@@ -1,0 +1,776 @@
+{
+	"name": "00_createAllTablesAndDFs",
+	"properties": {
+		"folder": {
+			"name": "TPC-DS-01-Create"
+		},
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "tpcdsMedium",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "56g",
+			"driverCores": 8,
+			"executorMemory": "56g",
+			"executorCores": 8,
+			"numExecutors": 2,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2",
+				"spark.autotune.trackingId": "dbb95a99-24f8-47ef-8ec2-4e59da69175b"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"enableDebugMode": false,
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "Synapse PySpark"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/e1bee07b-a025-41e2-ae0f-2291101bce96/resourceGroups/MiddleEarth/providers/Microsoft.Synapse/workspaces/anarion/bigDataPools/tpcdsMedium",
+				"name": "tpcdsMedium",
+				"type": "Spark",
+				"endpoint": "https://anarion.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/tpcdsMedium",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net"
+				},
+				"sparkVersion": "3.2",
+				"nodeCount": 3,
+				"cores": 8,
+				"memory": 56,
+				"automaticScaleJobs": false
+			},
+			"sessionKeepAliveTimeout": 30
+		},
+		"cells": [
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"## Set variables in the cell below to be used for each table/DF creation."
+				]
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"datalakePath='abfss://calembel@gondor2.dfs.core.windows.net/TPC-DS/SourceFiles001TB_parquet/'\r\n",
+					"storageFormat='parquet'\r\n",
+					"databaseName='tpcds1tb'"
+				],
+				"execution_count": 1
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"## Run the next cell only if doing this the first time, to create the Spark SQL/Lake database"
+				]
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"microsoft": {
+						"language": "sparksql"
+					},
+					"collapsed": false
+				},
+				"source": [
+					"%%sql\r\n",
+					"create database tpcds1tb;"
+				],
+				"execution_count": 2
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"## Change each cell for the specific schema/table needed. \r\n",
+					"This is the list of tables in the TPC-DS schema:\r\n",
+					"1. call_center\r\n",
+					"1. catalog_page\r\n",
+					"2. catalog_returns\r\n",
+					"3. catalog_sales\r\n",
+					"4. customer\r\n",
+					"5. customer_address\r\n",
+					"6. customer_demographics\r\n",
+					"7. date_dim\r\n",
+					"8. houshold_demographics\r\n",
+					"9. income_band\r\n",
+					"10. inventory\r\n",
+					"11. item\r\n",
+					"12. promotion\r\n",
+					"13. reason\r\n",
+					"14. ship_mode\r\n",
+					"15. store\r\n",
+					"16. store_returns\r\n",
+					"17. store_sales\r\n",
+					"18. time_dim\r\n",
+					"19. warehouse\r\n",
+					"20. web_page\r\n",
+					"21. web_returns\r\n",
+					"22. web_sales\r\n",
+					"23. web_site"
+				]
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"schemaType='call_center'\r\n",
+					"\r\n",
+					"dataPath=datalakePath + schemaType + '/'\r\n",
+					"tableName=databaseName + '.' + schemaType\r\n",
+					"df = spark.read.load(dataPath, format=storageFormat)\r\n",
+					"df.write.mode(\"overwrite\").saveAsTable(tableName)\r\n",
+					"\r\n",
+					"display(df.limit(10))"
+				],
+				"execution_count": 3
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"schemaType='catalog_page'\r\n",
+					"\r\n",
+					"dataPath=datalakePath + schemaType + '/'\r\n",
+					"tableName=databaseName + '.' + schemaType\r\n",
+					"df = spark.read.load(dataPath, format=storageFormat)\r\n",
+					"df.write.mode(\"overwrite\").saveAsTable(tableName)\r\n",
+					"\r\n",
+					"display(df.limit(10))"
+				],
+				"execution_count": 4
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"schemaType='catalog_returns'\r\n",
+					"\r\n",
+					"dataPath=datalakePath + schemaType + '/'\r\n",
+					"tableName=databaseName + '.' + schemaType\r\n",
+					"df = spark.read.load(dataPath, format=storageFormat)\r\n",
+					"df.write.mode(\"overwrite\").saveAsTable(tableName)\r\n",
+					"\r\n",
+					"display(df.limit(10))"
+				],
+				"execution_count": 5
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"schemaType='catalog_sales'\r\n",
+					"\r\n",
+					"dataPath=datalakePath + schemaType + '/'\r\n",
+					"tableName=databaseName + '.' + schemaType\r\n",
+					"df = spark.read.load(dataPath, format=storageFormat)\r\n",
+					"df.write.mode(\"overwrite\").saveAsTable(tableName)\r\n",
+					"\r\n",
+					"display(df.limit(10))"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"schemaType='customer'\r\n",
+					"\r\n",
+					"dataPath=datalakePath + schemaType + '/'\r\n",
+					"tableName=databaseName + '.' + schemaType\r\n",
+					"df = spark.read.load(dataPath, format=storageFormat)\r\n",
+					"df.write.mode(\"overwrite\").saveAsTable(tableName)\r\n",
+					"\r\n",
+					"display(df.limit(10))"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"schemaType='customer_address'\r\n",
+					"\r\n",
+					"dataPath=datalakePath + schemaType + '/'\r\n",
+					"tableName=databaseName + '.' + schemaType\r\n",
+					"df = spark.read.load(dataPath, format=storageFormat)\r\n",
+					"df.write.mode(\"overwrite\").saveAsTable(tableName)\r\n",
+					"\r\n",
+					"display(df.limit(10))"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"schemaType='customer_demographics'\r\n",
+					"\r\n",
+					"dataPath=datalakePath + schemaType + '/'\r\n",
+					"tableName=databaseName + '.' + schemaType\r\n",
+					"df = spark.read.load(dataPath, format=storageFormat)\r\n",
+					"df.write.mode(\"overwrite\").saveAsTable(tableName)\r\n",
+					"\r\n",
+					"display(df.limit(10))"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"schemaType='date_dim'\r\n",
+					"\r\n",
+					"dataPath=datalakePath + schemaType + '/'\r\n",
+					"tableName=databaseName + '.' + schemaType\r\n",
+					"df = spark.read.load(dataPath, format=storageFormat)\r\n",
+					"df.write.mode(\"overwrite\").saveAsTable(tableName)\r\n",
+					"\r\n",
+					"display(df.limit(10))"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"schemaType='household_demographics'\r\n",
+					"\r\n",
+					"dataPath=datalakePath + schemaType + '/'\r\n",
+					"tableName=databaseName + '.' + schemaType\r\n",
+					"df = spark.read.load(dataPath, format=storageFormat)\r\n",
+					"df.write.mode(\"overwrite\").saveAsTable(tableName)\r\n",
+					"\r\n",
+					"display(df.limit(10))"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"schemaType='income_band'\r\n",
+					"\r\n",
+					"dataPath=datalakePath + schemaType + '/'\r\n",
+					"tableName=databaseName + '.' + schemaType\r\n",
+					"df = spark.read.load(dataPath, format=storageFormat)\r\n",
+					"df.write.mode(\"overwrite\").saveAsTable(tableName)\r\n",
+					"\r\n",
+					"display(df.limit(10))"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"schemaType='inventory'\r\n",
+					"\r\n",
+					"dataPath=datalakePath + schemaType + '/'\r\n",
+					"tableName=databaseName + '.' + schemaType\r\n",
+					"df = spark.read.load(dataPath, format=storageFormat)\r\n",
+					"df.write.mode(\"overwrite\").saveAsTable(tableName)\r\n",
+					"\r\n",
+					"display(df.limit(10))"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"schemaType='item'\r\n",
+					"\r\n",
+					"dataPath=datalakePath + schemaType + '/'\r\n",
+					"tableName=databaseName + '.' + schemaType\r\n",
+					"df = spark.read.load(dataPath, format=storageFormat)\r\n",
+					"df.write.mode(\"overwrite\").saveAsTable(tableName)\r\n",
+					"\r\n",
+					"display(df.limit(10))"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"schemaType='promotion'\r\n",
+					"\r\n",
+					"dataPath=datalakePath + schemaType + '/'\r\n",
+					"tableName=databaseName + '.' + schemaType\r\n",
+					"df = spark.read.load(dataPath, format=storageFormat)\r\n",
+					"df.write.mode(\"overwrite\").saveAsTable(tableName)\r\n",
+					"\r\n",
+					"display(df.limit(10))"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"schemaType='reason'\r\n",
+					"\r\n",
+					"dataPath=datalakePath + schemaType + '/'\r\n",
+					"tableName=databaseName + '.' + schemaType\r\n",
+					"df = spark.read.load(dataPath, format=storageFormat)\r\n",
+					"df.write.mode(\"overwrite\").saveAsTable(tableName)\r\n",
+					"\r\n",
+					"display(df.limit(10))"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"schemaType='ship_mode'\r\n",
+					"\r\n",
+					"dataPath=datalakePath + schemaType + '/'\r\n",
+					"tableName=databaseName + '.' + schemaType\r\n",
+					"df = spark.read.load(dataPath, format=storageFormat)\r\n",
+					"df.write.mode(\"overwrite\").saveAsTable(tableName)\r\n",
+					"\r\n",
+					"display(df.limit(10))"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"schemaType='store'\r\n",
+					"\r\n",
+					"dataPath=datalakePath + schemaType + '/'\r\n",
+					"tableName=databaseName + '.' + schemaType\r\n",
+					"df = spark.read.load(dataPath, format=storageFormat)\r\n",
+					"df.write.mode(\"overwrite\").saveAsTable(tableName)\r\n",
+					"\r\n",
+					"display(df.limit(10))"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"schemaType='store_returns'\r\n",
+					"\r\n",
+					"dataPath=datalakePath + schemaType + '/'\r\n",
+					"tableName=databaseName + '.' + schemaType\r\n",
+					"df = spark.read.load(dataPath, format=storageFormat)\r\n",
+					"df.write.mode(\"overwrite\").saveAsTable(tableName)\r\n",
+					"\r\n",
+					"display(df.limit(10))"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"schemaType='store_sales'\r\n",
+					"\r\n",
+					"dataPath=datalakePath + schemaType + '/'\r\n",
+					"tableName=databaseName + '.' + schemaType\r\n",
+					"df = spark.read.load(dataPath, format=storageFormat)\r\n",
+					"df.write.mode(\"overwrite\").saveAsTable(tableName)\r\n",
+					"\r\n",
+					"display(df.limit(10))"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"schemaType='time_dim'\r\n",
+					"\r\n",
+					"dataPath=datalakePath + schemaType + '/'\r\n",
+					"tableName=databaseName + '.' + schemaType\r\n",
+					"df = spark.read.load(dataPath, format=storageFormat)\r\n",
+					"df.write.mode(\"overwrite\").saveAsTable(tableName)\r\n",
+					"\r\n",
+					"display(df.limit(10))"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"schemaType='warehouse'\r\n",
+					"\r\n",
+					"dataPath=datalakePath + schemaType + '/'\r\n",
+					"tableName=databaseName + '.' + schemaType\r\n",
+					"df = spark.read.load(dataPath, format=storageFormat)\r\n",
+					"df.write.mode(\"overwrite\").saveAsTable(tableName)\r\n",
+					"\r\n",
+					"display(df.limit(10))"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"schemaType='web_page'\r\n",
+					"\r\n",
+					"dataPath=datalakePath + schemaType + '/'\r\n",
+					"tableName=databaseName + '.' + schemaType\r\n",
+					"df = spark.read.load(dataPath, format=storageFormat)\r\n",
+					"df.write.mode(\"overwrite\").saveAsTable(tableName)\r\n",
+					"\r\n",
+					"display(df.limit(10))"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"schemaType='web_returns'\r\n",
+					"\r\n",
+					"dataPath=datalakePath + schemaType + '/'\r\n",
+					"tableName=databaseName + '.' + schemaType\r\n",
+					"df = spark.read.load(dataPath, format=storageFormat)\r\n",
+					"df.write.mode(\"overwrite\").saveAsTable(tableName)\r\n",
+					"\r\n",
+					"display(df.limit(10))"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"schemaType='web_sales'\r\n",
+					"\r\n",
+					"dataPath=datalakePath + schemaType + '/'\r\n",
+					"tableName=databaseName + '.' + schemaType\r\n",
+					"df = spark.read.load(dataPath, format=storageFormat)\r\n",
+					"df.write.mode(\"overwrite\").saveAsTable(tableName)\r\n",
+					"\r\n",
+					"display(df.limit(10))"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"schemaType='web_site'\r\n",
+					"\r\n",
+					"dataPath=datalakePath + schemaType + '/'\r\n",
+					"tableName=databaseName + '.' + schemaType\r\n",
+					"df = spark.read.load(dataPath, format=storageFormat)\r\n",
+					"df.write.mode(\"overwrite\").saveAsTable(tableName)\r\n",
+					"\r\n",
+					"display(df.limit(10))"
+				],
+				"execution_count": null
+			}
+		]
+	}
+}
