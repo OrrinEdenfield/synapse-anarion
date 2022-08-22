@@ -20,7 +20,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "a57c7472-e51e-41db-9181-de7f51b02f4b"
+				"spark.autotune.trackingId": "584b43b1-7ba6-454f-a0df-ab4bc8c0a28c"
 			}
 		},
 		"metadata": {
@@ -138,7 +138,7 @@
 				"source": [
 					"select * from catalog_returns limit 10;"
 				],
-				"execution_count": null
+				"execution_count": 5
 			},
 			{
 				"cell_type": "code",
@@ -157,7 +157,7 @@
 				"source": [
 					"select * from catalog_sales limit 10;"
 				],
-				"execution_count": null
+				"execution_count": 6
 			},
 			{
 				"cell_type": "code",
@@ -176,7 +176,7 @@
 				"source": [
 					"select * from customer limit 10;"
 				],
-				"execution_count": null
+				"execution_count": 7
 			},
 			{
 				"cell_type": "code",
@@ -195,7 +195,7 @@
 				"source": [
 					"select * from customer_address limit 10;"
 				],
-				"execution_count": null
+				"execution_count": 8
 			},
 			{
 				"cell_type": "code",
@@ -214,7 +214,7 @@
 				"source": [
 					"select * from customer_demographics limit 10;"
 				],
-				"execution_count": null
+				"execution_count": 9
 			},
 			{
 				"cell_type": "code",
@@ -233,7 +233,7 @@
 				"source": [
 					"select * from date_dim limit 10;"
 				],
-				"execution_count": null
+				"execution_count": 10
 			},
 			{
 				"cell_type": "code",
@@ -252,7 +252,7 @@
 				"source": [
 					"select * from household_demographics limit 10;"
 				],
-				"execution_count": null
+				"execution_count": 11
 			},
 			{
 				"cell_type": "code",
@@ -271,7 +271,7 @@
 				"source": [
 					"select * from income_band limit 10;"
 				],
-				"execution_count": null
+				"execution_count": 12
 			},
 			{
 				"cell_type": "code",
@@ -290,7 +290,7 @@
 				"source": [
 					"select * from inventory limit 10;"
 				],
-				"execution_count": null
+				"execution_count": 13
 			},
 			{
 				"cell_type": "code",
@@ -309,7 +309,7 @@
 				"source": [
 					"select * from item limit 10;"
 				],
-				"execution_count": null
+				"execution_count": 14
 			},
 			{
 				"cell_type": "code",
@@ -328,7 +328,7 @@
 				"source": [
 					"select * from promotion limit 10;"
 				],
-				"execution_count": null
+				"execution_count": 15
 			},
 			{
 				"cell_type": "code",
@@ -347,7 +347,7 @@
 				"source": [
 					"select * from reason limit 10;"
 				],
-				"execution_count": null
+				"execution_count": 16
 			},
 			{
 				"cell_type": "code",
@@ -366,7 +366,7 @@
 				"source": [
 					"select * from ship_mode limit 10;"
 				],
-				"execution_count": null
+				"execution_count": 17
 			},
 			{
 				"cell_type": "code",
@@ -385,7 +385,7 @@
 				"source": [
 					"select * from store limit 10;"
 				],
-				"execution_count": null
+				"execution_count": 18
 			},
 			{
 				"cell_type": "code",
@@ -404,7 +404,7 @@
 				"source": [
 					"select * from store_returns limit 10;"
 				],
-				"execution_count": null
+				"execution_count": 19
 			},
 			{
 				"cell_type": "code",
@@ -423,7 +423,7 @@
 				"source": [
 					"select * from store_sales limit 10;"
 				],
-				"execution_count": null
+				"execution_count": 20
 			},
 			{
 				"cell_type": "code",
@@ -442,7 +442,7 @@
 				"source": [
 					"select * from time_dim limit 10;"
 				],
-				"execution_count": null
+				"execution_count": 21
 			},
 			{
 				"cell_type": "code",
@@ -461,7 +461,7 @@
 				"source": [
 					"select * from warehouse limit 10;"
 				],
-				"execution_count": null
+				"execution_count": 22
 			},
 			{
 				"cell_type": "code",
@@ -480,7 +480,7 @@
 				"source": [
 					"select * from web_page limit 10;"
 				],
-				"execution_count": null
+				"execution_count": 23
 			},
 			{
 				"cell_type": "code",
@@ -499,7 +499,7 @@
 				"source": [
 					"select * from web_returns limit 10;"
 				],
-				"execution_count": null
+				"execution_count": 24
 			},
 			{
 				"cell_type": "code",
@@ -518,7 +518,7 @@
 				"source": [
 					"select * from web_sales limit 10;"
 				],
-				"execution_count": null
+				"execution_count": 25
 			},
 			{
 				"cell_type": "code",
@@ -537,7 +537,7 @@
 				"source": [
 					"select * from web_site limit 10;"
 				],
-				"execution_count": null
+				"execution_count": 26
 			}
 		]
 	}
