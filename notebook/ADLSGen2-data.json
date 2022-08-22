@@ -1,6 +1,9 @@
 {
 	"name": "ADLSGen2-data",
 	"properties": {
+		"folder": {
+			"name": "Examples"
+		},
 		"nbformat": 4,
 		"nbformat_minor": 2,
 		"bigDataPool": {
@@ -17,7 +20,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "7c0bb93b-d164-471d-b797-6dd5a771a796"
+				"spark.autotune.trackingId": "933b48d5-67b4-4051-beb5-63202a8e3202"
 			}
 		},
 		"metadata": {
@@ -138,9 +141,9 @@
 					}
 				},
 				"source": [
-					"mssparkutils.fs.ls(\"synfs:/0/mnt/adls/\")"
+					"mssparkutils.fs.ls(\"synfs:/0/mnt/adls/01-raw/biketrips/2022/\")"
 				],
-				"execution_count": 5
+				"execution_count": 8
 			}
 		]
 	}
