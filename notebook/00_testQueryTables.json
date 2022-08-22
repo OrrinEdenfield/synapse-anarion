@@ -20,7 +20,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "abb527f3-5c3e-4ce9-8efc-48936e74fe7a"
+				"spark.autotune.trackingId": "a57c7472-e51e-41db-9181-de7f51b02f4b"
 			}
 		},
 		"metadata": {
@@ -75,7 +75,8 @@
 						"transient": {
 							"deleting": false
 						}
-					}
+					},
+					"collapsed": false
 				},
 				"source": [
 					"use tpcds1tb;"
@@ -99,7 +100,7 @@
 				"source": [
 					"select * from call_center limit 10;"
 				],
-				"execution_count": 1
+				"execution_count": 3
 			},
 			{
 				"cell_type": "code",
@@ -118,7 +119,7 @@
 				"source": [
 					"select * from catalog_page limit 10;"
 				],
-				"execution_count": null
+				"execution_count": 4
 			},
 			{
 				"cell_type": "code",
