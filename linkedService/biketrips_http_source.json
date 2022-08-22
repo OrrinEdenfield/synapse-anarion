@@ -1,0 +1,17 @@
+{
+	"name": "biketrips_http_source",
+	"type": "Microsoft.Synapse/workspaces/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "HttpServer",
+		"typeProperties": {
+			"url": "https://s3.amazonaws.com/tripdata/",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Anonymous"
+		},
+		"connectVia": {
+			"referenceName": "AutoResolveIntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

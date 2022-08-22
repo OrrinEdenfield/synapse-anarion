@@ -1,0 +1,23 @@
+{
+	"name": "biketrips_csv_source_zipped",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "anarion-WorkspaceDefaultStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "01-raw/biketrips/incoming",
+				"fileSystem": "calembel"
+			},
+			"compression": {
+				"type": "ZipDeflate",
+				"level": "Optimal"
+			}
+		}
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}

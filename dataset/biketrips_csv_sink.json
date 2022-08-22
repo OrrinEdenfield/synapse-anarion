@@ -1,0 +1,19 @@
+{
+	"name": "biketrips_csv_sink",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "anarion-WorkspaceDefaultStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "01-raw/biketrips/2022",
+				"fileSystem": "calembel"
+			}
+		}
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}

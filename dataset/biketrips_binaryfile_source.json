@@ -1,0 +1,21 @@
+{
+	"name": "biketrips_binaryfile_source",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "biketrips_http_source",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "HttpServerLocation",
+				"relativeUrl": {
+					"value": "@concat(formatDatetime(getPastTime(1,'Month'),'yyyy'),formatDatetime(getPastTime(1,'Month'),'MM'),'-citbike-tripdata.csv.zip')",
+					"type": "Expression"
+				}
+			}
+		}
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}
