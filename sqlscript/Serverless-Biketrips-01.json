@@ -1,0 +1,17 @@
+{
+	"name": "Serverless-Biketrips-01",
+	"properties": {
+		"content": {
+			"query": "-- Read multiple files with same schema\n-- This is auto-generated code\nSELECT\n    TOP 100 *\nFROM\n    OPENROWSET(\n        BULK (\n            'https://gondor2.dfs.core.windows.net/calembel/01-raw/biketrips/2022/202201-citibike-tripdata.csv',\n\t\t\t'https://gondor2.dfs.core.windows.net/calembel/01-raw/biketrips/2022/202202-citibike-tripdata.csv',\n\t\t\t'https://gondor2.dfs.core.windows.net/calembel/01-raw/biketrips/2022/202203-citibike-tripdata.csv',\n\t\t\t'https://gondor2.dfs.core.windows.net/calembel/01-raw/biketrips/2022/202204-citibike-tripdata.csv',\n\t\t\t'https://gondor2.dfs.core.windows.net/calembel/01-raw/biketrips/2022/202205-citibike-tripdata.csv',\n\t\t\t'https://gondor2.dfs.core.windows.net/calembel/01-raw/biketrips/2022/202206-citbike-tripdata.csv',\n\t\t\t'https://gondor2.dfs.core.windows.net/calembel/01-raw/biketrips/2022/202207-citbike-tripdata.csv'\n        ),\n        FORMAT = 'CSV',\n        PARSER_VERSION = '2.0'\n    ) AS [result]\n\n\n-- Create Synapse SQL Serverless database\ncreate database biketrips collate Latin1_General_100_BIN2_UTF8;",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
