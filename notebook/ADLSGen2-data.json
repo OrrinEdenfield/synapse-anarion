@@ -20,7 +20,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "933b48d5-67b4-4051-beb5-63202a8e3202"
+				"spark.autotune.trackingId": "e429725d-3594-4840-b3ac-53b39598aa2e"
 			}
 		},
 		"metadata": {
@@ -144,6 +144,28 @@
 					"mssparkutils.fs.ls(\"synfs:/0/mnt/adls/01-raw/biketrips/2022/\")"
 				],
 				"execution_count": 8
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"import pandas\r\n",
+					"\r\n",
+					"#read csv file\r\n",
+					"df = pandas.read_csv('abfss://calembel@gondor2.dfs.core.windows.net/01-raw/biketrips/2022/202207-citbike-tripdata.csv', low_memory=False)\r\n",
+					"print(df)"
+				],
+				"execution_count": 22
 			}
 		]
 	}
