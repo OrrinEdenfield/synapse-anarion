@@ -7,20 +7,20 @@
 		"nbformat": 4,
 		"nbformat_minor": 2,
 		"bigDataPool": {
-			"referenceName": "tpcdsMedium",
+			"referenceName": "tpcdsXLarge",
 			"type": "BigDataPoolReference"
 		},
 		"sessionProperties": {
-			"driverMemory": "56g",
-			"driverCores": 8,
-			"executorMemory": "56g",
-			"executorCores": 8,
+			"driverMemory": "224g",
+			"driverCores": 32,
+			"executorMemory": "224g",
+			"executorCores": 32,
 			"numExecutors": 2,
 			"conf": {
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "dbb95a99-24f8-47ef-8ec2-4e59da69175b"
+				"spark.autotune.trackingId": "4f521831-87f9-43e7-97ee-3aaaff7e429e"
 			}
 		},
 		"metadata": {
@@ -34,18 +34,18 @@
 				"name": "python"
 			},
 			"a365ComputeOptions": {
-				"id": "/subscriptions/e1bee07b-a025-41e2-ae0f-2291101bce96/resourceGroups/MiddleEarth/providers/Microsoft.Synapse/workspaces/anarion/bigDataPools/tpcdsMedium",
-				"name": "tpcdsMedium",
+				"id": "/subscriptions/e1bee07b-a025-41e2-ae0f-2291101bce96/resourceGroups/MiddleEarth/providers/Microsoft.Synapse/workspaces/anarion/bigDataPools/tpcdsXLarge",
+				"name": "tpcdsXLarge",
 				"type": "Spark",
-				"endpoint": "https://anarion.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/tpcdsMedium",
+				"endpoint": "https://anarion.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/tpcdsXLarge",
 				"auth": {
 					"type": "AAD",
 					"authResource": "https://dev.azuresynapse.net"
 				},
 				"sparkVersion": "3.2",
 				"nodeCount": 3,
-				"cores": 8,
-				"memory": 56,
+				"cores": 32,
+				"memory": 224,
 				"automaticScaleJobs": false
 			},
 			"sessionKeepAliveTimeout": 30
@@ -107,7 +107,7 @@
 					"%%sql\r\n",
 					"create database tpcds1tb;"
 				],
-				"execution_count": 2
+				"execution_count": 9
 			},
 			{
 				"cell_type": "markdown",
@@ -171,7 +171,7 @@
 					"\r\n",
 					"display(df.limit(10))"
 				],
-				"execution_count": 3
+				"execution_count": 10
 			},
 			{
 				"cell_type": "code",
@@ -197,7 +197,7 @@
 					"\r\n",
 					"display(df.limit(10))"
 				],
-				"execution_count": 4
+				"execution_count": 11
 			},
 			{
 				"cell_type": "code",
@@ -223,7 +223,7 @@
 					"\r\n",
 					"display(df.limit(10))"
 				],
-				"execution_count": 5
+				"execution_count": 12
 			},
 			{
 				"cell_type": "code",
@@ -249,7 +249,7 @@
 					"\r\n",
 					"display(df.limit(10))"
 				],
-				"execution_count": null
+				"execution_count": 13
 			},
 			{
 				"cell_type": "code",
@@ -275,7 +275,7 @@
 					"\r\n",
 					"display(df.limit(10))"
 				],
-				"execution_count": null
+				"execution_count": 14
 			},
 			{
 				"cell_type": "code",
@@ -301,7 +301,7 @@
 					"\r\n",
 					"display(df.limit(10))"
 				],
-				"execution_count": null
+				"execution_count": 15
 			},
 			{
 				"cell_type": "code",
@@ -327,7 +327,7 @@
 					"\r\n",
 					"display(df.limit(10))"
 				],
-				"execution_count": null
+				"execution_count": 16
 			},
 			{
 				"cell_type": "code",
@@ -353,7 +353,7 @@
 					"\r\n",
 					"display(df.limit(10))"
 				],
-				"execution_count": null
+				"execution_count": 17
 			},
 			{
 				"cell_type": "code",
@@ -379,7 +379,7 @@
 					"\r\n",
 					"display(df.limit(10))"
 				],
-				"execution_count": null
+				"execution_count": 18
 			},
 			{
 				"cell_type": "code",
@@ -405,7 +405,7 @@
 					"\r\n",
 					"display(df.limit(10))"
 				],
-				"execution_count": null
+				"execution_count": 19
 			},
 			{
 				"cell_type": "code",
@@ -431,7 +431,7 @@
 					"\r\n",
 					"display(df.limit(10))"
 				],
-				"execution_count": null
+				"execution_count": 20
 			},
 			{
 				"cell_type": "code",
@@ -457,7 +457,7 @@
 					"\r\n",
 					"display(df.limit(10))"
 				],
-				"execution_count": null
+				"execution_count": 21
 			},
 			{
 				"cell_type": "code",
@@ -483,7 +483,7 @@
 					"\r\n",
 					"display(df.limit(10))"
 				],
-				"execution_count": null
+				"execution_count": 22
 			},
 			{
 				"cell_type": "code",
@@ -509,7 +509,7 @@
 					"\r\n",
 					"display(df.limit(10))"
 				],
-				"execution_count": null
+				"execution_count": 23
 			},
 			{
 				"cell_type": "code",
@@ -535,7 +535,7 @@
 					"\r\n",
 					"display(df.limit(10))"
 				],
-				"execution_count": null
+				"execution_count": 24
 			},
 			{
 				"cell_type": "code",
@@ -561,7 +561,7 @@
 					"\r\n",
 					"display(df.limit(10))"
 				],
-				"execution_count": null
+				"execution_count": 25
 			},
 			{
 				"cell_type": "code",
@@ -587,7 +587,7 @@
 					"\r\n",
 					"display(df.limit(10))"
 				],
-				"execution_count": null
+				"execution_count": 26
 			},
 			{
 				"cell_type": "code",
@@ -613,7 +613,7 @@
 					"\r\n",
 					"display(df.limit(10))"
 				],
-				"execution_count": null
+				"execution_count": 27
 			},
 			{
 				"cell_type": "code",
@@ -639,7 +639,7 @@
 					"\r\n",
 					"display(df.limit(10))"
 				],
-				"execution_count": null
+				"execution_count": 28
 			},
 			{
 				"cell_type": "code",
@@ -665,7 +665,7 @@
 					"\r\n",
 					"display(df.limit(10))"
 				],
-				"execution_count": null
+				"execution_count": 29
 			},
 			{
 				"cell_type": "code",
@@ -691,7 +691,7 @@
 					"\r\n",
 					"display(df.limit(10))"
 				],
-				"execution_count": null
+				"execution_count": 30
 			},
 			{
 				"cell_type": "code",
@@ -717,7 +717,7 @@
 					"\r\n",
 					"display(df.limit(10))"
 				],
-				"execution_count": null
+				"execution_count": 31
 			},
 			{
 				"cell_type": "code",
@@ -743,7 +743,7 @@
 					"\r\n",
 					"display(df.limit(10))"
 				],
-				"execution_count": null
+				"execution_count": 32
 			},
 			{
 				"cell_type": "code",
@@ -769,7 +769,7 @@
 					"\r\n",
 					"display(df.limit(10))"
 				],
-				"execution_count": null
+				"execution_count": 33
 			}
 		]
 	}
