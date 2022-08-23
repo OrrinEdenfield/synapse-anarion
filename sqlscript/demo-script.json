@@ -1,0 +1,20 @@
+{
+	"name": "demo-script",
+	"properties": {
+		"folder": {
+			"name": "Misc"
+		},
+		"content": {
+			"query": "-- This is auto-generated code\nSELECT\n    TOP 100 *\nFROM\n    OPENROWSET(\n        BULK 'https://minastirith.dfs.core.windows.net/datalake2020/01-fresh/biketrips/2020/202001-citibike-tripdata.csv',\n        FORMAT = 'CSV',\n        PARSER_VERSION='2.0',\n        header_row=true\n    ) AS [result]\n\nSELECT COUNT(*) as TotalRecords\nFROM\n    OPENROWSET(\n        BULK 'https://minastirith.dfs.core.windows.net/datalake2020/01-fresh/biketrips/2020/202001-citibike-tripdata.csv',\n        FORMAT = 'CSV',\n        PARSER_VERSION='2.0',\n        header_row=true\n    ) AS [result]\n-- 1,240,596\n\n\nSELECT \n     YEAR(starttime) as [year]\n    ,MONTH(starttime) as [month]\n    ,COUNT(*) as TotalRecords\nFROM\n    OPENROWSET(\n        BULK 'https://minastirith.dfs.core.windows.net/datalake2020/01-fresh/biketrips/2020/202001-citibike-tripdata.csv',\n        FORMAT = 'CSV',\n        PARSER_VERSION='2.0',\n        header_row=true\n    ) AS [result]\ngroup by \n     YEAR(starttime)\n    ,MONTH(starttime)\n\nSELECT COUNT(*) as TotalRecords\nFROM\n    OPENROWSET(\n        BULK 'https://minastirith.dfs.core.windows.net/datalake2020/01-fresh/biketrips/2020/',\n        FORMAT = 'CSV',\n        PARSER_VERSION='2.0',\n        header_row=true\n    ) AS [result]\n-- 1,240,596\n-- 19,506,857\n\n\nSELECT \n     YEAR(starttime) as [year]\n    ,MONTH(starttime) as [month]\n    ,COUNT(*) as TotalRecords\nFROM\n    OPENROWSET(\n        BULK 'https://minastirith.dfs.core.windows.net/datalake2020/01-fresh/biketrips/2020/',\n        FORMAT = 'CSV',\n        PARSER_VERSION='2.0',\n        header_row=true\n    ) AS [result]\ngroup by \n     YEAR(starttime)\n    ,MONTH(starttime)\norder by \n     YEAR(starttime)\n    ,MONTH(starttime)\n\n\n\n-- PARQUET data\n-- Note that for YEAR() we have to do YEAR(CAST(starttime as date))\n\n-- in master\ncreate database newserverless;\n\nuse newserverless;\n\n\ncreate view dbo.biketrips2020 as \nSELECT \n     YEAR(starttime) as [year]\n    ,MONTH(starttime) as [month]\n    ,COUNT(*) as TotalRecords\nFROM\n    OPENROWSET(\n        BULK 'https://minastirith.dfs.core.windows.net/datalake2020/01-fresh/biketrips/2020/',\n        FORMAT = 'CSV',\n        PARSER_VERSION='2.0',\n        header_row=true\n    ) AS [result]\ngroup by \n     YEAR(starttime)\n    ,MONTH(starttime)",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

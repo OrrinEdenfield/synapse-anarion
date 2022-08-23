@@ -1,0 +1,20 @@
+{
+	"name": "COPYscriptByHand",
+	"properties": {
+		"folder": {
+			"name": "Misc"
+		},
+		"content": {
+			"query": "-- Create the destination table with varchar data types\n/*\nDROP TABLE dbo.biketripstest;\nGO\n*/\nCREATE TABLE dbo.biketripstest\n\t(\n\t [tripduration] varchar(250),\n\t [starttime] varchar(250),\n\t [stoptime] varchar(250),\n\t [start station id] varchar(250),\n\t [start station name] varchar(250),\n\t [start station latitude] varchar(250),\n\t [start station longitude] varchar(250),\n\t [end station id] varchar(250),\n\t [end station name] varchar(250),\n\t [end station latitude] varchar(250),\n\t [end station longitude] varchar(250),\n\t [bikeid] varchar(250),\n\t [usertype] varchar(250),\n\t [birth year] varchar(250),\n\t [gender] varchar(250)\n\t)\nWITH\n\t(\n\tDISTRIBUTION = ROUND_ROBIN,\n\t CLUSTERED COLUMNSTORE INDEX\n\t -- HEAP\n\t)\nGO\n\n-- Table with real data types\nDROP TABLE dbo.biketripstesttypes;\nGO\nCREATE TABLE dbo.biketripstesttypes\n\t(\n\t [tripduration] bigint,\n\t [starttime] datetime2(0),\n\t [stoptime] datetime2(0),\n\t [start station id] bigint,\n\t [start station name] nvarchar(54),\n\t [start station latitude] float,\n\t [start station longitude] float,\n\t [end station id] bigint,\n\t [end station name] nvarchar(54),\n\t [end station latitude] float,\n\t [end station longitude] float,\n\t [bikeid] bigint,\n\t [usertype] nvarchar(30),\n\t [birth year] bigint,\n\t [gender] bigint\n\t)\nWITH\n\t(\n\tDISTRIBUTION = ROUND_ROBIN,\n\t CLUSTERED COLUMNSTORE INDEX\n\t -- HEAP\n\t)\nGO\n\n\n-- ::::::  Begin COPY INTO work\n\n/* -- FROM just 1 file, to test \nFROM 'https://minastirith.dfs.core.windows.net/datalake2020/01-fresh/biketrips/2020/202001-citibike-tripdata.csv'\n*/\n\n/* -- FROM 2020 year directory \nFROM 'https://minastirith.dfs.core.windows.net/datalake2020/01-fresh/biketrips/2020/'\n*/\n\n\n-- Run COPY into\nCOPY INTO dbo.biketripstest \nFROM 'https://minastirith.dfs.core.windows.net/datalake2020/01-fresh/biketrips/2020/'\nWITH (\n   FIELDTERMINATOR=',',\n   FIRSTROW=2,\n   ROWTERMINATOR='0x0A'\n);\n\n\n\n-- COPY into dbo.biketripstesttypes\nCOPY INTO dbo.biketripstesttypes\nFROM 'https://minastirith.dfs.core.windows.net/datalake2020/01-fresh/biketrips/2020/'\n--FROM 'https://minastirith.dfs.core.windows.net/datalake2020/01-fresh/biketrips/2020/202001-citibike-tripdata.csv'\nWITH (\n   FIELDTERMINATOR=',',\n   FIRSTROW=2,\n   ROWTERMINATOR='0x0A'\n);",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

@@ -1,0 +1,20 @@
+{
+	"name": "SQLserverlessByHand-2",
+	"properties": {
+		"folder": {
+			"name": "Examples-SQL-Serverless"
+		},
+		"content": {
+			"query": "-- Creating SQL Serverless databases\nCREATE DATABASE newdbname;\n\n\n-- Creating credentials in Azure Synapse serverless SQL pools\n-- AAD\nCREATE DATABASE SCOPED CREDENTIAL [sqlondemand] \nWITH IDENTITY='User Identity'\n\n-- Managed Identity for this Synapse workspace\nCREATE DATABASE SCOPED CREDENTIAL [sqlondemand] \nWITH IDENTITY='Managed Identity'\n\n-- SAS token\nCREATE DATABASE SCOPED CREDENTIAL [sqlondemand] \nWITH IDENTITY='SHARED ACCESS SIGNATURE',   \nSECRET = 'sv=2018-03-28&ss=bf&srt=sco&sp=rl&st=2019-10-14T12%3A10%3A25Z&se=2061-12-31T12%3A10%3A00Z&sig=KlSU2ullCscyTS0An0nozEpo4tO5JAgGBvw%2FJX2lguw%3D'\n\n\n-- External data sources\nCREATE EXTERNAL DATA SOURCE YellowTaxi \nWITH ( LOCATION = 'https://azureopendatastorage.blob.core.windows.net/nyctlc/yellow/')\n\nCREATE EXTERNAL DATA SOURCE SqlOnDemandDemo WITH ( \n    LOCATION = 'https://sqlondemandstorage.blob.core.windows.net', \n    CREDENTIAL = sqlondemand \n);\n\n-- External tables\n-- 3 objects needed\n--    External data source\n--    External file format\n--    External table\n\n-- Below uses the setup script\n-- https://github.com/Azure-Samples/Synapse/blob/master/SQL/Samples/LdwSample/SampleDB.sql\n\n-- Database scoped credential\nCREATE DATABASE SCOPED CREDENTIAL [sqlondemand] \nWITH IDENTITY='SHARED ACCESS SIGNATURE',   \nSECRET = 'sv=2018-03-28&ss=bf&srt=sco&sp=rl&st=2019-10-14T12%3A10%3A25Z&se=2061-12-31T12%3A10%3A00Z&sig=KlSU2ullCscyTS0An0nozEpo4tO5JAgGBvw%2FJX2lguw%3D'\n\n-- External data source\nCREATE EXTERNAL DATA SOURCE SqlOnDemandDemo WITH ( \n    LOCATION = 'https://sqlondemandstorage.blob.core.windows.net', \n    CREDENTIAL = sqlondemand \n); \nGO \nCREATE EXTERNAL DATA SOURCE YellowTaxi \nWITH ( LOCATION = 'https://azureopendatastorage.blob.core.windows.net/nyctlc/yellow/')\nGO\n\n-- External file format\nCREATE EXTERNAL FILE FORMAT QuotedCsvWithHeaderFormat \nWITH (   \n    FORMAT_TYPE = DELIMITEDTEXT, \n    FORMAT_OPTIONS ( FIELD_TERMINATOR = ',', STRING_DELIMITER = '\"', FIRST_ROW = 2   ) \n); \nGO \nCREATE EXTERNAL FILE FORMAT ParquetFormat WITH (  FORMAT_TYPE = PARQUET );\nGO\n\n-- Create the external table (on the secured data)\nUSE [mydbname]; \nGO \nCREATE EXTERNAL TABLE populationExternalTable \n( \n    [country_code] VARCHAR (5) COLLATE Latin1_General_BIN2, \n    [country_name] VARCHAR (100) COLLATE Latin1_General_BIN2, \n    [year] smallint, \n    [population] bigint \n) \nWITH ( \n    LOCATION = 'csv/population/population.csv', \n    DATA_SOURCE = sqlondemanddemo, \n    FILE_FORMAT = QuotedCSVWithHeaderFormat \n);\n\n\n-- Create the external table (on the public data)\nCREATE EXTERNAL TABLE Taxi ( \n    vendor_id VARCHAR(100) COLLATE Latin1_General_BIN2,  \n    pickup_datetime DATETIME2,  \n    dropoff_datetime DATETIME2, \n    passenger_count INT, \n    trip_distance FLOAT, \n    fare_amount FLOAT, \n    tip_amount FLOAT, \n    tolls_amount FLOAT, \n    total_amount FLOAT \n) WITH ( \n        LOCATION = 'puYear=*/puMonth=*/*.parquet', \n        DATA_SOURCE = YellowTaxi, \n        FILE_FORMAT = ParquetFormat \n);\n\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
