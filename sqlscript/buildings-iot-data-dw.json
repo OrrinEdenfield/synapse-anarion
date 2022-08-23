@@ -1,0 +1,20 @@
+{
+	"name": "buildings-iot-data-dw",
+	"properties": {
+		"folder": {
+			"name": "Examples-SQL-Serverless/operational-analytics"
+		},
+		"content": {
+			"query": "---------------------------------------------------------------------------------------------------\n-- External table (Parqet data on data lake)\nselect count(*)\nfrom ext.buildings_sensors\n-- 199\n\n-- Staging table (heap, round-robin table in SQL Dedicated)\nselect count(*)\nfrom staging.buildings\n-- 199\n\n-- DW table (CCI, hash distribution in SQL Dedicated)\nselect count(*)\nfrom dw.buildings\n-- 199\n\n\n-- Query the external table\nselect top 20 * from ext.buildings_sensors order by ISO8601 desc;\n\n-- DW record count by date:\nSELECT \n    year(cast(left(ISO8601,10) as date)) as [year], month(cast(left(ISO8601,10) as date)) as [month], day(cast(left(ISO8601,10) as date)) as [day]\n    ,count(*) as occurs\nfrom dw.buildings\ngroup by year(cast(left(ISO8601,10) as date)), month(cast(left(ISO8601,10) as date)), day(cast(left(ISO8601,10) as date))\norder by year(cast(left(ISO8601,10) as date)), month(cast(left(ISO8601,10) as date)), day(cast(left(ISO8601,10) as date)) desc\n\n\n-- Turn off ResultSet Cache\nSET RESULT_SET_CACHING OFF;\n\nSELECT \n    year(cast(left(ISO8601,10) as date)) as [year], month(cast(left(ISO8601,10) as date)) as [month], day(cast(left(ISO8601,10) as date)) as [day]\n    ,count(*) as occurs\nfrom dw.buildings\ngroup by year(cast(left(ISO8601,10) as date)), month(cast(left(ISO8601,10) as date)), day(cast(left(ISO8601,10) as date))\norder by year(cast(left(ISO8601,10) as date)), month(cast(left(ISO8601,10) as date)), day(cast(left(ISO8601,10) as date)) desc",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
