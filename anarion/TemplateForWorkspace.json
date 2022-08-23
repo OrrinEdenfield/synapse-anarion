@@ -9688,6 +9688,81 @@
 				"type": "SqlQuery"
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Demo-KQL-IoT-Building-Sensor')]",
+			"type": "Microsoft.Synapse/workspaces/kqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "// Drop target table for IoT data:\n//.drop table buidingenv\n\n// Create target table for IoT data:\n.create table buidingenv (timestamp: datetime, temperature: real, humidity: real)\n.create table buidingenv ingestion json mapping 'buidingenvMapping' '[{\"column\": \"timestamp\",\"path\": \"$.timestamp\",\"datatype\": \"datetime\" },{\"column\": \"humidity\",\"path\": \"$.humidity\",\"datatype\": \"real\"},{\"column\": \"temperature\",\"path\": \"$.temperature\",\"datatype\": \"real\"}]'\n\n// Return all records\nbuidingenv_v2 | count\n\n\n// Return all records for the last day\nbuidingenv_v2\n//| where timestamp > now(-1d) and timestamp <= now()\n| order by timestamp desc\n| limit 10\n| count\n\n\n// Average temperature by date & hour, rounded to 2 decimal places\nbuidingenv \n| summarize round(avg(temperature),2) by \n     year = datetime_part(\"year\", timestamp)\n    ,month = datetime_part(\"month\", timestamp)\n    ,day = datetime_part(\"day\", timestamp)\n    ,hour = datetime_part(\"hour\", timestamp)\n| where hour != ''\n| order by year asc, month asc, day asc, hour asc\n\n// Count of records per hour\nbuidingenv \n| summarize RecordCount = count() by ISO8601 = substring(tostring(timestamp),0,13)\n| where ISO8601 != ''\n| order by ISO8601 asc\n\n\n// Now switch to the new table\n\n// Count of messages per deviceID\nbuidingenv_v2\n| summarize RecordCount = count() by device = deviceid\n| order by device asc\n// IoTUbuntu           3405\n// IoTWinServer2019    2493\n\n// Count of records per hour\nbuidingenv_v2\n| summarize RecordCount = count() by ISO8601 = substring(tostring(timestamp),0,13), deviceid\n| where ISO8601 != '' and ISO8601 != '2021-09-24T13'\n| order by ISO8601 desc, deviceid asc\n\n\n\n// Daily query to extract from ADX cluster & persist for historical analysis\nbuidingenv_v2\n| where toint(datetime_part(\"day\", timestamp)) == datetime_part(\"day\", now(-1d))\n| count\n// 77,820\n\n// Compare yesterday's data to the day before\nbuidingenv_v2\n| where toint(datetime_part(\"day\", timestamp)) == datetime_part(\"day\", now(-2d))\n| count\n// 138,451\n\n// Compare yesterday's data to the day before, and the day before that\nbuidingenv_v2\n| where toint(datetime_part(\"day\", timestamp)) == datetime_part(\"day\", now(-3d))\n| count\n// 162,208\n\n// Count of records per hour, exclude first hour data was sent in & latest 1 hour increment\nbuidingenv_v2\n| summarize RecordCount = count() by ISO8601 = substring(tostring(timestamp),0,13), deviceid\n| where ISO8601 != '' and ISO8601 != '2021-09-24T13' and ISO8601 != substring(tostring(now()),0,13)\n| order by ISO8601 desc, deviceid asc\n\n// Return most recent records added\nbuidingenv_v2\n| order by timestamp desc\n| limit 15",
+					"metadata": {
+						"language": "kql"
+					}
+				},
+				"type": "KqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Misc-KQL-Create-IoT-Table')]",
+			"type": "Microsoft.Synapse/workspaces/kqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "// Create a table to ingest data into from IoT Hub\n//.create table PerceptInferences (col1: string, col2: string)\n\n.drop table PerceptInferences\n\n.create table PerceptInferences (label: string, confidence: real, timestamp: real)\n.create table PerceptInferences ingestion json mapping 'PerceptMapping' '[{\"column\":\"label\",\"path\":\"$.NEURAL_NETWORK.label\",\"datatype\":\"string\"},{\"column\":\"confidence\",\"path\":\"$.NEURAL_NETWORK.confidence\",\"datatype\":\"real\"},,{\"column\":\"timestamp\",\"path\":\"$.NEURAL_NETWORK.timestamp\",\"datatype\":\"real\"}]'\n\n\n",
+					"metadata": {
+						"language": "kql"
+					}
+				},
+				"type": "KqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Misc-KQL-iot-building-sensor')]",
+			"type": "Microsoft.Synapse/workspaces/kqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "// Drop target table for IoT data:\n//.drop table buidingenv\n\n// Create target table for IoT data:\n.create table buidingenv_v2 (timestamp: datetime, deviceid: string, temperature: real, humidity: real)\n.create table buidingenv_v2 ingestion json mapping 'buidingenvMapping_v2' '[{\"column\": \"timestamp\",\"path\": \"$.timestamp\",\"datatype\": \"datetime\" },{\"column\": \"deviceid\",\"path\": \"$.deviceid\",\"datatype\": \"string\" },{\"column\": \"humidity\",\"path\": \"$.humidity\",\"datatype\": \"real\"},{\"column\": \"temperature\",\"path\": \"$.temperature\",\"datatype\": \"real\"}]'\n\n// Return all records\nbuidingenv_v2 | count\n\n\n// Return all records for the last day\nbuidingenv\n| where timestamp > now(-2d) and timestamp <= now(-1d)\n| order by timestamp asc\n| count\n// As of 20210923 4pm - 79727 \n// As of 20210924 9am - \n\n// Average temperature by hour\nbuidingenv\n| summarize round(avg(temperature),2) by hour = datetime_part(\"hour\", timestamp) \n\n\n// Average temperature by hour, rounded to 2 decimal places\nbuidingenv | summarize round(avg(temperature),2) by hour = datetime_part(\"hour\", timestamp) \n\n\n// Average temperature by date & hour, rounded to 2 decimal places\nbuidingenv \n| summarize round(avg(temperature),2) by \n     year = datetime_part(\"year\", timestamp)\n    ,month = datetime_part(\"month\", timestamp)\n    ,day = datetime_part(\"day\", timestamp)\n    ,hour = datetime_part(\"hour\", timestamp)\n| where hour != ''\n| order by year asc, month asc, day asc, hour asc\n\n\n// Count records in the table\nbuidingenv | count\n// 148,415\n\n\n// View data in the table\nbuidingenv\n| order by timestamp desc\n| limit 10 \n\n\n// Count of records per hour\nbuidingenv \n| summarize RecordCount = count() by \n     ISO8601 = strcat(datetime_part(\"year\", timestamp),\"-\",iif(toint(datetime_part(\"month\", timestamp)) < 10, strcat(\"0\",datetime_part(\"month\", timestamp)),tostring((datetime_part(\"month\", timestamp)))),\"-\",iif(toint(datetime_part(\"day\", timestamp)) < 10, strcat(\"0\",datetime_part(\"day\", timestamp)),tostring((datetime_part(\"day\", timestamp)))),\"T\",iif(toint(datetime_part(\"hour\", timestamp)) < 10, strcat(\"0\",datetime_part(\"hour\", timestamp)),tostring((datetime_part(\"hour\", timestamp)))))\n    ,timestamp\n    ,ISO2 = substring(tostring(timestamp),0,13)\n    ,year = datetime_part(\"year\", timestamp)\n    ,month = iif(toint(datetime_part(\"month\", timestamp)) < 10, strcat(\"0\",datetime_part(\"month\", timestamp)),tostring((datetime_part(\"month\", timestamp))))\n    ,day = iif(toint(datetime_part(\"day\", timestamp)) < 10, strcat(\"0\",datetime_part(\"day\", timestamp)),tostring((datetime_part(\"day\", timestamp))))\n    ,hour = iif(toint(datetime_part(\"hour\", timestamp)) < 10, strcat(\"0\",datetime_part(\"hour\", timestamp)),tostring((datetime_part(\"hour\", timestamp))))\n| where hour != ''\n//| order by year asc, month asc, day asc, hour asc\n| order by ISO8601 asc\n\n\n\n\n\n// Return all records for yesterday\nbuidingenv\n| where toint(datetime_part(\"day\", timestamp)) == datetime_part(\"day\", now(-0d))\n| order by timestamp desc\n| count\n// 40562\n// asc  2021-09-24 00:00:00.132696Z\n// desc 2021-09-24 12:24:55.9175481Z\n\nbuidingenv\n| where toint(datetime_part(\"day\", timestamp)) == datetime_part(\"day\", now(-1d))\n| order by timestamp desc \n| count\n// 78704\n// asc  2021-09-23 00:02:05.7587822Z\n// desc 2021-09-23 23:59:59.0917272Z\n\n\nbuidingenv\n| where toint(datetime_part(\"day\", timestamp)) == datetime_part(\"day\", now(-2d))\n| order by timestamp desc\n| count\n// 80334\n// asc  2021-09-22 00:00:01.0465696Z\n// desc 2021-09-22 23:59:14.7105275Z\n\n\nbuidingenv\n| where toint(datetime_part(\"day\", timestamp)) == datetime_part(\"day\", now(-3d))\n| order by timestamp desc\n| count\n// 38742\n// asc  2021-09-21 12:11:18.5879796Z\n// desc 2021-09-21 23:59:59.99837Z\n\n\n// Switch to new table\n\nbuidingenv_v2\n| where toint(datetime_part(\"day\", timestamp)) == datetime_part(\"day\", now(-3d))\n| order by timestamp desc\n| count\n// 68441\n// asc  2021-09-24T13:34:38.7563626Z\n// desc 2021-09-24T23:59:59.9342816Z\n\n\nbuidingenv_v2\n| where toint(datetime_part(\"day\", timestamp)) == datetime_part(\"day\", now(-2d))\n| order by timestamp asc\n| count\n// 159599\n// asc  2021-09-25T00:00:00.5650615Z\n// desc 2021-09-25T23:59:59.8014913Z\n\nbuidingenv_v2\n| where toint(datetime_part(\"day\", timestamp)) == datetime_part(\"day\", now(-1d)) \n    and substring(tostring(timestamp),0,13) != '' \n    and substring(tostring(timestamp),0,13) != '2021-09-24T13'\n| order by timestamp desc\n| count\n// 162208\n// asc  2021-09-26T00:00:00.5705084Z\n// desc 2021-09-26T23:59:59.990929Z\n\nbuidingenv_v2\n| where toint(datetime_part(\"day\", timestamp)) == datetime_part(\"day\", now(-0d))\n| order by timestamp desc\n| count\n// 96616\n// asc  2021-09-27T00:00:00.8152044Z\n// desc 2021-09-27T14:38:45.077497Z\n\n",
+					"metadata": {
+						"language": "kql"
+					}
+				},
+				"type": "KqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Misc-KQL-last-hour')]",
+			"type": "Microsoft.Synapse/workspaces/kqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "// Compare yesterday's data to the day before, and the day before that\nbuidingenv_v2\n| where toint(datetime_part(\"day\", timestamp)) == datetime_part(\"day\", now(-3d))\n| count\n// 162,208\n\n// Count of records per hour, exclude first hour data was sent in & latest 1 hour increment\nbuidingenv_v2\n| summarize RecordCount = count() by ISO8601 = substring(tostring(timestamp),0,13), deviceid\n| where ISO8601 != '' and ISO8601 != '2021-09-24T13' and ISO8601 != substring(tostring(now()),0,13)\n| order by ISO8601 desc, deviceid asc\n\n// Records from the last 1 hour\nbuidingenv_v2\n| where timestamp > ago(8h)\n| order by timestamp desc\n| limit 15",
+					"metadata": {
+						"language": "kql"
+					}
+				},
+				"type": "KqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Misc-KQL-Query-ADLS-CSV')]",
+			"type": "Microsoft.Synapse/workspaces/kqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "// This seems to create the table, but I don't think the connection string is correct\n.create external table ExternalTable (tripduration:string, starttime:string, stoptime:string, start_station_id:string, start_station_name:string, start_station_lat:string, start_station_long:string, end_station_id:string, end_station_name:string, end_station_lat:string, end_station_long:string, bikeid:string, usertype:string, birth_year:string, gender:string)  \nkind=adl\ndataformat=csv \n( \n   h@'https://minastirith.dfs.core.windows.net/datalake2020/01-fresh/biketrips/2020/202001-citibike-tripdata.csv' \n)\n\n// show me the data - shows me an empty table with error\nexternal_table('ExternalTable') | take 1000\n\n\n// drop the table\n.drop external table ExternalTable",
+					"metadata": {
+						"language": "kql"
+					}
+				},
+				"type": "KqlQuery"
+			},
+			"dependsOn": []
 		}
 	]
 }
