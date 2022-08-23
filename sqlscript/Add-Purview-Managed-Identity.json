@@ -1,0 +1,20 @@
+{
+	"name": "Add-Purview-Managed-Identity",
+	"properties": {
+		"folder": {
+			"name": "Examples/Purview"
+		},
+		"content": {
+			"query": "-- Add MSI for my Purview account\nCREATE USER [palantir] FROM EXTERNAL PROVIDER\nGO\n\n-- Add permisions to the user in the database\nEXEC sp_addrolemember 'db_owner', [palantir]\nGO",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
