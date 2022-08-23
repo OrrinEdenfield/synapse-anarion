@@ -1,0 +1,24 @@
+{
+	"name": "Azure_IP_Source_TXT_linkresponse",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "anarion-WorkspaceDefaultStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "linkresponse.html",
+				"folderPath": "01-raw/azure-ip-range",
+				"fileSystem": "calembel"
+			},
+			"columnDelimiter": "",
+			"rowDelimiter": "",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
