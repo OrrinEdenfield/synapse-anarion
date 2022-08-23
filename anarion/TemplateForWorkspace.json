@@ -544,153 +544,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/WorkspaceSystemIdentity')]",
-			"type": "Microsoft.Synapse/workspaces/credentials",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"type": "ManagedIdentity",
-				"typeProperties": {}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/SynapseSpark')]",
-			"type": "Microsoft.Synapse/workspaces/bigDataPools",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"autoPause": {
-					"enabled": true,
-					"delayInMinutes": 30
-				},
-				"autoScale": {
-					"enabled": true,
-					"maxNodeCount": 5,
-					"minNodeCount": 3
-				},
-				"nodeCount": 3,
-				"nodeSize": "Small",
-				"nodeSizeFamily": "MemoryOptimized",
-				"sparkVersion": "3.1",
-				"isComputeIsolationEnabled": false,
-				"sessionLevelPackagesEnabled": false,
-				"annotations": []
-			},
-			"dependsOn": [],
-			"location": "westeurope"
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/tpcdsSmall')]",
-			"type": "Microsoft.Synapse/workspaces/bigDataPools",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"autoPause": {
-					"enabled": true,
-					"delayInMinutes": 15
-				},
-				"autoScale": {
-					"enabled": false,
-					"maxNodeCount": 10,
-					"minNodeCount": 3
-				},
-				"nodeCount": 3,
-				"nodeSize": "Small",
-				"nodeSizeFamily": "MemoryOptimized",
-				"sparkVersion": "3.2",
-				"isComputeIsolationEnabled": false,
-				"sessionLevelPackagesEnabled": false,
-				"annotations": []
-			},
-			"dependsOn": [],
-			"location": "westeurope"
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/tpcdsMedium')]",
-			"type": "Microsoft.Synapse/workspaces/bigDataPools",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"autoPause": {
-					"enabled": true,
-					"delayInMinutes": 15
-				},
-				"autoScale": {
-					"enabled": false,
-					"maxNodeCount": 10,
-					"minNodeCount": 3
-				},
-				"nodeCount": 3,
-				"nodeSize": "Medium",
-				"nodeSizeFamily": "MemoryOptimized",
-				"sparkVersion": "3.2",
-				"isComputeIsolationEnabled": false,
-				"sessionLevelPackagesEnabled": false,
-				"annotations": []
-			},
-			"dependsOn": [],
-			"location": "westeurope"
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/tpcdsLarge')]",
-			"type": "Microsoft.Synapse/workspaces/bigDataPools",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"autoPause": {
-					"enabled": true,
-					"delayInMinutes": 15
-				},
-				"autoScale": {
-					"enabled": false,
-					"maxNodeCount": 10,
-					"minNodeCount": 3
-				},
-				"nodeCount": 3,
-				"nodeSize": "Large",
-				"nodeSizeFamily": "MemoryOptimized",
-				"sparkVersion": "3.2",
-				"isComputeIsolationEnabled": false,
-				"sessionLevelPackagesEnabled": false,
-				"annotations": []
-			},
-			"dependsOn": [],
-			"location": "westeurope"
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/tpcdsXLarge')]",
-			"type": "Microsoft.Synapse/workspaces/bigDataPools",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"autoPause": {
-					"enabled": true,
-					"delayInMinutes": 15
-				},
-				"autoScale": {
-					"enabled": false,
-					"maxNodeCount": 10,
-					"minNodeCount": 3
-				},
-				"nodeCount": 3,
-				"nodeSize": "XLarge",
-				"nodeSizeFamily": "MemoryOptimized",
-				"sparkVersion": "3.2",
-				"isComputeIsolationEnabled": false,
-				"sessionLevelPackagesEnabled": false,
-				"annotations": []
-			},
-			"dependsOn": [],
-			"location": "westeurope"
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/SynapseSQLDedicated')]",
-			"type": "Microsoft.Synapse/workspaces/sqlPools",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"collation": "SQL_Latin1_General_CP1_CI_AS",
-				"maxSizeBytes": 263882790666240,
-				"annotations": []
-			},
-			"dependsOn": [],
-			"location": "westeurope"
-		},
-		{
 			"name": "[concat(parameters('workspaceName'), '/OnPremSHIR')]",
 			"type": "Microsoft.Synapse/workspaces/integrationRuntimes",
 			"apiVersion": "2019-06-01-preview",
@@ -701,610 +554,35 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/ADLSGen2-data')]",
-			"type": "Microsoft.Synapse/workspaces/notebooks",
+			"name": "[concat(parameters('workspaceName'), '/WorkspaceSystemIdentity')]",
+			"type": "Microsoft.Synapse/workspaces/credentials",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
-				"folder": {
-					"name": "Examples"
-				},
-				"nbformat": 4,
-				"nbformat_minor": 2,
-				"bigDataPool": {
-					"referenceName": "SynapseSpark",
-					"type": "BigDataPoolReference"
-				},
-				"sessionProperties": {
-					"driverMemory": "28g",
-					"driverCores": 4,
-					"executorMemory": "28g",
-					"executorCores": 4,
-					"numExecutors": 2,
-					"conf": {
-						"spark.dynamicAllocation.enabled": "false",
-						"spark.dynamicAllocation.minExecutors": "2",
-						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "e429725d-3594-4840-b3ac-53b39598aa2e"
-					}
-				},
-				"metadata": {
-					"saveOutput": true,
-					"enableDebugMode": false,
-					"kernelspec": {
-						"name": "synapse_pyspark",
-						"display_name": "Synapse PySpark"
-					},
-					"language_info": {
-						"name": "python"
-					},
-					"a365ComputeOptions": {
-						"id": "/subscriptions/e1bee07b-a025-41e2-ae0f-2291101bce96/resourceGroups/MiddleEarth/providers/Microsoft.Synapse/workspaces/anarion/bigDataPools/SynapseSpark",
-						"name": "SynapseSpark",
-						"type": "Spark",
-						"endpoint": "https://anarion.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/SynapseSpark",
-						"auth": {
-							"type": "AAD",
-							"authResource": "https://dev.azuresynapse.net"
-						},
-						"sparkVersion": "3.1",
-						"nodeCount": 3,
-						"cores": 4,
-						"memory": 28,
-						"automaticScaleJobs": false
-					},
-					"sessionKeepAliveTimeout": 30
-				},
-				"cells": [
-					{
-						"cell_type": "markdown",
-						"metadata": {
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"# Demo notebook for Synapse Spark"
-						]
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"mssparkutils.fs.mount(\"abfss://calembel@gondor2.dfs.core.windows.net/\",\"/mnt/adls\",{\"linkedService\":\"anarion-WorkspaceDefaultStorage\"}\r\n",
-							")"
-						],
-						"outputs": [],
-						"execution_count": 1
-					},
-					{
-						"cell_type": "markdown",
-						"metadata": {
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"## Get the JobID of the current/running session (Spark Application)"
-						]
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"mssparkutils.env.getJobId()"
-						],
-						"outputs": [],
-						"execution_count": 2
-					},
-					{
-						"cell_type": "markdown",
-						"metadata": {
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"## List files from the ADLS Gen2 mountpoint"
-						]
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"mssparkutils.fs.ls(\"synfs:/0/mnt/adls/01-raw/biketrips/2022/\")"
-						],
-						"outputs": [],
-						"execution_count": 8
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"import pandas\r\n",
-							"\r\n",
-							"#read csv file\r\n",
-							"df = pandas.read_csv('abfss://calembel@gondor2.dfs.core.windows.net/01-raw/biketrips/2022/202207-citbike-tripdata.csv', low_memory=False)\r\n",
-							"print(df)"
-						],
-						"outputs": [],
-						"execution_count": 22
-					}
-				]
+				"type": "ManagedIdentity",
+				"typeProperties": {}
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/Example-OpenDatasets')]",
-			"type": "Microsoft.Synapse/workspaces/notebooks",
+			"name": "[concat(parameters('workspaceName'), '/Serverless-Biketrips-01')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
 				"folder": {
-					"name": "Examples"
+					"name": "Examples-SQL-Serverless/biketrips"
 				},
-				"nbformat": 4,
-				"nbformat_minor": 2,
-				"bigDataPool": {
-					"referenceName": "SynapseSpark",
-					"type": "BigDataPoolReference"
+				"content": {
+					"query": "-- Read multiple files with same schema\n-- This is auto-generated code\nSELECT\n    TOP 100 *\nFROM\n    OPENROWSET(\n        BULK (\n            'https://gondor2.dfs.core.windows.net/calembel/01-raw/biketrips/2022/202201-citibike-tripdata.csv',\n\t\t\t'https://gondor2.dfs.core.windows.net/calembel/01-raw/biketrips/2022/202202-citibike-tripdata.csv',\n\t\t\t'https://gondor2.dfs.core.windows.net/calembel/01-raw/biketrips/2022/202203-citibike-tripdata.csv',\n\t\t\t'https://gondor2.dfs.core.windows.net/calembel/01-raw/biketrips/2022/202204-citibike-tripdata.csv',\n\t\t\t'https://gondor2.dfs.core.windows.net/calembel/01-raw/biketrips/2022/202205-citibike-tripdata.csv',\n\t\t\t'https://gondor2.dfs.core.windows.net/calembel/01-raw/biketrips/2022/202206-citbike-tripdata.csv',\n\t\t\t'https://gondor2.dfs.core.windows.net/calembel/01-raw/biketrips/2022/202207-citbike-tripdata.csv'\n        ),\n        FORMAT = 'CSV',\n        PARSER_VERSION = '2.0'\n    ) AS [result]\n\n\n-- Create Synapse SQL Serverless database\ncreate database biketrips collate Latin1_General_100_BIN2_UTF8;\n\n-- Use the new database\nuse biketrips;\n\n-- Create master key for encryption, only do this once.\n-- Using:!r@PMK5cfCWn%f#qJjmJ\ncreate master key encryption by password='INSERT HERE';\n\n-- Create scoped credential\ncreate database scoped credential WorkspaceIdentity with identity = 'Managed Identity';\ngo\n\n-- Create external data source\nIF NOT EXISTS (SELECT * FROM sys.external_data_sources WHERE name = 'calembel_gondor2_dfs_core_windows_net') \n\tCREATE EXTERNAL DATA SOURCE [calembel_gondor2_dfs_core_windows_net] \n\tWITH (\n\t\tLOCATION = 'abfss://calembel@gondor2.dfs.core.windows.net' \n\t)\nGO\n\n-- Create external file formats\nIF NOT EXISTS (SELECT * FROM sys.external_file_formats WHERE name = 'SynapseDelimitedTextFormat') \n\tCREATE EXTERNAL FILE FORMAT [SynapseDelimitedTextFormat] \n\tWITH ( FORMAT_TYPE = DELIMITEDTEXT ,\n\t       FORMAT_OPTIONS (\n\t\t\t FIELD_TERMINATOR = ',',\n\t\t\t USE_TYPE_DEFAULT = FALSE\n\t\t\t))\nGO\n\n-- Do this format too\ncreate external file format ParquetExternalFormat with (format_type=PARQUET);\ngo\n\n\n\n-- Explore some data\nselect top 10  *\nfrom openrowset(\n    bulk '2022/', \n    data_source = 'biketrips_raw_source', \n    format='CSV',\n    PARSER_VERSION = '2.0'\n    ) as a\n\n\n\n-- Create a table\nCREATE EXTERNAL TABLE biketrips202207 (\n\t[ride_id] nvarchar(4000),\n\t[rideable_type] nvarchar(4000),\n\t[started_at] datetime2(0),\n\t[ended_at] datetime2(0),\n\t[start_station_name] nvarchar(4000),\n\t[start_station_id] float,\n\t[end_station_name] nvarchar(4000),\n\t[end_station_id] float,\n\t[start_lat] float,\n\t[start_lng] float,\n\t[end_lat] float,\n\t[end_lng] float,\n\t[member_casual] nvarchar(4000)\n\t)\n\tWITH (\n\tLOCATION = '01-raw/biketrips/2022/202207-citbike-tripdata.csv',\n\tDATA_SOURCE = [calembel_gondor2_dfs_core_windows_net],\n\tFILE_FORMAT = [SynapseDelimitedTextFormat]\n\t)\nGO\n\n-- Query new external table\nSELECT TOP 10 * FROM dbo.biketrips202207;\n",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "biketrips",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
 				},
-				"sessionProperties": {
-					"driverMemory": "28g",
-					"driverCores": 4,
-					"executorMemory": "28g",
-					"executorCores": 4,
-					"numExecutors": 2,
-					"conf": {
-						"spark.dynamicAllocation.enabled": "false",
-						"spark.dynamicAllocation.minExecutors": "2",
-						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "081e6796-229b-482a-9dcb-aeb662eb8981"
-					}
-				},
-				"metadata": {
-					"saveOutput": true,
-					"enableDebugMode": false,
-					"kernelspec": {
-						"name": "synapse_pyspark",
-						"display_name": "Synapse PySpark"
-					},
-					"language_info": {
-						"name": "python"
-					},
-					"a365ComputeOptions": {
-						"id": "/subscriptions/e1bee07b-a025-41e2-ae0f-2291101bce96/resourceGroups/MiddleEarth/providers/Microsoft.Synapse/workspaces/anarion/bigDataPools/SynapseSpark",
-						"name": "SynapseSpark",
-						"type": "Spark",
-						"endpoint": "https://anarion.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/SynapseSpark",
-						"auth": {
-							"type": "AAD",
-							"authResource": "https://dev.azuresynapse.net"
-						},
-						"sparkVersion": "3.1",
-						"nodeCount": 3,
-						"cores": 4,
-						"memory": 28,
-						"automaticScaleJobs": false
-					},
-					"sessionKeepAliveTimeout": 30
-				},
-				"cells": [
-					{
-						"cell_type": "markdown",
-						"metadata": {
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"# Data visualization with Synapse Spark"
-						]
-					},
-					{
-						"cell_type": "markdown",
-						"metadata": {
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"In this tutorial, we'll use several different libraries to help us visualize the dataset. To do this analysis, import the following libraries:"
-						]
-					},
-					{
-						"cell_type": "code",
-						"metadata": {},
-						"source": [
-							"import matplotlib.pyplot as plt\r\n",
-							"import seaborn as sns\r\n",
-							"import pandas as pd"
-						],
-						"outputs": [],
-						"execution_count": 12
-					},
-					{
-						"cell_type": "markdown",
-						"metadata": {
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"Because the raw data is in a Parquet format, you can use the Spark context to pull the file into memory as a DataFrame directly. \r\n",
-							"\r\n",
-							"Create a Spark DataFrame by retrieving the data via the Open Datasets API. Here, we use the Spark DataFrame schema on read properties to infer the datatypes and schema."
-						]
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"from azureml.opendatasets import NycTlcYellow\r\n",
-							"from datetime import datetime\r\n",
-							"from dateutil import parser\r\n",
-							"\r\n",
-							"end_date = parser.parse('2018-06-06')\r\n",
-							"start_date = parser.parse('2018-05-01')\r\n",
-							"nyc_tlc = NycTlcYellow(start_date=start_date, end_date=end_date)\r\n",
-							"df = nyc_tlc.to_spark_dataframe()"
-						],
-						"outputs": [],
-						"execution_count": 13
-					},
-					{
-						"cell_type": "markdown",
-						"metadata": {
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"After the data is read, we'll want to do some initial filtering to clean the dataset. We might remove unneeded columns and add columns that extract important information. \r\n",
-							"\r\n",
-							"In addition, we'll filter out anomalies within the dataset and create a temporary view that we can query with Spark SQL."
-						]
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"# Filter the dataset \r\n",
-							"from pyspark.sql.functions import *\r\n",
-							"\r\n",
-							"filtered_df = df.select('vendorID', 'passengerCount', 'tripDistance','paymentType', 'fareAmount', 'tipAmount'\\\r\n",
-							"                                , date_format('tpepPickupDateTime', 'hh').alias('hour_of_day')\\\r\n",
-							"                                , dayofweek('tpepPickupDateTime').alias('day_of_week')\\\r\n",
-							"                                , dayofmonth(col('tpepPickupDateTime')).alias('day_of_month'))\\\r\n",
-							"                            .filter((df.passengerCount > 0)\\\r\n",
-							"                                & (df.tipAmount >= 0)\\\r\n",
-							"                                & (df.fareAmount >= 1) & (df.fareAmount <= 250)\\\r\n",
-							"                                & (df.tripDistance > 0) & (df.tripDistance <= 200))\r\n",
-							"\r\n",
-							"filtered_df.createOrReplaceTempView(\"taxi_dataset\")"
-						],
-						"outputs": [],
-						"execution_count": 14
-					},
-					{
-						"cell_type": "markdown",
-						"metadata": {
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"By using this query, we want to understand how the average tip amounts have changed over the period we've selected. \r\n",
-							"\r\n",
-							"This query will also help us identify other useful insights, including the minimum/maximum tip amount per day and the average fare amount."
-						]
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							},
-							"microsoft": {
-								"language": "sparksql"
-							},
-							"collapsed": false
-						},
-						"source": [
-							"%%sql\r\n",
-							"SELECT \r\n",
-							"    day_of_month\r\n",
-							"    , MIN(tipAmount) AS minTipAmount\r\n",
-							"    , MAX(tipAmount) AS maxTipAmount\r\n",
-							"    , AVG(tipAmount) AS avgTipAmount\r\n",
-							"    , AVG(fareAmount) as fareAmount\r\n",
-							"FROM taxi_dataset \r\n",
-							"GROUP BY day_of_month\r\n",
-							"ORDER BY day_of_month ASC"
-						],
-						"outputs": [],
-						"execution_count": 15
-					},
-					{
-						"cell_type": "markdown",
-						"metadata": {
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"To make development easier and less expensive, we'll downsample the dataset. We'll use the built-in Apache Spark sampling capability. \r\n",
-							"\r\n",
-							"In addition, both Seaborn and Matplotlib require a Pandas DataFrame or NumPy array. To get a Pandas DataFrame, use the toPandas() command to convert the DataFrame."
-						]
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"# To make development easier, faster, and less expensive, downsample for now\r\n",
-							"sampled_taxi_df = filtered_df.sample(True, 0.001, seed=1234)\r\n",
-							"\r\n",
-							"# The charting package needs a Pandas DataFrame or NumPy array to do the conversion\r\n",
-							"sampled_taxi_pd_df = sampled_taxi_df.toPandas()"
-						],
-						"outputs": [],
-						"execution_count": 16
-					},
-					{
-						"cell_type": "markdown",
-						"metadata": {
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"We want to understand the distribution of tips in our dataset. We'll use Matplotlib to create a histogram that shows the distribution of tip amount and count. Based on the distribution, we can see that tips are skewed toward amounts less than or equal to $10."
-						]
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"# Look at a histogram of tips by count by using Matplotlib\r\n",
-							"\r\n",
-							"ax1 = sampled_taxi_pd_df['tipAmount'].plot(kind='hist', bins=25, facecolor='lightblue')\r\n",
-							"ax1.set_title('Tip amount distribution')\r\n",
-							"ax1.set_xlabel('Tip Amount ($)')\r\n",
-							"ax1.set_ylabel('Counts')\r\n",
-							"plt.suptitle('')\r\n",
-							"plt.show()"
-						],
-						"outputs": [],
-						"execution_count": 17
-					},
-					{
-						"cell_type": "markdown",
-						"metadata": {
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"Next, we want to understand the relationship between the tips for a given trip and the day of the week. \r\n",
-							"\r\n",
-							"Use Seaborn to create a box plot that summarizes the trends for each day of the week."
-						]
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"# View the distribution of tips by day of week using Seaborn\r\n",
-							"ax = sns.boxplot(x=\"day_of_week\", y=\"tipAmount\",data=sampled_taxi_pd_df, showfliers = False)\r\n",
-							"ax.set_title('Tip amount distribution per day')\r\n",
-							"ax.set_xlabel('Day of Week')\r\n",
-							"ax.set_ylabel('Tip Amount ($)')\r\n",
-							"plt.show()"
-						],
-						"outputs": [],
-						"execution_count": 18
-					},
-					{
-						"cell_type": "markdown",
-						"metadata": {
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"Another hypothesis of ours might be that there's a positive relationship between the number of passengers and the total taxi tip amount. \r\n",
-							"\r\n",
-							"To verify this relationship, run the following code to generate a box plot that illustrates the distribution of tips for each passenger count."
-						]
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"# How many passengers tipped by various amounts \r\n",
-							"ax2 = sampled_taxi_pd_df.boxplot(column=['tipAmount'], by=['passengerCount'])\r\n",
-							"ax2.set_title('Tip amount by Passenger count')\r\n",
-							"ax2.set_xlabel('Passenger count')\r\n",
-							"ax2.set_ylabel('Tip Amount ($)')\r\n",
-							"ax2.set_ylim(0,30)\r\n",
-							"plt.suptitle('')\r\n",
-							"plt.show()"
-						],
-						"outputs": [],
-						"execution_count": 19
-					},
-					{
-						"cell_type": "markdown",
-						"metadata": {
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"Last, we want to understand the relationship between the fare amount and the tip amount. Based on the results, we can see that there are several observations where people don't tip. \r\n",
-							"\r\n",
-							"However, we also see a positive relationship between the overall fare and tip amounts."
-						]
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"# Look at the relationship between fare and tip amounts\r\n",
-							"\r\n",
-							"ax = sampled_taxi_pd_df.plot(kind='scatter', x= 'fareAmount', y = 'tipAmount', c='blue', alpha = 0.10, s=2.5*(sampled_taxi_pd_df['passengerCount']))\r\n",
-							"ax.set_title('Tip amount by Fare amount')\r\n",
-							"ax.set_xlabel('Fare Amount ($)')\r\n",
-							"ax.set_ylabel('Tip Amount ($)')\r\n",
-							"plt.axis([-2, 80, -2, 20])\r\n",
-							"plt.suptitle('')\r\n",
-							"plt.show()"
-						],
-						"outputs": [],
-						"execution_count": 20
-					}
-				]
+				"type": "SqlQuery"
 			},
 			"dependsOn": []
 		},
@@ -1357,8 +635,7 @@
 						"sparkVersion": "3.2",
 						"nodeCount": 3,
 						"cores": 32,
-						"memory": 224,
-						"automaticScaleJobs": false
+						"memory": 224
 					},
 					"sessionKeepAliveTimeout": 30
 				},
@@ -1378,7 +655,6 @@
 					},
 					{
 						"cell_type": "code",
-						"metadata": {},
 						"source": [
 							"datalakePath='abfss://calembel@gondor2.dfs.core.windows.net/TPC-DS/SourceFiles001TB_parquet/'\r\n",
 							"storageFormat='parquet'\r\n",
@@ -2163,9 +1439,7 @@
 						"sparkVersion": "3.2",
 						"nodeCount": 3,
 						"cores": 4,
-						"memory": 28,
-						"extraHeader": {},
-						"automaticScaleJobs": false
+						"memory": 28
 					},
 					"sessionKeepAliveTimeout": 30
 				},
@@ -2688,6 +1962,611 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('workspaceName'), '/ADLSGen2-data')]",
+			"type": "Microsoft.Synapse/workspaces/notebooks",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "Examples"
+				},
+				"nbformat": 4,
+				"nbformat_minor": 2,
+				"bigDataPool": {
+					"referenceName": "SynapseSpark",
+					"type": "BigDataPoolReference"
+				},
+				"sessionProperties": {
+					"driverMemory": "28g",
+					"driverCores": 4,
+					"executorMemory": "28g",
+					"executorCores": 4,
+					"numExecutors": 2,
+					"conf": {
+						"spark.dynamicAllocation.enabled": "false",
+						"spark.dynamicAllocation.minExecutors": "2",
+						"spark.dynamicAllocation.maxExecutors": "2",
+						"spark.autotune.trackingId": "e429725d-3594-4840-b3ac-53b39598aa2e"
+					}
+				},
+				"metadata": {
+					"saveOutput": true,
+					"enableDebugMode": false,
+					"kernelspec": {
+						"name": "synapse_pyspark",
+						"display_name": "Synapse PySpark"
+					},
+					"language_info": {
+						"name": "python"
+					},
+					"a365ComputeOptions": {
+						"id": "/subscriptions/e1bee07b-a025-41e2-ae0f-2291101bce96/resourceGroups/MiddleEarth/providers/Microsoft.Synapse/workspaces/anarion/bigDataPools/SynapseSpark",
+						"name": "SynapseSpark",
+						"type": "Spark",
+						"endpoint": "https://anarion.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/SynapseSpark",
+						"auth": {
+							"type": "AAD",
+							"authResource": "https://dev.azuresynapse.net"
+						},
+						"sparkVersion": "3.1",
+						"nodeCount": 3,
+						"cores": 4,
+						"memory": 28
+					},
+					"sessionKeepAliveTimeout": 30
+				},
+				"cells": [
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Demo notebook for Synapse Spark"
+						]
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"mssparkutils.fs.mount(\"abfss://calembel@gondor2.dfs.core.windows.net/\",\"/mnt/adls\",{\"linkedService\":\"anarion-WorkspaceDefaultStorage\"}\r\n",
+							")"
+						],
+						"outputs": [],
+						"execution_count": 1
+					},
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"## Get the JobID of the current/running session (Spark Application)"
+						]
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"mssparkutils.env.getJobId()"
+						],
+						"outputs": [],
+						"execution_count": 2
+					},
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"## List files from the ADLS Gen2 mountpoint"
+						]
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"mssparkutils.fs.ls(\"synfs:/0/mnt/adls/01-raw/biketrips/2022/\")"
+						],
+						"outputs": [],
+						"execution_count": 8
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"import pandas\r\n",
+							"\r\n",
+							"#read csv file\r\n",
+							"df = pandas.read_csv('abfss://calembel@gondor2.dfs.core.windows.net/01-raw/biketrips/2022/202207-citbike-tripdata.csv', low_memory=False)\r\n",
+							"print(df)"
+						],
+						"outputs": [],
+						"execution_count": 22
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Example-OpenDatasets')]",
+			"type": "Microsoft.Synapse/workspaces/notebooks",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "Examples"
+				},
+				"nbformat": 4,
+				"nbformat_minor": 2,
+				"bigDataPool": {
+					"referenceName": "SynapseSpark",
+					"type": "BigDataPoolReference"
+				},
+				"sessionProperties": {
+					"driverMemory": "28g",
+					"driverCores": 4,
+					"executorMemory": "28g",
+					"executorCores": 4,
+					"numExecutors": 2,
+					"conf": {
+						"spark.dynamicAllocation.enabled": "false",
+						"spark.dynamicAllocation.minExecutors": "2",
+						"spark.dynamicAllocation.maxExecutors": "2",
+						"spark.autotune.trackingId": "081e6796-229b-482a-9dcb-aeb662eb8981"
+					}
+				},
+				"metadata": {
+					"saveOutput": true,
+					"enableDebugMode": false,
+					"kernelspec": {
+						"name": "synapse_pyspark",
+						"display_name": "Synapse PySpark"
+					},
+					"language_info": {
+						"name": "python"
+					},
+					"a365ComputeOptions": {
+						"id": "/subscriptions/e1bee07b-a025-41e2-ae0f-2291101bce96/resourceGroups/MiddleEarth/providers/Microsoft.Synapse/workspaces/anarion/bigDataPools/SynapseSpark",
+						"name": "SynapseSpark",
+						"type": "Spark",
+						"endpoint": "https://anarion.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/SynapseSpark",
+						"auth": {
+							"type": "AAD",
+							"authResource": "https://dev.azuresynapse.net"
+						},
+						"sparkVersion": "3.1",
+						"nodeCount": 3,
+						"cores": 4,
+						"memory": 28
+					},
+					"sessionKeepAliveTimeout": 30
+				},
+				"cells": [
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Data visualization with Synapse Spark"
+						]
+					},
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"In this tutorial, we'll use several different libraries to help us visualize the dataset. To do this analysis, import the following libraries:"
+						]
+					},
+					{
+						"cell_type": "code",
+						"source": [
+							"import matplotlib.pyplot as plt\r\n",
+							"import seaborn as sns\r\n",
+							"import pandas as pd"
+						],
+						"outputs": [],
+						"execution_count": 12
+					},
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"Because the raw data is in a Parquet format, you can use the Spark context to pull the file into memory as a DataFrame directly. \r\n",
+							"\r\n",
+							"Create a Spark DataFrame by retrieving the data via the Open Datasets API. Here, we use the Spark DataFrame schema on read properties to infer the datatypes and schema."
+						]
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"from azureml.opendatasets import NycTlcYellow\r\n",
+							"from datetime import datetime\r\n",
+							"from dateutil import parser\r\n",
+							"\r\n",
+							"end_date = parser.parse('2018-06-06')\r\n",
+							"start_date = parser.parse('2018-05-01')\r\n",
+							"nyc_tlc = NycTlcYellow(start_date=start_date, end_date=end_date)\r\n",
+							"df = nyc_tlc.to_spark_dataframe()"
+						],
+						"outputs": [],
+						"execution_count": 13
+					},
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"After the data is read, we'll want to do some initial filtering to clean the dataset. We might remove unneeded columns and add columns that extract important information. \r\n",
+							"\r\n",
+							"In addition, we'll filter out anomalies within the dataset and create a temporary view that we can query with Spark SQL."
+						]
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Filter the dataset \r\n",
+							"from pyspark.sql.functions import *\r\n",
+							"\r\n",
+							"filtered_df = df.select('vendorID', 'passengerCount', 'tripDistance','paymentType', 'fareAmount', 'tipAmount'\\\r\n",
+							"                                , date_format('tpepPickupDateTime', 'hh').alias('hour_of_day')\\\r\n",
+							"                                , dayofweek('tpepPickupDateTime').alias('day_of_week')\\\r\n",
+							"                                , dayofmonth(col('tpepPickupDateTime')).alias('day_of_month'))\\\r\n",
+							"                            .filter((df.passengerCount > 0)\\\r\n",
+							"                                & (df.tipAmount >= 0)\\\r\n",
+							"                                & (df.fareAmount >= 1) & (df.fareAmount <= 250)\\\r\n",
+							"                                & (df.tripDistance > 0) & (df.tripDistance <= 200))\r\n",
+							"\r\n",
+							"filtered_df.createOrReplaceTempView(\"taxi_dataset\")"
+						],
+						"outputs": [],
+						"execution_count": 14
+					},
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"By using this query, we want to understand how the average tip amounts have changed over the period we've selected. \r\n",
+							"\r\n",
+							"This query will also help us identify other useful insights, including the minimum/maximum tip amount per day and the average fare amount."
+						]
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							},
+							"microsoft": {
+								"language": "sparksql"
+							},
+							"collapsed": false
+						},
+						"source": [
+							"%%sql\r\n",
+							"SELECT \r\n",
+							"    day_of_month\r\n",
+							"    , MIN(tipAmount) AS minTipAmount\r\n",
+							"    , MAX(tipAmount) AS maxTipAmount\r\n",
+							"    , AVG(tipAmount) AS avgTipAmount\r\n",
+							"    , AVG(fareAmount) as fareAmount\r\n",
+							"FROM taxi_dataset \r\n",
+							"GROUP BY day_of_month\r\n",
+							"ORDER BY day_of_month ASC"
+						],
+						"outputs": [],
+						"execution_count": 15
+					},
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"To make development easier and less expensive, we'll downsample the dataset. We'll use the built-in Apache Spark sampling capability. \r\n",
+							"\r\n",
+							"In addition, both Seaborn and Matplotlib require a Pandas DataFrame or NumPy array. To get a Pandas DataFrame, use the toPandas() command to convert the DataFrame."
+						]
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# To make development easier, faster, and less expensive, downsample for now\r\n",
+							"sampled_taxi_df = filtered_df.sample(True, 0.001, seed=1234)\r\n",
+							"\r\n",
+							"# The charting package needs a Pandas DataFrame or NumPy array to do the conversion\r\n",
+							"sampled_taxi_pd_df = sampled_taxi_df.toPandas()"
+						],
+						"outputs": [],
+						"execution_count": 16
+					},
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"We want to understand the distribution of tips in our dataset. We'll use Matplotlib to create a histogram that shows the distribution of tip amount and count. Based on the distribution, we can see that tips are skewed toward amounts less than or equal to $10."
+						]
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Look at a histogram of tips by count by using Matplotlib\r\n",
+							"\r\n",
+							"ax1 = sampled_taxi_pd_df['tipAmount'].plot(kind='hist', bins=25, facecolor='lightblue')\r\n",
+							"ax1.set_title('Tip amount distribution')\r\n",
+							"ax1.set_xlabel('Tip Amount ($)')\r\n",
+							"ax1.set_ylabel('Counts')\r\n",
+							"plt.suptitle('')\r\n",
+							"plt.show()"
+						],
+						"outputs": [],
+						"execution_count": 17
+					},
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"Next, we want to understand the relationship between the tips for a given trip and the day of the week. \r\n",
+							"\r\n",
+							"Use Seaborn to create a box plot that summarizes the trends for each day of the week."
+						]
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# View the distribution of tips by day of week using Seaborn\r\n",
+							"ax = sns.boxplot(x=\"day_of_week\", y=\"tipAmount\",data=sampled_taxi_pd_df, showfliers = False)\r\n",
+							"ax.set_title('Tip amount distribution per day')\r\n",
+							"ax.set_xlabel('Day of Week')\r\n",
+							"ax.set_ylabel('Tip Amount ($)')\r\n",
+							"plt.show()"
+						],
+						"outputs": [],
+						"execution_count": 18
+					},
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"Another hypothesis of ours might be that there's a positive relationship between the number of passengers and the total taxi tip amount. \r\n",
+							"\r\n",
+							"To verify this relationship, run the following code to generate a box plot that illustrates the distribution of tips for each passenger count."
+						]
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# How many passengers tipped by various amounts \r\n",
+							"ax2 = sampled_taxi_pd_df.boxplot(column=['tipAmount'], by=['passengerCount'])\r\n",
+							"ax2.set_title('Tip amount by Passenger count')\r\n",
+							"ax2.set_xlabel('Passenger count')\r\n",
+							"ax2.set_ylabel('Tip Amount ($)')\r\n",
+							"ax2.set_ylim(0,30)\r\n",
+							"plt.suptitle('')\r\n",
+							"plt.show()"
+						],
+						"outputs": [],
+						"execution_count": 19
+					},
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"Last, we want to understand the relationship between the fare amount and the tip amount. Based on the results, we can see that there are several observations where people don't tip. \r\n",
+							"\r\n",
+							"However, we also see a positive relationship between the overall fare and tip amounts."
+						]
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Look at the relationship between fare and tip amounts\r\n",
+							"\r\n",
+							"ax = sampled_taxi_pd_df.plot(kind='scatter', x= 'fareAmount', y = 'tipAmount', c='blue', alpha = 0.10, s=2.5*(sampled_taxi_pd_df['passengerCount']))\r\n",
+							"ax.set_title('Tip amount by Fare amount')\r\n",
+							"ax.set_xlabel('Fare Amount ($)')\r\n",
+							"ax.set_ylabel('Tip Amount ($)')\r\n",
+							"plt.axis([-2, 80, -2, 20])\r\n",
+							"plt.suptitle('')\r\n",
+							"plt.show()"
+						],
+						"outputs": [],
+						"execution_count": 20
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/tpc-ds-queries-1tb-medium')]",
 			"type": "Microsoft.Synapse/workspaces/notebooks",
 			"apiVersion": "2019-06-01-preview",
@@ -2736,8 +2615,7 @@
 						"sparkVersion": "3.2",
 						"nodeCount": 3,
 						"cores": 8,
-						"memory": 56,
-						"automaticScaleJobs": false
+						"memory": 56
 					},
 					"sessionKeepAliveTimeout": 30
 				},
@@ -9284,7 +9162,190 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/Serverless-Biketrips-01')]",
+			"name": "[concat(parameters('workspaceName'), '/SynapseSpark')]",
+			"type": "Microsoft.Synapse/workspaces/bigDataPools",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"autoPause": {
+					"enabled": true,
+					"delayInMinutes": 30
+				},
+				"autoScale": {
+					"enabled": true,
+					"maxNodeCount": 5,
+					"minNodeCount": 3
+				},
+				"nodeCount": 3,
+				"nodeSize": "Small",
+				"nodeSizeFamily": "MemoryOptimized",
+				"sparkVersion": "3.1",
+				"isComputeIsolationEnabled": false,
+				"sessionLevelPackagesEnabled": false,
+				"annotations": []
+			},
+			"dependsOn": [],
+			"location": "westeurope"
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/tpcdsSmall')]",
+			"type": "Microsoft.Synapse/workspaces/bigDataPools",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"autoPause": {
+					"enabled": true,
+					"delayInMinutes": 15
+				},
+				"autoScale": {
+					"enabled": false,
+					"maxNodeCount": 10,
+					"minNodeCount": 3
+				},
+				"nodeCount": 3,
+				"nodeSize": "Small",
+				"nodeSizeFamily": "MemoryOptimized",
+				"sparkVersion": "3.2",
+				"isComputeIsolationEnabled": false,
+				"sessionLevelPackagesEnabled": false,
+				"annotations": []
+			},
+			"dependsOn": [],
+			"location": "westeurope"
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/tpcdsMedium')]",
+			"type": "Microsoft.Synapse/workspaces/bigDataPools",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"autoPause": {
+					"enabled": true,
+					"delayInMinutes": 15
+				},
+				"autoScale": {
+					"enabled": false,
+					"maxNodeCount": 10,
+					"minNodeCount": 3
+				},
+				"nodeCount": 3,
+				"nodeSize": "Medium",
+				"nodeSizeFamily": "MemoryOptimized",
+				"sparkVersion": "3.2",
+				"isComputeIsolationEnabled": false,
+				"sessionLevelPackagesEnabled": false,
+				"annotations": []
+			},
+			"dependsOn": [],
+			"location": "westeurope"
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/tpcdsLarge')]",
+			"type": "Microsoft.Synapse/workspaces/bigDataPools",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"autoPause": {
+					"enabled": true,
+					"delayInMinutes": 15
+				},
+				"autoScale": {
+					"enabled": false,
+					"maxNodeCount": 10,
+					"minNodeCount": 3
+				},
+				"nodeCount": 3,
+				"nodeSize": "Large",
+				"nodeSizeFamily": "MemoryOptimized",
+				"sparkVersion": "3.2",
+				"isComputeIsolationEnabled": false,
+				"sessionLevelPackagesEnabled": false,
+				"annotations": []
+			},
+			"dependsOn": [],
+			"location": "westeurope"
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/tpcdsXLarge')]",
+			"type": "Microsoft.Synapse/workspaces/bigDataPools",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"autoPause": {
+					"enabled": true,
+					"delayInMinutes": 15
+				},
+				"autoScale": {
+					"enabled": false,
+					"maxNodeCount": 10,
+					"minNodeCount": 3
+				},
+				"nodeCount": 3,
+				"nodeSize": "XLarge",
+				"nodeSizeFamily": "MemoryOptimized",
+				"sparkVersion": "3.2",
+				"isComputeIsolationEnabled": false,
+				"sessionLevelPackagesEnabled": false,
+				"annotations": []
+			},
+			"dependsOn": [],
+			"location": "westeurope"
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SynapseSQLDedicated')]",
+			"type": "Microsoft.Synapse/workspaces/sqlPools",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"collation": "SQL_Latin1_General_CP1_CI_AS",
+				"maxSizeBytes": 263882790666240,
+				"annotations": []
+			},
+			"dependsOn": [],
+			"location": "westeurope"
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/buildings-iot-data-analytics')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "Examples-SQL-Dedicated/operational-analytics"
+				},
+				"content": {
+					"query": "-- Create external table\ndrop external table ext.buildings_sensors;\ngo\ncreate external table ext.buildings_sensors\n(\n     ISO8601 varchar(20)\n    ,deviceid varchar(20)\n    ,avg_temperature float\n    ,avg_humidity float\n)\nWITH\n(\n    LOCATION='03-serve/iot-data/buildings-by-hour/',\n    DATA_SOURCE = datalake2020_source,\n    FILE_FORMAT = parquet_snappy\n);\n\n-- Test the external table\nselect top 10 * from ext.buildings_sensors\nselect count(*) from ext.buildings_sensors\n-- 91\nselect *\nfrom ext.buildings_sensors order by ISO8601 desc, deviceid asc\n\n\nCREATE SCHEMA staging;\n\n-- CTAS for staging table\ndrop table staging.buildings;\ngo\ncreate table staging.buildings\nwith\n(\n    DISTRIBUTION = ROUND_ROBIN\n    ,HEAP\n)\nas \nselect * from ext.buildings_sensors;\n\nselect * from staging.buildings\n\n-- Put new records in staging\nselect * from staging.buildings\norder by ISO8601 desc, deviceid asc\n\nselect * from ext.buildings_sensors\norder by ISO8601 desc, deviceid asc\n\n-- one time\ntruncate table staging.buildings;\ninsert into staging.buildings\nselect\n     e.ISO8601\n    ,e.deviceid\n    ,e.avg_temperature\n    ,e.avg_humidity\nfrom ext.buildings_sensors as e\n--left join staging.buildings as s \nleft join dw.buildings as s\non \n     e.ISO8601 = s.ISO8601\n--    and e.deviceid = s.deviceid\n--    and e.avg_temperature = s.avg_temperature\n--    and e.avg_humidity = e.avg_humidity\nwhere s.ISO8601 is null\n--order by e.ISO8601 asc, e.deviceid desc\n-- asc  2021-09-28-00\n-- desc 2021-09-30-23\n\n-- asc  2021-09-26-00\n-- desc 2021-09-27-23\n\nselect count(*) from staging.buildings\n\n\n-- Create heap table\nCREATE TABLE staging.buildings\n(\n     ISO8601 varchar(20)\n    ,deviceid varchar(20)\n    ,avg_temperature float\n    ,avg_humidity float\n)\nWITH (HEAP);\n\ninsert into staging.buildings\nselect * from ext.buildings_sensors\n\n\n\n-- DW table\nDROP TABLE dw.buildings;\nGO\nCREATE TABLE dw.buildings\n(\n     ISO8601 varchar(20)\n    ,deviceid varchar(20)\n    ,avg_temperature float\n    ,avg_humidity float\n)\nWITH (DISTRIBUTION = HASH(deviceid),CLUSTERED COLUMNSTORE INDEX);\n\n-- Insert new records to the data warehouse table\ninsert into dw.buildings \nselect * from staging.buildings;\n\nselect * from dw.buildings \n\n-- Create the sproc\ndrop PROCEDURE dw_insert;\nCREATE PROCEDURE dw_insert AS\nBEGIN\n    -- Truncate the staging table. Staging table will only hold new records to be inserted\n    truncate table staging.buildings;\n\n    -- Insert only new records into the staging table\n    insert into staging.buildings\n    select\n         e.ISO8601\n        ,e.deviceid\n        ,e.avg_temperature\n        ,e.avg_humidity\n    from ext.buildings_sensors as e\n    left join dw.buildings as s\n    on \n        e.ISO8601 = s.ISO8601\n    --    and e.deviceid = s.deviceid\n    --    and e.avg_temperature = s.avg_temperature\n    --    and e.avg_humidity = e.avg_humidity\n    where s.ISO8601 is null\n\n    -- Insert new records into the DW table\n    insert into dw.buildings select * from staging.buildings;\nEND\n\nselect count(*) from dw.buildings\n--91\n\nexec dw_insert;\nselect count(*) from dw.buildings;\n--182\n\n\nSELECT count(*)\nFROM [ext].[buildings_sensors]\n-- 91\n-- 115\n-- 151\n-- 199\n\nselect * from ext.buildings_sensors\norder by ISO8601 desc\n\nselect count(*) from dw.buildings;\n-- 91\n-- 182\n\nselect * from dw.buildings\norder by ISO8601 desc\n\nSELECT top 10 \n    year(cast(left(ISO8601,10) as date)) as [year], month(cast(left(ISO8601,10) as date)) as [month], day(cast(left(ISO8601,10) as date)) as [day]\n    ,count(*) as occurs\nfrom dw.buildings\ngroup by year(cast(left(ISO8601,10) as date)), month(cast(left(ISO8601,10) as date)), day(cast(left(ISO8601,10) as date))\n\nselect count(*)\nfrom dw.buildings\nwhere day(cast(left(ISO8601,10) as date)) = 26\norder by ISO8601 desc\n-- 26   144 deleted\n-- 27   129 deleted\n\n\nselect count(*)\nfrom [ext].[buildings_sensors]\nwhere day(cast(left(ISO8601,10) as date)) = 26\norder by ISO8601 desc\n\n\nselect *\nfrom dw.buildings\nwhere day(cast(left(ISO8601,10) as date)) = 26\norder by ISO8601 desc",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "master",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/buildings-iot-data-dw')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "Examples-SQL-Dedicated/operational-analytics"
+				},
+				"content": {
+					"query": "---------------------------------------------------------------------------------------------------\n-- External table (Parqet data on data lake)\nselect count(*)\nfrom ext.buildings_sensors\n-- 199\n\n-- Staging table (heap, round-robin table in SQL Dedicated)\nselect count(*)\nfrom staging.buildings\n-- 199\n\n-- DW table (CCI, hash distribution in SQL Dedicated)\nselect count(*)\nfrom dw.buildings\n-- 199\n\n\n-- Query the external table\nselect top 20 * from ext.buildings_sensors order by ISO8601 desc;\n\n-- DW record count by date:\nSELECT \n    year(cast(left(ISO8601,10) as date)) as [year], month(cast(left(ISO8601,10) as date)) as [month], day(cast(left(ISO8601,10) as date)) as [day]\n    ,count(*) as occurs\nfrom dw.buildings\ngroup by year(cast(left(ISO8601,10) as date)), month(cast(left(ISO8601,10) as date)), day(cast(left(ISO8601,10) as date))\norder by year(cast(left(ISO8601,10) as date)), month(cast(left(ISO8601,10) as date)), day(cast(left(ISO8601,10) as date)) desc\n\n\n-- Turn off ResultSet Cache\nSET RESULT_SET_CACHING OFF;\n\nSELECT \n    year(cast(left(ISO8601,10) as date)) as [year], month(cast(left(ISO8601,10) as date)) as [month], day(cast(left(ISO8601,10) as date)) as [day]\n    ,count(*) as occurs\nfrom dw.buildings\ngroup by year(cast(left(ISO8601,10) as date)), month(cast(left(ISO8601,10) as date)), day(cast(left(ISO8601,10) as date))\norder by year(cast(left(ISO8601,10) as date)), month(cast(left(ISO8601,10) as date)), day(cast(left(ISO8601,10) as date)) desc",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "master",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/External-Tables-00-PublicData')]",
 			"type": "Microsoft.Synapse/workspaces/sqlscripts",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
@@ -9292,12 +9353,334 @@
 					"name": "Examples-SQL-Serverless"
 				},
 				"content": {
-					"query": "-- Read multiple files with same schema\n-- This is auto-generated code\nSELECT\n    TOP 100 *\nFROM\n    OPENROWSET(\n        BULK (\n            'https://gondor2.dfs.core.windows.net/calembel/01-raw/biketrips/2022/202201-citibike-tripdata.csv',\n\t\t\t'https://gondor2.dfs.core.windows.net/calembel/01-raw/biketrips/2022/202202-citibike-tripdata.csv',\n\t\t\t'https://gondor2.dfs.core.windows.net/calembel/01-raw/biketrips/2022/202203-citibike-tripdata.csv',\n\t\t\t'https://gondor2.dfs.core.windows.net/calembel/01-raw/biketrips/2022/202204-citibike-tripdata.csv',\n\t\t\t'https://gondor2.dfs.core.windows.net/calembel/01-raw/biketrips/2022/202205-citibike-tripdata.csv',\n\t\t\t'https://gondor2.dfs.core.windows.net/calembel/01-raw/biketrips/2022/202206-citbike-tripdata.csv',\n\t\t\t'https://gondor2.dfs.core.windows.net/calembel/01-raw/biketrips/2022/202207-citbike-tripdata.csv'\n        ),\n        FORMAT = 'CSV',\n        PARSER_VERSION = '2.0'\n    ) AS [result]\n\n\n-- Create Synapse SQL Serverless database\ncreate database biketrips collate Latin1_General_100_BIN2_UTF8;\n\n-- Use the new database\nuse biketrips;\n\n-- Create master key for encryption, only do this once.\n-- Using:!r@PMK5cfCWn%f#qJjmJ\ncreate master key encryption by password='INSERT HERE';\n\n-- Create scoped credential\ncreate database scoped credential WorkspaceIdentity with identity = 'Managed Identity';\ngo\n\n-- Create external data source\nIF NOT EXISTS (SELECT * FROM sys.external_data_sources WHERE name = 'calembel_gondor2_dfs_core_windows_net') \n\tCREATE EXTERNAL DATA SOURCE [calembel_gondor2_dfs_core_windows_net] \n\tWITH (\n\t\tLOCATION = 'abfss://calembel@gondor2.dfs.core.windows.net' \n\t)\nGO\n\n-- Create external file formats\nIF NOT EXISTS (SELECT * FROM sys.external_file_formats WHERE name = 'SynapseDelimitedTextFormat') \n\tCREATE EXTERNAL FILE FORMAT [SynapseDelimitedTextFormat] \n\tWITH ( FORMAT_TYPE = DELIMITEDTEXT ,\n\t       FORMAT_OPTIONS (\n\t\t\t FIELD_TERMINATOR = ',',\n\t\t\t USE_TYPE_DEFAULT = FALSE\n\t\t\t))\nGO\n\n-- Do this format too\ncreate external file format ParquetExternalFormat with (format_type=PARQUET);\ngo\n\n\n\n-- Explore some data\nselect top 10  *\nfrom openrowset(\n    bulk '2022/', \n    data_source = 'biketrips_raw_source', \n    format='CSV',\n    PARSER_VERSION = '2.0'\n    ) as a\n\n\n\n-- Create a table\nCREATE EXTERNAL TABLE biketrips202207 (\n\t[ride_id] nvarchar(4000),\n\t[rideable_type] nvarchar(4000),\n\t[started_at] datetime2(0),\n\t[ended_at] datetime2(0),\n\t[start_station_name] nvarchar(4000),\n\t[start_station_id] float,\n\t[end_station_name] nvarchar(4000),\n\t[end_station_id] float,\n\t[start_lat] float,\n\t[start_lng] float,\n\t[end_lat] float,\n\t[end_lng] float,\n\t[member_casual] nvarchar(4000)\n\t)\n\tWITH (\n\tLOCATION = '01-raw/biketrips/2022/202207-citbike-tripdata.csv',\n\tDATA_SOURCE = [calembel_gondor2_dfs_core_windows_net],\n\tFILE_FORMAT = [SynapseDelimitedTextFormat]\n\t)\nGO\n\n-- Query new external table\nSELECT TOP 10 * FROM dbo.biketrips202207;\n",
+					"query": "/* Note: this script is filtered on a specific month. You can modify the location to read the entire dataset. */\nIF NOT EXISTS (SELECT * FROM sys.external_file_formats WHERE name = 'SynapseParquetFormat')\n\tCREATE EXTERNAL FILE FORMAT [SynapseParquetFormat]\n\tWITH ( FORMAT_TYPE = PARQUET)\nGO\n\nIF NOT EXISTS (SELECT * FROM sys.external_data_sources WHERE name = 'nyctlc_azureopendatastorage_blob_core_windows_net')\n\tCREATE EXTERNAL DATA SOURCE [nyctlc_azureopendatastorage_blob_core_windows_net]\n\tWITH (\n\t\tLOCATION = 'wasbs://nyctlc@azureopendatastorage.blob.core.windows.net',\n\t\tTYPE     = HADOOP\n\t)\nGO\n\nCREATE EXTERNAL TABLE nyc_tlc_yellow_trip_ext (\n\t[vendorID] varchar(8000),\n\t[tpepPickupDateTime] datetime2(7),\n\t[tpepDropoffDateTime] datetime2(7),\n\t[passengerCount] int,\n\t[tripDistance] float,\n\t[puLocationId] varchar(8000),\n\t[doLocationId] varchar(8000),\n\t[startLon] float,\n\t[startLat] float,\n\t[endLon] float,\n\t[endLat] float,\n\t[rateCodeId] int,\n\t[storeAndFwdFlag] varchar(8000),\n\t[paymentType] varchar(8000),\n\t[fareAmount] float,\n\t[extra] float,\n\t[mtaTax] float,\n\t[improvementSurcharge] varchar(8000),\n\t[tipAmount] float,\n\t[tollsAmount] float,\n\t[totalAmount] float\n\t)\n\tWITH (\n    LOCATION = 'yellow/puYear=2014/puMonth=3/',\n    -- LOCATION = 'yellow'\n\tDATA_SOURCE = [nyctlc_azureopendatastorage_blob_core_windows_net],\n\tFILE_FORMAT = [SynapseParquetFormat],\n\tREJECT_TYPE = VALUE,\n\tREJECT_VALUE = 0\n\t)\nGO\n\nSELECT TOP 100 * FROM nyc_tlc_yellow_trip_ext\nGO\n",
 					"metadata": {
 						"language": "sql"
 					},
 					"currentConnection": {
-						"databaseName": "biketrips",
+						"databaseName": "master",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/External-Tables-01-My-Datalake')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "Examples-SQL-Serverless"
+				},
+				"content": {
+					"query": "-- Example external tables/resources\n/*\nYou can use external tables to:\n  - Query Azure Blob Storage and Azure Data Lake Gen2 with Transact-SQL statements.\n  - Store query results to files in Azure Blob Storage or Azure Data Lake Storage using CETAS\n  - Import data from Azure Blob Storage and Azure Data Lake Storage and store it in a dedicated SQL pool (only Hadoop tables in dedicated pool).\n    - On secont thought, use COPY INTO for this.\n*/\n\n\n-- Credential\ncreate database scoped credential msi_cred\nwith identity = 'Managed Service Identity';\n\n\n-- External data source\ndrop external data source datalake_source;\ngo\ncreate external data source datalake_source\nwith(\n    location = 'abfss://datalake@minastirith.dfs.core.windows.net'\n    ,credential = msi_cred\n    ,type = HADOOP\n);\n\n-- External file format\ncreate external file format parquet_snappy\nwith(\n     format_type = PARQUET\n    ,data_compression = 'org.apache.hadoop.io.compress.SnappyCodec'\n);\n\ncreate external file format delimitedtext_csv\nwith(\n     format_type = delimitedtext\n    ,format_options(\n        field_terminator = ','\n    )\n);\n\ncreate external file format delimitedtext_csv_skiprow1\nwith(\n     format_type = delimitedtext\n    ,format_options(\n         field_terminator = ','\n        ,first_row = 2\n    )\n);\n\n\ncreate schema ext;\n\n-- External table\ndrop external table ext.biketrips2020;\ngo\ncreate external table ext.biketrips2020\n(\n     [tripduration] [varchar](250)  NULL\n\t,[starttime] [varchar](250)  NULL\n\t,[stoptime] [varchar](250)  NULL\n\t,[start station id] [varchar](250)  NULL\n\t,[start station name] [varchar](250)  NULL\n\t,[start station latitude] [varchar](250)  NULL\n\t,[start station longitude] [varchar](250)  NULL\n\t,[end station id] [varchar](250)  NULL\n\t,[end station name] [varchar](250)  NULL\n\t,[end station latitude] [varchar](250)  NULL\n\t,[end station longitude] [varchar](250)  NULL\n\t,[bikeid] [varchar](250)  NULL\n\t,[usertype] [varchar](250)  NULL\n\t,[birth year] [varchar](250)  NULL\n\t,[gender] [varchar](250)  NULL\n)\nWITH\n(\n    LOCATION='/01-fresh/biketrips/2020/' ,\n    DATA_SOURCE = datalake_source ,\n    FILE_FORMAT = delimitedtext_csv_skiprow1\n);\n\n-- Query data\nselect top 10 * from ext.biketrips2020;",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "master",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Read-Delta-Lake')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "Examples-SQL-Serverless"
+				},
+				"content": {
+					"query": "use serverlessDB;\n\n-- openrowset example\n-- The URI in the OPENROWSET function must reference the root Delta Lake folder that contains a subfolder called _delta_log\nselect top 10 *\nfrom openrowset(\n    bulk 'https://minastirith.blob.core.windows.net/datalake/03-serve/biketrips-deltalake/',\n    format = 'delta') as rows\n\n-- Calculate some aggregate columns\nselect YEAR(StartTime) as [Year], MONTH(StartTime) as [Month], count(*) as [RecordCount]\nfrom openrowset(\n    bulk 'https://minastirith.blob.core.windows.net/datalake/03-serve/biketrips-deltalake/',\n    format = 'delta') as rows\ngroup by YEAR(StartTime), MONTH(StartTime)\n\n\n-- Create external data source\ncreate external data source DeltaLakeStorageBikeTrips\nwith ( location = 'https://minastirith.blob.core.windows.net/datalake/03-serve/biketrips-deltalake/' );\n\n-- openrowset with external data source\nselect top 10 *\nfrom openrowset(\n        bulk '/',\n        data_source = 'DeltaLakeStorageBikeTrips',\n        format = 'delta'\n    ) as rows\n\n-- best practice to specify a schema\nselect top 10 *\nfrom openrowset(\n        bulk '/',\n        data_source = 'DeltaLakeStorageBikeTrips',\n        format = 'delta'\n    )\n    with (  TripDuration varchar(75)\n           ,StartTime varchar(75)\n           ,StopTime varchar(75)\n           ,StartStationId varchar(75)\n           ,StartStationName varchar(75)\n           ,StartStationLatitude varchar(75)\n           ,StartStationLongitude varchar(75)\n           ,EndStationId varchar(75)\n           ,EndStationName varchar(75)\n           ,EndStationLatitude varchar(75)\n           ,EndStationLongitude varchar(75)\n           ,BikeId varchar(75)\n           ,UserType varchar(75)\n           ,BirthYear varchar(75)\n           ,Gender varchar(75)\n           ) as rows",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "master",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SQL-Dedicated-DDM-Example-01')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "Examples-SQL-Dedicated"
+				},
+				"content": {
+					"query": "/*\nDynamic data masking example for Azure Synapse SQL Dedicated\n*/\n\n-- in ddmtesting2 database\n\n-- create schema\ncreate schema ddm;\n\n\n/*\ndrop table dbo.securedata;\n*/\n\n-- create table\ncreate table ddm.securedata(\n     [MemberID]         int not null\n    ,[FirstName]        varchar(100) not null\n    ,[LastName]         varchar(100) not null\n    ,[PostalAddress]    varchar(100) not null\n    ,[CreditCard]       decimal(16,0) not null\n)\nwith\n(\n\t distribution = round_robin\n    ,clustered columnstore index\n);\n\n\n-- insert some data\ninsert into ddm.securedata values (1234,'Francisque','Thandeka','100 High Street',1111222233334444);\ninsert into ddm.securedata values (1235,'Vanda','Maeleachlainn','101 High Street',2222333344445555);\ninsert into ddm.securedata values (1236,'Josefina','Visnja','102 High Street',3333444455556666);\ninsert into ddm.securedata values (1237,'Andrés','Winfrith','103 High Street',4444555566667777);\ninsert into ddm.securedata values (1239,'Josephus','Panos','105 High Street',6666777788889999);\n\n-- View data in table\nselect * from ddm.securedata;\n-- All data visible to everyone who has access to the table.\n/*\nMemberID    FirstName   LastName        PostalAddress       CreditCard\n1234\t    Francisque\tThandeka\t    100 High Street\t    1111222233334444\n1237\t    Andrés\t    Winfrith\t    103 High Street\t    4444555566667777\n1236\t    Josefina\tVisnja\t        102 High Street\t    3333444455556666\n1239\t    Josephus\tPanos\t        105 High Street\t    6666777788889999\n1235\t    Vanda\t    Maeleachlainn\t101 High Street\t    2222333344445555\n*/\n\n\n-- Create user accounts\ncreate user User1 without login;\ncreate user User2 without login;\ncreate user User3 without login;\n\n-- Give users access to run select against the objects in schema ddm\ngrant select on schema::ddm to User1\ngrant select on schema::ddm to User2\ngrant select on schema::ddm to User3\n\n\n-- add masking to the table\nalter table ddm.securedata alter column PostalAddress add masked with (function = 'default()');\nalter table ddm.securedata alter column CreditCard add masked with (function = 'random(1, 100)');\n\n-- remove masking from the table - only run this for testing, don't remove masking when running test expecting to see masked data\n/*\nalter table dbo.securedata alter column PostalAddress drop masked;\nalter table dbo.securedata alter column CreditCard drop masked;\n*/\n\n-- Check the data:\nselect * from ddm.securedata;\n-- Data is not masked for me (ored@microsoft.com, AAD Admin)\n\n\n-- What User1 would see\nexecute as user = 'User1';  \nselect * from ddm.securedata;\nrevert;\n-- both columns are masked\n\n-- What User2 would see\nexecute as user = 'User2';  \nselect * from ddm.securedata;\nrevert;\n-- both columns are masked\n\n-- What User3 would see\nexecute as user = 'User3';  \nselect * from ddm.securedata;\nrevert;\n-- both columns are masked\n\n/*\n-- Customer has requirement that \n\tUser1 be able to see [PostalAddress]\n\tUser2 be able to see [CreditCard]\n\tUser3 be able to see [PostalAddress] & [CreditCard]\n*/\n-- Allow User3 to see the masked data, User3 can now see [PostalAddress] & [CreditCard] unmasked\ngrant unmask on ddm.securedata(PostalAddress) to User1;\ngrant unmask on ddm.securedata(CreditCard) to User2;\ngrant unmask to User3;\n\n\n-- What User1 would see\nexecute as user = 'User1';  \nselect * from ddm.securedata;\nrevert;\n-- both columns are masked (not as expected)\n-- Expected: PostalAddress to be unmasked\n\n-- What User2 would see\nexecute as user = 'User2';  \nselect * from ddm.securedata;\nrevert;\n-- both columns are masked (not as expected)\n-- Expected: CreditCard to be unmasked\n\n-- What User3 would see\nexecute as user = 'User3';  \nselect * from ddm.securedata;\nrevert;\n-- both columns are unmasked (as expected)",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "master",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SynapseLink-CosmosDB-01')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "Examples-SQL-Serverless"
+				},
+				"content": {
+					"query": "/*  \n-- Create the credential that is used to access\nCREATE CREDENTIAL [howtoanalytics-cosmosdb]\nWITH IDENTITY = 'SHARED ACCESS SIGNATURE', SECRET = '2EBVHRxK6KLS7ZCyrWHrY4k5CEmqyL25CGM18AFIwGCgHibwoVfhKCuLAU0fLvE5ChueH3gTGXSGw14I36y3gw=='\n*/\n\n\n\nSELECT TOP 100 *\nFROM OPENROWSET(​PROVIDER = 'CosmosDB', CONNECTION = 'Account=howtoanalytics;Database=biketrips',\n    OBJECT = 'data2021', SERVER_CREDENTIAL = 'howtoanalytics-cosmosdb' ) AS [data2021];\n\n-- Create database\n--create database sqlserverless;\n\n-- To copy the data into the data lake, we need to use CETAS & to use that we need to create an external data source & format\nCREATE EXTERNAL DATA SOURCE [datalake] WITH (LOCATION = 'https://minastirith.dfs.core.windows.net/datalake2020');\nCREATE EXTERNAL FILE FORMAT [parquet] WITH (FORMAT_TYPE = PARQUET, DATA_COMPRESSION = 'org.apache.hadoop.io.compress.SnappyCodec'); \nCREATE EXTERNAL FILE FORMAT [delimitedtext] WITH (FORMAT_TYPE = DELIMITEDTEXT);\n\nCREATE EXTERNAL FILE FORMAT csvtext WITH (FORMAT_TYPE = DELIMITEDTEXT, FORMAT_OPTIONS (FIELD_TERMINATOR = ','));\n\n\n-- 01-fresh/synapselink-cosmosdb/\n\n-- Drop external tables\ndrop EXTERNAL TABLE biketrips2021_parquet;\ndrop EXTERNAL TABLE biketrips2021_delimited;\n\n-- Create External table to copy data into Data Lake from Cosmos DB:\nCREATE EXTERNAL TABLE biketrips2021_parquet\nWITH (\n    LOCATION = '01-fresh/synapselink-cosmosdb/parquet',\n    DATA_SOURCE = datalake,  \n    FILE_FORMAT = parquet\n)  \nAS\nSELECT *\nFROM OPENROWSET(​PROVIDER = 'CosmosDB', CONNECTION = 'Account=howtoanalytics;Database=biketrips',\n                OBJECT = 'data2021', SERVER_CREDENTIAL = 'howtoanalytics-cosmosdb' ) AS [data2021];\nGO\n-- 00:00:16\n\nCREATE EXTERNAL TABLE biketrips2021_delimited\nWITH (\n    LOCATION = '01-fresh/synapselink-cosmosdb/delimitedtext',\n    DATA_SOURCE = datalake,  \n    FILE_FORMAT = csvtext\n)  \nAS\nSELECT *\nFROM OPENROWSET(​PROVIDER = 'CosmosDB', CONNECTION = 'Account=howtoanalytics;Database=biketrips',\n                OBJECT = 'data2021', SERVER_CREDENTIAL = 'howtoanalytics-cosmosdb' ) AS [data2021];\nGO\n-- 00:00:14\n\n-- you can query the newly created external table\nSELECT count(*) FROM biketrips2021_parquet\n-- 3,224,034\n\nSELECT count(*) FROM biketrips2021_delimited\n-- 3,224,034",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "master",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/edw_create_tables')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "Misc/TPC-DS"
+				},
+				"content": {
+					"query": "-- misc\nSET ANSI_NULLS ON\nGO\n\nSET QUOTED_IDENTIFIER ON\nGO\n\n-- call_center\nCREATE TABLE [call_center]\n(\n\t[cc_call_center_sk] [int] NOT NULL,\n\t[cc_call_center_id] [char](16) NOT NULL,\n\t[cc_rec_start_date] [date] NULL,\n\t[cc_rec_end_date] [date] NULL,\n\t[cc_closed_date_sk] [int] NULL,\n\t[cc_open_date_sk] [int] NULL,\n\t[cc_name] [varchar](50) NULL,\n\t[cc_class] [varchar](50) NULL,\n\t[cc_employees] [int] NULL,\n\t[cc_sq_ft] [int] NULL,\n\t[cc_hours] [char](20) NULL,\n\t[cc_manager] [varchar](40) NULL,\n\t[cc_mkt_id] [int] NULL,\n\t[cc_mkt_class] [char](50) NULL,\n\t[cc_mkt_desc] [varchar](100) NULL,\n\t[cc_market_manager] [varchar](40) NULL,\n\t[cc_division] [int] NULL,\n\t[cc_division_name] [varchar](50) NULL,\n\t[cc_company] [int] NULL,\n\t[cc_company_name] [char](50) NULL,\n\t[cc_street_number] [char](10) NULL,\n\t[cc_street_name] [varchar](60) NULL,\n\t[cc_street_type] [char](15) NULL,\n\t[cc_suite_number] [char](10) NULL,\n\t[cc_city] [varchar](60) NULL,\n\t[cc_county] [varchar](30) NULL,\n\t[cc_state] [char](2) NULL,\n\t[cc_zip] [char](10) NULL,\n\t[cc_country] [varchar](20) NULL,\n\t[cc_gmt_offset] [decimal](5, 2) NULL,\n\t[cc_tax_percentage] [decimal](5, 2) NULL\n)\nWITH\n(\n\tDISTRIBUTION = REPLICATE,\n\tCLUSTERED COLUMNSTORE INDEX\n)\nGO\n\n-- catalog_page\nCREATE TABLE [catalog_page]\n(\n\t[cp_catalog_page_sk] [int] NOT NULL,\n\t[cp_catalog_page_id] [char](16) NOT NULL,\n\t[cp_start_date_sk] [int] NULL,\n\t[cp_end_date_sk] [int] NULL,\n\t[cp_department] [varchar](50) NULL,\n\t[cp_catalog_number] [int] NULL,\n\t[cp_catalog_page_number] [int] NULL,\n\t[cp_description] [varchar](100) NULL,\n\t[cp_type] [varchar](100) NULL\n)\nWITH\n(\n\tDISTRIBUTION = REPLICATE,\n\tCLUSTERED COLUMNSTORE INDEX\n)\nGO\n\n-- catalog_returns\nCREATE TABLE [catalog_returns]\n(\n\t[cr_returned_date_sk] [int] NULL,\n\t[cr_returned_time_sk] [int] NULL,\n\t[cr_item_sk] [int] NOT NULL,\n\t[cr_refunded_customer_sk] [int] NULL,\n\t[cr_refunded_cdemo_sk] [int] NULL,\n\t[cr_refunded_hdemo_sk] [int] NULL,\n\t[cr_refunded_addr_sk] [int] NULL,\n\t[cr_returning_customer_sk] [int] NULL,\n\t[cr_returning_cdemo_sk] [int] NULL,\n\t[cr_returning_hdemo_sk] [int] NULL,\n\t[cr_returning_addr_sk] [int] NULL,\n\t[cr_call_center_sk] [int] NULL,\n\t[cr_catalog_page_sk] [int] NULL,\n\t[cr_ship_mode_sk] [int] NULL,\n\t[cr_warehouse_sk] [int] NULL,\n\t[cr_reason_sk] [int] NULL,\n\t[cr_order_number] [int] NOT NULL,\n\t[cr_return_quantity] [int] NULL,\n\t[cr_return_amount] [decimal](7, 2) NULL,\n\t[cr_return_tax] [decimal](7, 2) NULL,\n\t[cr_return_amt_inc_tax] [decimal](7, 2) NULL,\n\t[cr_fee] [decimal](7, 2) NULL,\n\t[cr_return_ship_cost] [decimal](7, 2) NULL,\n\t[cr_refunded_cash] [decimal](7, 2) NULL,\n\t[cr_reversed_charge] [decimal](7, 2) NULL,\n\t[cr_store_credit] [decimal](7, 2) NULL,\n\t[cr_net_loss] [decimal](7, 2) NULL\n)\nWITH\n(\n\tDISTRIBUTION = HASH ( [cr_item_sk] ),\n\tCLUSTERED COLUMNSTORE INDEX ORDER ([cr_returned_date_sk], [cr_item_sk])\n)\nGO\n\n\n-- catalog_sales\nCREATE TABLE [catalog_sales]\n(\n\t[cs_sold_date_sk] [int] NULL,\n\t[cs_sold_time_sk] [int] NULL,\n\t[cs_ship_date_sk] [int] NULL,\n\t[cs_bill_customer_sk] [int] NULL,\n\t[cs_bill_cdemo_sk] [int] NULL,\n\t[cs_bill_hdemo_sk] [int] NULL,\n\t[cs_bill_addr_sk] [int] NULL,\n\t[cs_ship_customer_sk] [int] NULL,\n\t[cs_ship_cdemo_sk] [int] NULL,\n\t[cs_ship_hdemo_sk] [int] NULL,\n\t[cs_ship_addr_sk] [int] NULL,\n\t[cs_call_center_sk] [int] NULL,\n\t[cs_catalog_page_sk] [int] NULL,\n\t[cs_ship_mode_sk] [int] NULL,\n\t[cs_warehouse_sk] [int] NULL,\n\t[cs_item_sk] [int] NOT NULL,\n\t[cs_promo_sk] [int] NULL,\n\t[cs_order_number] [int] NOT NULL,\n\t[cs_quantity] [int] NULL,\n\t[cs_wholesale_cost] [decimal](7, 2) NULL,\n\t[cs_list_price] [decimal](7, 2) NULL,\n\t[cs_sales_price] [decimal](7, 2) NULL,\n\t[cs_ext_discount_amt] [decimal](7, 2) NULL,\n\t[cs_ext_sales_price] [decimal](7, 2) NULL,\n\t[cs_ext_wholesale_cost] [decimal](7, 2) NULL,\n\t[cs_ext_list_price] [decimal](7, 2) NULL,\n\t[cs_ext_tax] [decimal](7, 2) NULL,\n\t[cs_coupon_amt] [decimal](7, 2) NULL,\n\t[cs_ext_ship_cost] [decimal](7, 2) NULL,\n\t[cs_net_paid] [decimal](7, 2) NULL,\n\t[cs_net_paid_inc_tax] [decimal](7, 2) NULL,\n\t[cs_net_paid_inc_ship] [decimal](7, 2) NULL,\n\t[cs_net_paid_inc_ship_tax] [decimal](7, 2) NULL,\n\t[cs_net_profit] [decimal](7, 2) NULL\n)\nWITH\n(\n\tDISTRIBUTION = HASH ( [cs_item_sk] ),\n\tCLUSTERED COLUMNSTORE INDEX ORDER(cs_sold_date_sk, cs_item_sk)\n)\nGO\n\n-- customer_address\nCREATE TABLE [customer_address]\n(\n\t[ca_address_sk] [int] NOT NULL,\n\t[ca_address_id] [char](16) NOT NULL,\n\t[ca_street_number] [char](10) NULL,\n\t[ca_street_name] [varchar](60) NULL,\n\t[ca_street_type] [char](15) NULL,\n\t[ca_suite_number] [char](10) NULL,\n\t[ca_city] [varchar](60) NULL,\n\t[ca_county] [varchar](30) NULL,\n\t[ca_state] [char](2) NULL,\n\t[ca_zip] [char](10) NULL,\n\t[ca_country] [varchar](20) NULL,\n\t[ca_gmt_offset] [decimal](5, 2) NULL,\n\t[ca_location_type] [char](20) NULL\n)\nWITH\n(\n\tDISTRIBUTION = REPLICATE,\n\tCLUSTERED COLUMNSTORE INDEX\n)\nGO\n\n\n-- customer_demographics\nCREATE TABLE [customer_demographics]\n(\n\t[cd_demo_sk] [int] NOT NULL,\n\t[cd_gender] [char](1) NULL,\n\t[cd_marital_status] [char](1) NULL,\n\t[cd_education_status] [char](20) NULL,\n\t[cd_purchase_estimate] [int] NULL,\n\t[cd_credit_rating] [char](10) NULL,\n\t[cd_dep_count] [int] NULL,\n\t[cd_dep_employed_count] [int] NULL,\n\t[cd_dep_college_count] [int] NULL\n)\nWITH\n(\n\tDISTRIBUTION = REPLICATE,\n\tCLUSTERED COLUMNSTORE INDEX\n)\nGO\n\n\n-- customer\nCREATE TABLE [customer]\n(\n\t[c_customer_sk] [int] NOT NULL,\n\t[c_customer_id] [char](16) NOT NULL,\n\t[c_current_cdemo_sk] [int] NULL,\n\t[c_current_hdemo_sk] [int] NULL,\n\t[c_current_addr_sk] [int] NULL,\n\t[c_first_shipto_date_sk] [int] NULL,\n\t[c_first_sales_date_sk] [int] NULL,\n\t[c_salutation] [char](10) NULL,\n\t[c_first_name] [char](20) NULL,\n\t[c_last_name] [char](30) NULL,\n\t[c_preferred_cust_flag] [char](1) NULL,\n\t[c_birth_day] [int] NULL,\n\t[c_birth_month] [int] NULL,\n\t[c_birth_year] [int] NULL,\n\t[c_birth_country] [varchar](20) NULL,\n\t[c_login] [char](13) NULL,\n\t[c_email_address] [char](50) NULL,\n\t[c_last_review_date] [char](10) NULL\n)\nWITH\n(\n\tDISTRIBUTION = REPLICATE,\n\tCLUSTERED COLUMNSTORE INDEX\n)\nGO\n\n\n-- date_dim\nCREATE TABLE [date_dim]\n(\n\t[d_date_sk] [int] NOT NULL,\n\t[d_date_id] [char](16) NOT NULL,\n\t[d_date] [date] NULL,\n\t[d_month_seq] [int] NULL,\n\t[d_week_seq] [int] NULL,\n\t[d_quarter_seq] [int] NULL,\n\t[d_year] [int] NULL,\n\t[d_dow] [int] NULL,\n\t[d_moy] [int] NULL,\n\t[d_dom] [int] NULL,\n\t[d_qoy] [int] NULL,\n\t[d_fy_year] [int] NULL,\n\t[d_fy_quarter_seq] [int] NULL,\n\t[d_fy_week_seq] [int] NULL,\n\t[d_day_name] [char](9) NULL,\n\t[d_quarter_name] [char](6) NULL,\n\t[d_holiday] [char](1) NULL,\n\t[d_weekend] [char](1) NULL,\n\t[d_following_holiday] [char](1) NULL,\n\t[d_first_dom] [int] NULL,\n\t[d_last_dom] [int] NULL,\n\t[d_same_day_ly] [int] NULL,\n\t[d_same_day_lq] [int] NULL,\n\t[d_current_day] [char](1) NULL,\n\t[d_current_week] [char](1) NULL,\n\t[d_current_month] [char](1) NULL,\n\t[d_current_quarter] [char](1) NULL,\n\t[d_current_year] [char](1) NULL\n)\nWITH\n(\n\tDISTRIBUTION = REPLICATE,\n\tCLUSTERED COLUMNSTORE INDEX\n)\nGO\n\n\n-- household_demographics\nCREATE TABLE [household_demographics]\n(\n\t[hd_demo_sk] [int] NOT NULL,\n\t[hd_income_band_sk] [int] NULL,\n\t[hd_buy_potential] [char](15) NULL,\n\t[hd_dep_count] [int] NULL,\n\t[hd_vehicle_count] [int] NULL\n)\nWITH\n(\n\tDISTRIBUTION = REPLICATE,\n\tCLUSTERED COLUMNSTORE INDEX\n)\nGO\n\n\n-- income_band\nCREATE TABLE [income_band]\n(\n\t[ib_income_band_sk] [int] NOT NULL,\n\t[ib_lower_bound] [int] NULL,\n\t[ib_upper_bound] [int] NULL\n)\nWITH\n(\n\tDISTRIBUTION = REPLICATE,\n\tCLUSTERED COLUMNSTORE INDEX\n)\nGO\n\n\n-- inventory\nCREATE TABLE [inventory]\n(\n\t[inv_date_sk] [int] NOT NULL,\n\t[inv_item_sk] [int] NOT NULL,\n\t[inv_warehouse_sk] [int] NOT NULL,\n\t[inv_quantity_on_hand] [int] NULL\n)\nWITH\n(\n\tDISTRIBUTION = HASH(inv_date_sk),\n\tCLUSTERED COLUMNSTORE INDEX \n)\nGO\n\n\n-- item\nCREATE TABLE [item]\n(\n\t[i_item_sk] [int] NOT NULL,\n\t[i_item_id] [char](16) NOT NULL,\n\t[i_rec_start_date] [date] NULL,\n\t[i_rec_end_date] [date] NULL,\n\t[i_item_desc] [varchar](200) NULL,\n\t[i_current_price] [decimal](7, 2) NULL,\n\t[i_wholesale_cost] [decimal](7, 2) NULL,\n\t[i_brand_id] [int] NULL,\n\t[i_brand] [char](50) NULL,\n\t[i_class_id] [int] NULL,\n\t[i_class] [char](50) NULL,\n\t[i_category_id] [int] NULL,\n\t[i_category] [char](50) NULL,\n\t[i_manufact_id] [int] NULL,\n\t[i_manufact] [char](50) NULL,\n\t[i_size] [char](20) NULL,\n\t[i_formulation] [char](20) NULL,\n\t[i_color] [char](20) NULL,\n\t[i_units] [char](10) NULL,\n\t[i_container] [char](10) NULL,\n\t[i_manager_id] [int] NULL,\n\t[i_product_name] [char](50) NULL\n)\nWITH\n(\n\tDISTRIBUTION = REPLICATE,\n\tCLUSTERED COLUMNSTORE INDEX\n)\nGO\n\n\n-- promotion\nCREATE TABLE [promotion]\n(\n\t[p_promo_sk] [int] NOT NULL,\n\t[p_promo_id] [char](16) NOT NULL,\n\t[p_start_date_sk] [int] NULL,\n\t[p_end_date_sk] [int] NULL,\n\t[p_item_sk] [int] NULL,\n\t[p_cost] [decimal](15, 2) NULL,\n\t[p_response_target] [int] NULL,\n\t[p_promo_name] [char](50) NULL,\n\t[p_channel_dmail] [char](1) NULL,\n\t[p_channel_email] [char](1) NULL,\n\t[p_channel_catalog] [char](1) NULL,\n\t[p_channel_tv] [char](1) NULL,\n\t[p_channel_radio] [char](1) NULL,\n\t[p_channel_press] [char](1) NULL,\n\t[p_channel_event] [char](1) NULL,\n\t[p_channel_demo] [char](1) NULL,\n\t[p_channel_details] [varchar](100) NULL,\n\t[p_purpose] [char](15) NULL,\n\t[p_discount_active] [char](1) NULL\n)\nWITH\n(\n\tDISTRIBUTION = REPLICATE,\n\tCLUSTERED COLUMNSTORE INDEX\n)\nGO\n\n\n-- reason\nCREATE TABLE [reason]\n(\n\t[r_reason_sk] [int] NOT NULL,\n\t[r_reason_id] [char](16) NOT NULL,\n\t[r_reason_desc] [char](100) NULL\n)\nWITH\n(\n\tDISTRIBUTION = REPLICATE,\n\tCLUSTERED COLUMNSTORE INDEX\n)\nGO\n\n\n-- ship_mode\nCREATE TABLE [ship_mode]\n(\n\t[sm_ship_mode_sk] [int] NOT NULL,\n\t[sm_ship_mode_id] [char](16) NOT NULL,\n\t[sm_type] [char](30) NULL,\n\t[sm_code] [char](10) NULL,\n\t[sm_carrier] [char](20) NULL,\n\t[sm_contract] [char](20) NULL\n)\nWITH\n(\n\tDISTRIBUTION = REPLICATE,\n\tCLUSTERED COLUMNSTORE INDEX\n)\nGO\n\n\n-- store_returns\nCREATE TABLE [store_returns]\n(\n\t[sr_returned_date_sk] [int] NULL,\n\t[sr_return_time_sk] [int] NULL,\n\t[sr_item_sk] [int] NOT NULL,\n\t[sr_customer_sk] [int] NULL,\n\t[sr_cdemo_sk] [int] NULL,\n\t[sr_hdemo_sk] [int] NULL,\n\t[sr_addr_sk] [int] NULL,\n\t[sr_store_sk] [int] NULL,\n\t[sr_reason_sk] [int] NULL,\n\t[sr_ticket_number] [bigint] NOT NULL,\n\t[sr_return_quantity] [int] NULL,\n\t[sr_return_amt] [decimal](7, 2) NULL,\n\t[sr_return_tax] [decimal](7, 2) NULL,\n\t[sr_return_amt_inc_tax] [decimal](7, 2) NULL,\n\t[sr_fee] [decimal](7, 2) NULL,\n\t[sr_return_ship_cost] [decimal](7, 2) NULL,\n\t[sr_refunded_cash] [decimal](7, 2) NULL,\n\t[sr_reversed_charge] [decimal](7, 2) NULL,\n\t[sr_store_credit] [decimal](7, 2) NULL,\n\t[sr_net_loss] [decimal](7, 2) NULL\n)\nWITH\n(\n\tDISTRIBUTION = HASH ( [sr_item_sk] ),\n\tCLUSTERED COLUMNSTORE INDEX ORDER([sr_returned_date_sk], [sr_item_sk])\n)\nGO\n\n\n-- store_sales\nCREATE TABLE [store_sales]\n(\n\t[ss_sold_date_sk] [int] NULL,\n\t[ss_sold_time_sk] [int] NULL,\n\t[ss_item_sk] [int] NOT NULL,\n\t[ss_customer_sk] [int] NULL,\n\t[ss_cdemo_sk] [int] NULL,\n\t[ss_hdemo_sk] [int] NULL,\n\t[ss_addr_sk] [int] NULL,\n\t[ss_store_sk] [int] NULL,\n\t[ss_promo_sk] [int] NULL,\n\t[ss_ticket_number] [int] NOT NULL,\n\t[ss_quantity] [int] NULL,\n\t[ss_wholesale_cost] [decimal](7, 2) NULL,\n\t[ss_list_price] [decimal](7, 2) NULL,\n\t[ss_sales_price] [decimal](7, 2) NULL,\n\t[ss_ext_discount_amt] [decimal](7, 2) NULL,\n\t[ss_ext_sales_price] [decimal](7, 2) NULL,\n\t[ss_ext_wholesale_cost] [decimal](7, 2) NULL,\n\t[ss_ext_list_price] [decimal](7, 2) NULL,\n\t[ss_ext_tax] [decimal](7, 2) NULL,\n\t[ss_coupon_amt] [decimal](7, 2) NULL,\n\t[ss_net_paid] [decimal](7, 2) NULL,\n\t[ss_net_paid_inc_tax] [decimal](7, 2) NULL,\n\t[ss_net_profit] [decimal](7, 2) NULL\n)\nWITH\n(\n\tDISTRIBUTION = HASH ( [ss_item_sk] ),\n\tCLUSTERED COLUMNSTORE INDEX ORDER([ss_sold_date_sk], [ss_item_sk])\n)\nGO\n\n\n-- store\nCREATE TABLE [store]\n(\n\t[s_store_sk] [int] NOT NULL,\n\t[s_store_id] [char](16) NOT NULL,\n\t[s_rec_start_date] [date] NULL,\n\t[s_rec_end_date] [date] NULL,\n\t[s_closed_date_sk] [int] NULL,\n\t[s_store_name] [varchar](50) NULL,\n\t[s_number_employees] [int] NULL,\n\t[s_floor_space] [int] NULL,\n\t[s_hours] [char](20) NULL,\n\t[s_manager] [varchar](40) NULL,\n\t[s_market_id] [int] NULL,\n\t[s_geography_class] [varchar](100) NULL,\n\t[s_market_desc] [varchar](100) NULL,\n\t[s_market_manager] [varchar](40) NULL,\n\t[s_division_id] [int] NULL,\n\t[s_division_name] [varchar](50) NULL,\n\t[s_company_id] [int] NULL,\n\t[s_company_name] [varchar](50) NULL,\n\t[s_street_number] [varchar](10) NULL,\n\t[s_street_name] [varchar](60) NULL,\n\t[s_street_type] [char](15) NULL,\n\t[s_suite_number] [char](10) NULL,\n\t[s_city] [varchar](60) NULL,\n\t[s_county] [varchar](30) NULL,\n\t[s_state] [char](2) NULL,\n\t[s_zip] [char](10) NULL,\n\t[s_country] [varchar](20) NULL,\n\t[s_gmt_offset] [decimal](5, 2) NULL,\n\t[s_tax_precentage] [decimal](5, 2) NULL\n)\nWITH\n(\n\tDISTRIBUTION = REPLICATE,\n\tCLUSTERED COLUMNSTORE INDEX\n)\nGO\n\n\n-- time_dim\nCREATE TABLE [time_dim]\n(\n\t[t_time_sk] [int] NOT NULL,\n\t[t_time_id] [char](16) NOT NULL,\n\t[t_time] [int] NULL,\n\t[t_hour] [int] NULL,\n\t[t_minute] [int] NULL,\n\t[t_second] [int] NULL,\n\t[t_am_pm] [char](2) NULL,\n\t[t_shift] [char](20) NULL,\n\t[t_sub_shift] [char](20) NULL,\n\t[t_meal_time] [char](20) NULL\n)\nWITH\n(\n\tDISTRIBUTION = REPLICATE,\n\tCLUSTERED COLUMNSTORE INDEX\n)\nGO\n\n\n-- warehouse\nCREATE TABLE [warehouse]\n(\n\t[w_warehouse_sk] [int] NOT NULL,\n\t[w_warehouse_id] [char](16) NOT NULL,\n\t[w_warehouse_name] [varchar](20) NULL,\n\t[w_warehouse_sq_ft] [int] NULL,\n\t[w_street_number] [char](10) NULL,\n\t[w_street_name] [varchar](60) NULL,\n\t[w_street_type] [char](15) NULL,\n\t[w_suite_number] [char](10) NULL,\n\t[w_city] [varchar](60) NULL,\n\t[w_county] [varchar](30) NULL,\n\t[w_state] [char](2) NULL,\n\t[w_zip] [char](10) NULL,\n\t[w_country] [varchar](20) NULL,\n\t[w_gmt_offset] [decimal](5, 2) NULL\n)\nWITH\n(\n\tDISTRIBUTION = REPLICATE,\n\tCLUSTERED COLUMNSTORE INDEX\n)\nGO\n\n\n-- web_page\nCREATE TABLE [web_page]\n(\n\t[wp_web_page_sk] [int] NOT NULL,\n\t[wp_web_page_id] [char](16) NOT NULL,\n\t[wp_rec_start_date] [date] NULL,\n\t[wp_rec_end_date] [date] NULL,\n\t[wp_creation_date_sk] [int] NULL,\n\t[wp_access_date_sk] [int] NULL,\n\t[wp_autogen_flag] [char](1) NULL,\n\t[wp_customer_sk] [int] NULL,\n\t[wp_url] [varchar](100) NULL,\n\t[wp_type] [char](50) NULL,\n\t[wp_char_count] [int] NULL,\n\t[wp_link_count] [int] NULL,\n\t[wp_image_count] [int] NULL,\n\t[wp_max_ad_count] [int] NULL\n)\nWITH\n(\n\tDISTRIBUTION = REPLICATE,\n\tCLUSTERED COLUMNSTORE INDEX\n)\nGO\n\n\n-- web_returns\nCREATE TABLE [web_returns]\n(\n\t[wr_returned_date_sk] [int] NULL,\n\t[wr_returned_time_sk] [int] NULL,\n\t[wr_item_sk] [int] NOT NULL,\n\t[wr_refunded_customer_sk] [int] NULL,\n\t[wr_refunded_cdemo_sk] [int] NULL,\n\t[wr_refunded_hdemo_sk] [int] NULL,\n\t[wr_refunded_addr_sk] [int] NULL,\n\t[wr_returning_customer_sk] [int] NULL,\n\t[wr_returning_cdemo_sk] [int] NULL,\n\t[wr_returning_hdemo_sk] [int] NULL,\n\t[wr_returning_addr_sk] [int] NULL,\n\t[wr_web_page_sk] [int] NULL,\n\t[wr_reason_sk] [int] NULL,\n\t[wr_order_number] [int] NOT NULL,\n\t[wr_return_quantity] [int] NULL,\n\t[wr_return_amt] [decimal](7, 2) NULL,\n\t[wr_return_tax] [decimal](7, 2) NULL,\n\t[wr_return_amt_inc_tax] [decimal](7, 2) NULL,\n\t[wr_fee] [decimal](7, 2) NULL,\n\t[wr_return_ship_cost] [decimal](7, 2) NULL,\n\t[wr_refunded_cash] [decimal](7, 2) NULL,\n\t[wr_reversed_charge] [decimal](7, 2) NULL,\n\t[wr_account_credit] [decimal](7, 2) NULL,\n\t[wr_net_loss] [decimal](7, 2) NULL\n)\nWITH\n(\n\tDISTRIBUTION = HASH ( [wr_item_sk] ),\n\tCLUSTERED COLUMNSTORE INDEX ORDER(wr_returned_date_sk, wr_item_sk)\n)\nGO\n\n\n-- web_sales\nCREATE TABLE [web_sales]\n(\n\t[ws_sold_date_sk] [int] NULL,\n\t[ws_sold_time_sk] [int] NULL,\n\t[ws_ship_date_sk] [int] NULL,\n\t[ws_item_sk] [int] NOT NULL,\n\t[ws_bill_customer_sk] [int] NULL,\n\t[ws_bill_cdemo_sk] [int] NULL,\n\t[ws_bill_hdemo_sk] [int] NULL,\n\t[ws_bill_addr_sk] [int] NULL,\n\t[ws_ship_customer_sk] [int] NULL,\n\t[ws_ship_cdemo_sk] [int] NULL,\n\t[ws_ship_hdemo_sk] [int] NULL,\n\t[ws_ship_addr_sk] [int] NULL,\n\t[ws_web_page_sk] [int] NULL,\n\t[ws_web_site_sk] [int] NULL,\n\t[ws_ship_mode_sk] [int] NULL,\n\t[ws_warehouse_sk] [int] NULL,\n\t[ws_promo_sk] [int] NULL,\n\t[ws_order_number] [int] NOT NULL,\n\t[ws_quantity] [int] NULL,\n\t[ws_wholesale_cost] [decimal](7, 2) NULL,\n\t[ws_list_price] [decimal](7, 2) NULL,\n\t[ws_sales_price] [decimal](7, 2) NULL,\n\t[ws_ext_discount_amt] [decimal](7, 2) NULL,\n\t[ws_ext_sales_price] [decimal](7, 2) NULL,\n\t[ws_ext_wholesale_cost] [decimal](7, 2) NULL,\n\t[ws_ext_list_price] [decimal](7, 2) NULL,\n\t[ws_ext_tax] [decimal](7, 2) NULL,\n\t[ws_coupon_amt] [decimal](7, 2) NULL,\n\t[ws_ext_ship_cost] [decimal](7, 2) NULL,\n\t[ws_net_paid] [decimal](7, 2) NULL,\n\t[ws_net_paid_inc_tax] [decimal](7, 2) NULL,\n\t[ws_net_paid_inc_ship] [decimal](7, 2) NULL,\n\t[ws_net_paid_inc_ship_tax] [decimal](7, 2) NULL,\n\t[ws_net_profit] [decimal](7, 2) NULL\n)\nWITH\n(\n\tDISTRIBUTION = HASH ( [ws_item_sk] ),\n\tCLUSTERED COLUMNSTORE INDEX ORDER(ws_sold_date_sk, ws_item_sk)\n)\nGO\n\n\n-- web_site\nCREATE TABLE [web_site]\n(\n\t[web_site_sk] [int] NOT NULL,\n\t[web_site_id] [char](16) NOT NULL,\n\t[web_rec_start_date] [date] NULL,\n\t[web_rec_end_date] [date] NULL,\n\t[web_name] [varchar](50) NULL,\n\t[web_open_date_sk] [int] NULL,\n\t[web_close_date_sk] [int] NULL,\n\t[web_class] [varchar](50) NULL,\n\t[web_manager] [varchar](40) NULL,\n\t[web_mkt_id] [int] NULL,\n\t[web_mkt_class] [varchar](50) NULL,\n\t[web_mkt_desc] [varchar](100) NULL,\n\t[web_market_manager] [varchar](40) NULL,\n\t[web_company_id] [int] NULL,\n\t[web_company_name] [char](50) NULL,\n\t[web_street_number] [char](10) NULL,\n\t[web_street_name] [varchar](60) NULL,\n\t[web_street_type] [char](15) NULL,\n\t[web_suite_number] [char](10) NULL,\n\t[web_city] [varchar](60) NULL,\n\t[web_county] [varchar](30) NULL,\n\t[web_state] [char](2) NULL,\n\t[web_zip] [char](10) NULL,\n\t[web_country] [varchar](20) NULL,\n\t[web_gmt_offset] [decimal](5, 2) NULL,\n\t[web_tax_percentage] [decimal](5, 2) NULL\n)\nWITH\n(\n\tDISTRIBUTION = REPLICATE,\n\tCLUSTERED COLUMNSTORE INDEX\n)\nGO\n",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "master",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/serverless_tables')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "Misc/TPC-DS"
+				},
+				"content": {
+					"query": "DROP VIEW IF EXISTS [call_center]; \nGO\n\nDROP VIEW IF EXISTS [catalog_page]; \nGO\n\nDROP VIEW IF EXISTS [catalog_returns]; \nGO\n\nDROP VIEW IF EXISTS [catalog_sales]; \nGO\n\nDROP VIEW IF EXISTS [customer]; \nGO\n\nDROP VIEW IF EXISTS [customer_address]; \nGO\n\nDROP VIEW IF EXISTS [customer_demographics]; \nGO\n\nDROP VIEW IF EXISTS [date_dim]; \nGO\n\nDROP VIEW IF EXISTS [household_demographics]; \nGO\n\nDROP VIEW IF EXISTS [income_band]; \nGO\n\nDROP VIEW IF EXISTS [inventory]; \nGO\n\nDROP VIEW IF EXISTS [item]; \nGO\n\nDROP VIEW IF EXISTS [promotion];\nGO\n\nDROP VIEW IF EXISTS [reason]; \nGO\n\nDROP VIEW IF EXISTS [ship_mode]; \nGO\n\nDROP VIEW IF EXISTS [store]; \nGO\n\nDROP VIEW IF EXISTS [store_returns];\nGO\n\nDROP VIEW IF EXISTS [store_sales];\nGO\n\nDROP VIEW IF EXISTS [time_dim];\nGO\n\nDROP VIEW IF EXISTS [warehouse];\nGO\n\nDROP VIEW IF EXISTS [web_page];\nGO\n\nDROP VIEW IF EXISTS [web_site];\nGO\n\nDROP VIEW IF EXISTS [web_returns];\nGO\n\nDROP VIEW IF EXISTS [web_sales];\nGO\n\n\nCREATE VIEW [call_center] AS\nSELECT * FROM\nOPENROWSET(\n\tBULK N'parquet/call_center/*', FORMAT = 'PARQUET', FIELDTERMINATOR = '|', DATA_SOURCE = 'tpcds_data') \n\tWITH (\n    CC_CALL_CENTER_SK         integer,\n    CC_CALL_CENTER_ID         char(16) COLLATE Latin1_General_100_BIN2_UTF8,\n    CC_REC_START_DATE         date,\n    CC_REC_END_DATE           date,\n    CC_CLOSED_DATE_SK         integer,\n    CC_OPEN_DATE_SK           integer,\n    CC_NAME                   varchar(50) COLLATE Latin1_General_100_BIN2_UTF8,\n    CC_CLASS                  varchar(50) COLLATE Latin1_General_100_BIN2_UTF8,\n    CC_EMPLOYEES              integer,\n    CC_SQ_FT                  integer,\n    CC_HOURS                  char(20) COLLATE Latin1_General_100_BIN2_UTF8,\n    CC_MANAGER                varchar(40) COLLATE Latin1_General_100_BIN2_UTF8,\n    CC_MKT_ID                 integer,\n    CC_MKT_CLASS              char(50) COLLATE Latin1_General_100_BIN2_UTF8,\n    CC_MKT_DESC               varchar(100) COLLATE Latin1_General_100_BIN2_UTF8,\n    CC_MARKET_MANAGER         varchar(40) COLLATE Latin1_General_100_BIN2_UTF8,\n    CC_DIVISION               integer,\n    CC_DIVISION_NAME          varchar(50) COLLATE Latin1_General_100_BIN2_UTF8,\n    CC_COMPANY                integer,\n    CC_COMPANY_NAME           char(50) COLLATE Latin1_General_100_BIN2_UTF8,\n    CC_STREET_NUMBER          char(10) COLLATE Latin1_General_100_BIN2_UTF8,\n    CC_STREET_NAME            varchar(60) COLLATE Latin1_General_100_BIN2_UTF8,\n    CC_STREET_TYPE            char(15) COLLATE Latin1_General_100_BIN2_UTF8,\n    CC_SUITE_NUMBER           char(10) COLLATE Latin1_General_100_BIN2_UTF8,\n    CC_CITY                   varchar(60) COLLATE Latin1_General_100_BIN2_UTF8,\n    CC_COUNTY                 varchar(30) COLLATE Latin1_General_100_BIN2_UTF8,\n    CC_STATE                  char(2) COLLATE Latin1_General_100_BIN2_UTF8,\n    CC_ZIP                    char(10) COLLATE Latin1_General_100_BIN2_UTF8,\n    CC_COUNTRY                varchar(20) COLLATE Latin1_General_100_BIN2_UTF8,\n    CC_GMT_OFFSET             decimal(5,2),\n    CC_TAX_PERCENTAGE         decimal(5,2)\n) AS call_center;\nGO\n\nCREATE VIEW [catalog_page] AS\nSELECT * FROM\nOPENROWSET(\n\tBULK N'parquet/catalog_page/*', FORMAT = 'PARQUET', FIELDTERMINATOR = '|', DATA_SOURCE = 'tpcds_data') \n\tWITH (\n    CP_CATALOG_PAGE_SK        integer,\n    CP_CATALOG_PAGE_ID        char(16) COLLATE Latin1_General_100_BIN2_UTF8,\n    CP_START_DATE_SK          integer,\n    CP_END_DATE_SK            integer,\n    CP_DEPARTMENT             varchar(50) COLLATE Latin1_General_100_BIN2_UTF8,\n    CP_CATALOG_NUMBER         integer,\n    CP_CATALOG_PAGE_NUMBER    integer,\n    CP_DESCRIPTION            varchar(100) COLLATE Latin1_General_100_BIN2_UTF8,\n    CP_TYPE                   varchar(100) COLLATE Latin1_General_100_BIN2_UTF8\n) AS catalog_page;\nGO\n\nCREATE VIEW [catalog_returns] AS\nSELECT * FROM\nOPENROWSET(\n\tBULK N'parquet/catalog_returns/*', FORMAT = 'PARQUET', FIELDTERMINATOR = '|', DATA_SOURCE = 'tpcds_data') \n\tWITH (\n    CR_RETURNED_DATE_SK             integer,\n    CR_RETURNED_TIME_SK             integer,\n    CR_ITEM_SK                      integer,\n    CR_REFUNDED_CUSTOMER_SK         integer,\n    CR_REFUNDED_CDEMO_SK            integer,\n    CR_REFUNDED_HDEMO_SK            integer,\n    CR_REFUNDED_ADDR_SK             integer,\n    CR_RETURNING_CUSTOMER_SK        integer,\n    CR_RETURNING_CDEMO_SK           integer,\n    CR_RETURNING_HDEMO_SK           integer,\n    CR_RETURNING_ADDR_SK            integer,\n    CR_CALL_CENTER_SK               integer,\n    CR_CATALOG_PAGE_SK              integer,\n    CR_SHIP_MODE_SK                 integer,\n    CR_WAREHOUSE_SK                 integer,\n    CR_REASON_SK                    integer,\n    CR_ORDER_NUMBER                 bigint,\n    CR_RETURN_QUANTITY              integer,\n    CR_RETURN_AMOUNT                decimal(7,2),\n    CR_RETURN_TAX                   decimal(7,2),\n    CR_RETURN_AMT_INC_TAX           decimal(7,2),\n    CR_FEE                          decimal(7,2),\n    CR_RETURN_SHIP_COST             decimal(7,2),\n    CR_REFUNDED_CASH                decimal(7,2),\n    CR_REVERSED_CHARGE              decimal(7,2),\n    CR_STORE_CREDIT                 decimal(7,2),\n    CR_NET_LOSS                     decimal(7,2)\n) AS catalog_returns;\nGO\n\nCREATE VIEW [catalog_sales] AS\nSELECT * FROM\nOPENROWSET(\n\tBULK N'parquet/catalog_sales/*', FORMAT = 'PARQUET', FIELDTERMINATOR = '|', DATA_SOURCE = 'tpcds_data') \n\tWITH (\n\tCS_SOLD_DATE_SK                 integer,\n    CS_SOLD_TIME_SK                 integer,\n    CS_SHIP_DATE_SK                 integer,\n    CS_BILL_CUSTOMER_SK             integer,\n    CS_BILL_CDEMO_SK                integer,\n    CS_BILL_HDEMO_SK                integer,\n    CS_BILL_ADDR_SK                 integer,\n    CS_SHIP_CUSTOMER_SK             integer,\n    CS_SHIP_CDEMO_SK                integer,\n    CS_SHIP_HDEMO_SK                integer,\n    CS_SHIP_ADDR_SK                 integer,\n    CS_CALL_CENTER_SK               integer,\n    CS_CATALOG_PAGE_SK              integer,\n    CS_SHIP_MODE_SK                 integer,\n    CS_WAREHOUSE_SK                 integer,\n    CS_ITEM_SK                      integer,\n    CS_PROMO_SK                     integer,\n    CS_ORDER_NUMBER                 bigint,\n    CS_QUANTITY                     integer,\n    CS_WHOLESALE_COST               decimal(7,2),\n    CS_LIST_PRICE                   decimal(7,2),\n    CS_SALES_PRICE                  decimal(7,2),\n    CS_EXT_DISCOUNT_AMT             decimal(7,2),\n    CS_EXT_SALES_PRICE              decimal(7,2),\n    CS_EXT_WHOLESALE_COST           decimal(7,2),\n    CS_EXT_LIST_PRICE               decimal(7,2),\n    CS_EXT_TAX                      decimal(7,2),\n    CS_COUPON_AMT                   decimal(7,2),\n    CS_EXT_SHIP_COST                decimal(7,2),\n    CS_NET_PAID                     decimal(7,2),\n    CS_NET_PAID_INC_TAX             decimal(7,2),\n    CS_NET_PAID_INC_SHIP            decimal(7,2),\n    CS_NET_PAID_INC_SHIP_TAX        decimal(7,2),\n    CS_NET_PROFIT                   decimal(7,2)\n) AS catalog_sales;\nGO\n\nCREATE VIEW [customer] AS\nSELECT * FROM\nOPENROWSET(\n\tBULK N'parquet/customer/*', FORMAT = 'PARQUET', FIELDTERMINATOR = '|', DATA_SOURCE = 'tpcds_data') \n\tWITH (\n    C_CUSTOMER_SK                   integer,\n    C_CUSTOMER_ID                   char(16) COLLATE Latin1_General_100_BIN2_UTF8,\n    C_CURRENT_CDEMO_SK              integer,\n    C_CURRENT_HDEMO_SK              integer,\n    C_CURRENT_ADDR_SK               integer,\n    C_FIRST_SHIPTO_DATE_SK          integer,\n    C_FIRST_SALES_DATE_SK           integer,\n    C_SALUTATION                    char(10) COLLATE Latin1_General_100_BIN2_UTF8,\n    C_FIRST_NAME                    char(20) COLLATE Latin1_General_100_BIN2_UTF8,\n    C_LAST_NAME                     char(30) COLLATE Latin1_General_100_BIN2_UTF8,\n    C_PREFERRED_CUST_FLAG           char(1) COLLATE Latin1_General_100_BIN2_UTF8,\n    C_BIRTH_DAY                     integer,\n    C_BIRTH_MONTH                   integer,\n    C_BIRTH_YEAR                    integer,\n    C_BIRTH_COUNTRY                 varchar(20) COLLATE Latin1_General_100_BIN2_UTF8,\n    C_LOGIN                         char(13) COLLATE Latin1_General_100_BIN2_UTF8,\n    C_EMAIL_ADDRESS                 char(50) COLLATE Latin1_General_100_BIN2_UTF8,\n    C_LAST_REVIEW_DATE_SK           integer\n) AS customer;\nGO\n\nCREATE VIEW [customer_address] AS\nSELECT * FROM\nOPENROWSET(\n\tBULK N'parquet/customer_address/*', FORMAT = 'PARQUET', FIELDTERMINATOR = '|', DATA_SOURCE = 'tpcds_data') \n\tWITH (\n    CA_ADDRESS_SK                   integer,\n    CA_ADDRESS_ID                   char(16) COLLATE Latin1_General_100_BIN2_UTF8,\n    CA_STREET_NUMBER                char(10) COLLATE Latin1_General_100_BIN2_UTF8,\n    CA_STREET_NAME                  varchar(60) COLLATE Latin1_General_100_BIN2_UTF8,\n    CA_STREET_TYPE                  char(15) COLLATE Latin1_General_100_BIN2_UTF8,\n    CA_SUITE_NUMBER                 char(10) COLLATE Latin1_General_100_BIN2_UTF8,\n    CA_CITY                         varchar(60) COLLATE Latin1_General_100_BIN2_UTF8,\n    CA_COUNTY                       varchar(30) COLLATE Latin1_General_100_BIN2_UTF8,\n    CA_STATE                        char(2) COLLATE Latin1_General_100_BIN2_UTF8,\n    CA_ZIP                          char(10) COLLATE Latin1_General_100_BIN2_UTF8,\n    CA_COUNTRY                      varchar(20) COLLATE Latin1_General_100_BIN2_UTF8,\n    CA_GMT_OFFSET                   decimal(5,2),\n    CA_LOCATION_TYPE                char(20) COLLATE Latin1_General_100_BIN2_UTF8\n) AS customer_address;\nGO\n\nCREATE VIEW [customer_demographics] AS\nSELECT * FROM\nOPENROWSET(\n\tBULK N'parquet/customer_demographics/*', FORMAT = 'PARQUET', FIELDTERMINATOR = '|', DATA_SOURCE = 'tpcds_data') \n\tWITH (\n    CD_DEMO_SK                      integer,\n    CD_GENDER                       char(1) COLLATE Latin1_General_100_BIN2_UTF8,\n    CD_MARITAL_STATUS               char(1) COLLATE Latin1_General_100_BIN2_UTF8,\n    CD_EDUCATION_STATUS             char(20) COLLATE Latin1_General_100_BIN2_UTF8,\n    CD_PURCHASE_ESTIMATE            integer,\n    CD_CREDIT_RATING                char(10) COLLATE Latin1_General_100_BIN2_UTF8,\n    CD_DEP_COUNT                    integer, \n    CD_DEP_EMPLOYED_COUNT           integer,\n    CD_DEP_COLLEGE_COUNT            integer\n) AS customer_demographics;\nGO\n\nCREATE VIEW [date_dim] AS\nSELECT * FROM\nOPENROWSET(\n\tBULK N'parquet/date_dim/*', FORMAT = 'PARQUET', FIELDTERMINATOR = '|', DATA_SOURCE = 'tpcds_data') \n\tWITH (\n    D_DATE_SK                 integer,\n    D_DATE_ID                 char(16) COLLATE Latin1_General_100_BIN2_UTF8,\n    D_DATE                    date,\n    D_MONTH_SEQ               integer,\n    D_WEEK_SEQ                integer,\n    D_QUARTER_SEQ             integer,\n    D_YEAR                    integer,\n    D_DOW                     integer,\n    D_MOY                     integer,\n    D_DOM                     integer,\n    D_QOY                     integer,\n    D_FY_YEAR                 integer,\n    D_FY_QUARTER_SEQ          integer,\n    D_FY_WEEK_SEQ             integer,\n    D_DAY_NAME                char(9) COLLATE Latin1_General_100_BIN2_UTF8,\n    D_QUARTER_NAME            char(6) COLLATE Latin1_General_100_BIN2_UTF8,\n    D_HOLIDAY                 char(1) COLLATE Latin1_General_100_BIN2_UTF8,\n    D_WEEKEND                 char(1) COLLATE Latin1_General_100_BIN2_UTF8,\n    D_FOLLOWING_HOLIDAY       char(1) COLLATE Latin1_General_100_BIN2_UTF8,\n    D_FIRST_DOM               integer,\n    D_LAST_DOM                integer,\n    D_SAME_DAY_LY             integer,\n    D_SAME_DAY_LQ             integer,\n    D_CURRENT_DAY             char(1) COLLATE Latin1_General_100_BIN2_UTF8,\n    D_CURRENT_WEEK            char(1) COLLATE Latin1_General_100_BIN2_UTF8,\n    D_CURRENT_MONTH           char(1) COLLATE Latin1_General_100_BIN2_UTF8,\n    D_CURRENT_QUARTER         char(1) COLLATE Latin1_General_100_BIN2_UTF8,\n    D_CURRENT_YEAR            char(1) COLLATE Latin1_General_100_BIN2_UTF8\n) AS date_dim;\nGO\n\nCREATE VIEW [household_demographics] AS\nSELECT * FROM\nOPENROWSET(\n\tBULK N'parquet/household_demographics/*', FORMAT = 'PARQUET', FIELDTERMINATOR = '|', DATA_SOURCE = 'tpcds_data') \n\tWITH (\n    HD_DEMO_SK                      integer,\n    HD_INCOME_BAND_SK               integer,\n    HD_BUY_POTENTIAL                char(15) COLLATE Latin1_General_100_BIN2_UTF8,\n    HD_DEP_COUNT                    integer,\n    HD_VEHICLE_COUNT                integer\n) AS household_demographics;\nGO\n\nCREATE VIEW [income_band] AS \nSELECT * FROM\nOPENROWSET(\n\tBULK N'parquet/income_band/*', FORMAT = 'PARQUET', FIELDTERMINATOR = '|', DATA_SOURCE = 'tpcds_data') \n\tWITH (\n    IB_INCOME_BAND_SK         integer,\n    IB_LOWER_BOUND            integer,\n    IB_UPPER_BOUND            integer\n) AS income_band;\nGO\n\nCREATE VIEW [inventory] AS\nSELECT * FROM\nOPENROWSET(\n\tBULK N'parquet/inventory/*', FORMAT = 'PARQUET', FIELDTERMINATOR = '|', DATA_SOURCE = 'tpcds_data') \n\tWITH (\n    INV_DATE_SK                     integer,\n    INV_ITEM_SK                     integer,\n    INV_WAREHOUSE_SK                integer,\n    INV_QUANTITY_ON_HAND            integer\n) AS inventory;\nGO\n\nCREATE VIEW [item] AS\nSELECT * FROM\nOPENROWSET(\n\tBULK N'parquet/item/*', FORMAT = 'PARQUET', FIELDTERMINATOR = '|', DATA_SOURCE = 'tpcds_data') \n\tWITH (\n    I_ITEM_SK                       integer,\n    I_ITEM_ID                       char(16) COLLATE Latin1_General_100_BIN2_UTF8,\n    I_REC_START_DATE                date,\n    I_REC_END_DATE                  date,\n    I_ITEM_DESC                     varchar(200) COLLATE Latin1_General_100_BIN2_UTF8,\n    I_CURRENT_PRICE                 decimal(7,2),\n    I_WHOLESALE_COST                decimal(7,2),\n    I_BRAND_ID                      integer,\n    I_BRAND                         char(50) COLLATE Latin1_General_100_BIN2_UTF8,\n    I_CLASS_ID                      integer,\n    I_CLASS                         char(50) COLLATE Latin1_General_100_BIN2_UTF8,\n    I_CTGRY_ID                      integer,\n    I_CTGRY                         char(50) COLLATE Latin1_General_100_BIN2_UTF8,\n    I_MANUFACT_ID                   integer,\n    I_MANUFACT                      char(50) COLLATE Latin1_General_100_BIN2_UTF8,\n    I_SIZE                          char(20) COLLATE Latin1_General_100_BIN2_UTF8,\n    I_FORMULATION                   char(20) COLLATE Latin1_General_100_BIN2_UTF8,\n    I_COLOR                         char(20) COLLATE Latin1_General_100_BIN2_UTF8,\n    I_UNITS                         char(10) COLLATE Latin1_General_100_BIN2_UTF8,\n    I_CONTAINER                     char(10) COLLATE Latin1_General_100_BIN2_UTF8,\n    I_MANAGER_ID                    integer,\n    I_PRODUCT_NAME                  char(50) COLLATE Latin1_General_100_BIN2_UTF8\n) AS item;\nGO\n \nCREATE VIEW [promotion] AS\nSELECT * FROM\nOPENROWSET(\n\tBULK N'parquet/promotion/*', FORMAT = 'PARQUET', FIELDTERMINATOR = '|', DATA_SOURCE = 'tpcds_data') \n\tWITH (\n    P_PROMO_SK                      integer,\n    P_PROMO_ID                      char(16) COLLATE Latin1_General_100_BIN2_UTF8,\n    P_START_DATE_SK                 integer,\n    P_END_DATE_SK                   integer,\n    P_ITEM_SK                       integer,\n    P_COST                          decimal(15,2),\n    P_RESPONSE_TARGET               integer,\n    P_PROMO_NAME                    char(50) COLLATE Latin1_General_100_BIN2_UTF8,\n    P_CHANNEL_DMAIL                 char(1) COLLATE Latin1_General_100_BIN2_UTF8,\n    P_CHANNEL_EMAIL                 char(1) COLLATE Latin1_General_100_BIN2_UTF8,\n    P_CHANNEL_CATALOG               char(1) COLLATE Latin1_General_100_BIN2_UTF8,\n    P_CHANNEL_TV                    char(1) COLLATE Latin1_General_100_BIN2_UTF8,\n    P_CHANNEL_RADIO                 char(1) COLLATE Latin1_General_100_BIN2_UTF8,\n    P_CHANNEL_PRESS                 char(1) COLLATE Latin1_General_100_BIN2_UTF8,\n    P_CHANNEL_EVENT                 char(1) COLLATE Latin1_General_100_BIN2_UTF8,\n    P_CHANNEL_DEMO                  char(1) COLLATE Latin1_General_100_BIN2_UTF8,\n    P_CHANNEL_DETAILS               varchar(100) COLLATE Latin1_General_100_BIN2_UTF8,\n    P_PURPOSE                       char(15) COLLATE Latin1_General_100_BIN2_UTF8,\n    P_DISCOUNT_ACTIVE               char(1) COLLATE Latin1_General_100_BIN2_UTF8\n) AS promotion;\nGO\n\nCREATE VIEW [reason] AS\nSELECT * FROM\nOPENROWSET(\n\tBULK N'parquet/reason/*', FORMAT = 'PARQUET', FIELDTERMINATOR = '|', DATA_SOURCE = 'tpcds_data') \n\tWITH (\n    R_REASON_SK               integer,\n    R_REASON_ID               char(16) COLLATE Latin1_General_100_BIN2_UTF8,\n    R_REASON_DESC             char(100) COLLATE Latin1_General_100_BIN2_UTF8\n) AS reason;\nGO\n\nCREATE VIEW [ship_mode] AS\nSELECT * FROM\nOPENROWSET(\n\tBULK N'parquet/ship_mode/*', FORMAT = 'PARQUET', FIELDTERMINATOR = '|', DATA_SOURCE = 'tpcds_data') \n\tWITH (\n    SM_SHIP_MODE_SK           integer,\n    SM_SHIP_MODE_ID           char(16) COLLATE Latin1_General_100_BIN2_UTF8,\n    SM_TYPE                   char(30) COLLATE Latin1_General_100_BIN2_UTF8,\n    SM_CODE                   char(10) COLLATE Latin1_General_100_BIN2_UTF8,\n    SM_CARRIER                char(20) COLLATE Latin1_General_100_BIN2_UTF8,\n    SM_CONTRACT               char(20) COLLATE Latin1_General_100_BIN2_UTF8\n) AS ship_mode;\nGO\n\nCREATE VIEW [store] AS\nSELECT * FROM\nOPENROWSET(\n\tBULK N'parquet/store/*', FORMAT = 'PARQUET', FIELDTERMINATOR = '|', DATA_SOURCE = 'tpcds_data') \n\tWITH (\n    S_STORE_SK                      integer,\n    S_STORE_ID                      char(16) COLLATE Latin1_General_100_BIN2_UTF8,\n    S_REC_START_DATE                date,\n    S_REC_END_DATE                  date,\n    S_CLOSED_DATE_SK                integer,\n    S_STORE_NAME                    varchar(50) COLLATE Latin1_General_100_BIN2_UTF8,\n    S_NUMBER_EMPLOYEES              integer,\n    S_FLOOR_SPACE                   integer,\n    S_HOURS                         char(20) COLLATE Latin1_General_100_BIN2_UTF8,\n    S_MANAGER                       varchar(40) COLLATE Latin1_General_100_BIN2_UTF8,\n    S_MARKET_ID                     integer,\n    S_GEOGRAPHY_CLASS               varchar(100) COLLATE Latin1_General_100_BIN2_UTF8,\n    S_MARKET_DESC                   varchar(100) COLLATE Latin1_General_100_BIN2_UTF8,\n    S_MARKET_MANAGER                varchar(40) COLLATE Latin1_General_100_BIN2_UTF8,\n    S_DIVISION_ID                   integer,\n    S_DIVISION_NAME                 varchar(50) COLLATE Latin1_General_100_BIN2_UTF8,\n    S_COMPANY_ID                    integer,\n    S_COMPANY_NAME                  varchar(50) COLLATE Latin1_General_100_BIN2_UTF8,\n    S_STREET_NUMBER                 varchar(10) COLLATE Latin1_General_100_BIN2_UTF8,\n    S_STREET_NAME                   varchar(60) COLLATE Latin1_General_100_BIN2_UTF8,\n    S_STREET_TYPE                   char(15) COLLATE Latin1_General_100_BIN2_UTF8,\n    S_SUITE_NUMBER                  char(10) COLLATE Latin1_General_100_BIN2_UTF8,\n    S_CITY                          varchar(60) COLLATE Latin1_General_100_BIN2_UTF8,\n    S_COUNTY                        varchar(30) COLLATE Latin1_General_100_BIN2_UTF8,\n    S_STATE                         char(2) COLLATE Latin1_General_100_BIN2_UTF8,\n    S_ZIP                           char(10) COLLATE Latin1_General_100_BIN2_UTF8,\n    S_COUNTRY                       varchar(20) COLLATE Latin1_General_100_BIN2_UTF8,\n    S_GMT_OFFSET                    decimal(5,2),\n    S_TAX_PRECENTAGE                decimal(5,2)\n) AS store;\nGO\n\nCREATE VIEW [store_returns] AS\nSELECT * FROM\nOPENROWSET(\n\tBULK N'parquet/store_returns/*', FORMAT = 'PARQUET', FIELDTERMINATOR = '|', DATA_SOURCE = 'tpcds_data') \n\tWITH (\n    SR_RETURNED_DATE_SK       integer,\n    SR_RETURN_TIME_SK         integer,\n    SR_ITEM_SK                integer,\n    SR_CUSTOMER_SK            integer,\n    SR_CDEMO_SK               integer,\n    SR_HDEMO_SK               integer,\n    SR_ADDR_SK                integer,\n    SR_STORE_SK               integer,\n    SR_REASON_SK              integer,\n    SR_TICKET_NUMBER          integer,\n    SR_RETURN_QUANTITY        integer,\n    SR_RETURN_AMT             decimal(7,2),\n    SR_RETURN_TAX             decimal(7,2),\n    SR_RETURN_AMT_INC_TAX     decimal(7,2),\n    SR_FEE                    decimal(7,2),\n    SR_RETURN_SHIP_COST       decimal(7,2),\n    SR_REFUNDED_CASH          decimal(7,2),\n    SR_REVERSED_CHARGE        decimal(7,2),\n    SR_STORE_CREDIT           decimal(7,2),\n    SR_NET_LOSS               decimal(7,2)\n) AS store_returns;\nGO\n\nCREATE VIEW [store_sales] AS\nSELECT * FROM\nOPENROWSET(\n\tBULK N'parquet/store_sales/*', FORMAT = 'PARQUET', FIELDTERMINATOR = '|', DATA_SOURCE = 'tpcds_data') \n\tWITH (\n    SS_SOLD_DATE_SK                   integer,\n    SS_SOLD_TIME_SK                   integer,\n    SS_ITEM_SK                        integer,\n    SS_CUSTOMER_SK                    integer,\n    SS_CDEMO_SK                       integer,\n    SS_HDEMO_SK                       integer,\n    SS_ADDR_SK                        integer,\n    SS_STORE_SK                       integer,\n    SS_PROMO_SK                       integer,\n    SS_TICKET_NUMBER                  integer,\n    SS_QUANTITY                       integer,\n    SS_WHOLESALE_COST                 decimal(7, 2),\n    SS_LIST_PRICE                     decimal(7, 2),\n    SS_SALES_PRICE                    decimal(7, 2),\n    SS_EXT_DISCOUNT_AMT               decimal(7, 2),\n    SS_EXT_SALES_PRICE                decimal(7, 2),\n    SS_EXT_WHOLESALE_COST             decimal(7, 2),\n    SS_EXT_LIST_PRICE                 decimal(7, 2),\n    SS_EXT_TAX                        decimal(7, 2),\n    SS_COUPON_AMT                     decimal(7, 2),\n    SS_NET_PAID                       decimal(7, 2),\n    SS_NET_PAID_INC_TAX               decimal(7, 2),\n    SS_NET_PROFIT                     decimal(7, 2)\n) AS store_sales;\nGO\n\nCREATE VIEW [time_dim] AS\nSELECT * FROM\nOPENROWSET(\n\tBULK N'parquet/time_dim/*', FORMAT = 'PARQUET', FIELDTERMINATOR = '|', DATA_SOURCE = 'tpcds_data') \n\tWITH (\n    T_TIME_SK                 integer,\n    T_TIME_ID                 char(16) COLLATE Latin1_General_100_BIN2_UTF8,\n    T_TIME                    integer,\n    T_HOUR                    integer,\n    T_MINUTE                  integer,\n    T_SECOND                  integer,\n    T_AM_PM                   char(2) COLLATE Latin1_General_100_BIN2_UTF8,\n    T_SHIFT                   char(20) COLLATE Latin1_General_100_BIN2_UTF8,\n    T_SUB_SHIFT               char(20) COLLATE Latin1_General_100_BIN2_UTF8,\n    T_MEAL_TIME               char(20) COLLATE Latin1_General_100_BIN2_UTF8\n) AS time_dim;\nGO\n\nCREATE VIEW [warehouse] AS\nSELECT * FROM\nOPENROWSET(\n\tBULK N'parquet/warehouse/*', FORMAT = 'PARQUET', FIELDTERMINATOR = '|', DATA_SOURCE = 'tpcds_data') \n\tWITH (\n    W_WAREHOUSE_SK            integer,\n    W_WAREHOUSE_ID            char(16) COLLATE Latin1_General_100_BIN2_UTF8,\n    W_WAREHOUSE_NAME          varchar(20) COLLATE Latin1_General_100_BIN2_UTF8,\n    W_WAREHOUSE_SQ_FT         integer,\n    W_STREET_NUMBER           char(10) COLLATE Latin1_General_100_BIN2_UTF8,\n    W_STREET_NAME             varchar(60) COLLATE Latin1_General_100_BIN2_UTF8,\n    W_STREET_TYPE             char(15) COLLATE Latin1_General_100_BIN2_UTF8,\n    W_SUITE_NUMBER            char(10) COLLATE Latin1_General_100_BIN2_UTF8,\n    W_CITY                    varchar(60) COLLATE Latin1_General_100_BIN2_UTF8,\n    W_COUNTY                  varchar(30) COLLATE Latin1_General_100_BIN2_UTF8,\n    W_STATE                   char(2) COLLATE Latin1_General_100_BIN2_UTF8,\n    W_ZIP                     char(10) COLLATE Latin1_General_100_BIN2_UTF8,\n    W_COUNTRY                 varchar(20) COLLATE Latin1_General_100_BIN2_UTF8,\n    W_GMT_OFFSET              decimal(5,2)\n) AS warehouse;\nGO\n\nCREATE VIEW [web_page] AS\nSELECT * FROM\nOPENROWSET(\n\tBULK N'parquet/web_page/*', FORMAT = 'PARQUET', FIELDTERMINATOR = '|', DATA_SOURCE = 'tpcds_data') \n\tWITH (\n    WP_WEB_PAGE_SK            integer,\n    WP_WEB_PAGE_ID            char(16) COLLATE Latin1_General_100_BIN2_UTF8,\n    WP_REC_START_DATE         date,\n    WP_REC_END_DATE           date,\n    WP_CREATION_DATE_SK       integer,\n    WP_ACCESS_DATE_SK         integer,\n    WP_AUTOGEN_FLAG           char(1) COLLATE Latin1_General_100_BIN2_UTF8,\n    WP_CUSTOMER_SK            integer,\n    WP_URL                    varchar(100) COLLATE Latin1_General_100_BIN2_UTF8,\n    WP_TYPE                   char(50) COLLATE Latin1_General_100_BIN2_UTF8,\n    WP_CHAR_COUNT             integer,\n    WP_LINK_COUNT             integer,\n    WP_IMAGE_COUNT            integer,\n    WP_MAX_AD_COUNT           integer\n) AS web_page;\nGO\n\nCREATE VIEW [web_returns] AS\nSELECT * FROM\nOPENROWSET(\n\tBULK N'parquet/web_returns/*', FORMAT = 'PARQUET', FIELDTERMINATOR = '|', DATA_SOURCE = 'tpcds_data') \n\tWITH (\n    WR_RETURNED_DATE_SK             integer,\n    WR_RETURNED_TIME_SK             integer,\n    WR_ITEM_SK                      integer,\n    WR_REFUNDED_CUSTOMER_SK         integer,\n    WR_REFUNDED_CDEMO_SK            integer,\n    WR_REFUNDED_HDEMO_SK            integer,\n    WR_REFUNDED_ADDR_SK             integer,\n    WR_RETURNING_CUSTOMER_SK        integer,\n    WR_RETURNING_CDEMO_SK           integer,\n    WR_RETURNING_HDEMO_SK           integer,\n    WR_RETURNING_ADDR_SK            integer,\n    WR_WEB_PAGE_SK                  integer,\n    WR_REASON_SK                    integer,\n    WR_ORDER_NUMBER                 integer,\n    WR_RETURN_QUANTITY              integer,\n    WR_RETURN_AMT                   decimal(7,2),\n    WR_RETURN_TAX                   decimal(7,2),\n    WR_RETURN_AMT_INC_TAX           decimal(7,2),\n    WR_FEE                          decimal(7,2),\n    WR_RETURN_SHIP_COST             decimal(7,2),\n    WR_REFUNDED_CASH                decimal(7,2),\n    WR_REVERSED_CHARGE              decimal(7,2),\n    WR_ACCOUNT_CREDIT               decimal(7,2),\n    WR_NET_LOSS                     decimal(7,2)\n) AS web_returns;\nGO\n\nCREATE VIEW [web_sales] AS\nSELECT * FROM\nOPENROWSET(\n\tBULK N'parquet/web_sales/*', FORMAT = 'PARQUET', FIELDTERMINATOR = '|', DATA_SOURCE = 'tpcds_data') \n\tWITH (\n    WS_SOLD_DATE_SK                 integer,\n    WS_SOLD_TIME_SK                 integer,\n    WS_SHIP_DATE_SK                 integer,\n    WS_ITEM_SK                      integer,\n    WS_BILL_CUSTOMER_SK             integer,\n    WS_BILL_CDEMO_SK                integer,\n    WS_BILL_HDEMO_SK                integer,\n    WS_BILL_ADDR_SK                 integer,\n    WS_SHIP_CUSTOMER_SK             integer,\n    WS_SHIP_CDEMO_SK                integer,\n    WS_SHIP_HDEMO_SK                integer,\n    WS_SHIP_ADDR_SK                 integer,\n    WS_WEB_PAGE_SK                  integer,\n    WS_WEB_SITE_SK                  integer,\n    WS_SHIP_MODE_SK                 integer,\n    WS_WAREHOUSE_SK                 integer,\n    WS_PROMO_SK                     integer,\n    WS_ORDER_NUMBER                 integer,\n    WS_QUANTITY                     integer,\n    WS_WHOLESALE_COST               decimal(7,2),\n    WS_LIST_PRICE                   decimal(7,2),\n    WS_SALES_PRICE                  decimal(7,2),\n    WS_EXT_DISCOUNT_AMT             decimal(7,2),\n    WS_EXT_SALES_PRICE              decimal(7,2),\n    WS_EXT_WHOLESALE_COST           decimal(7,2),\n    WS_EXT_LIST_PRICE               decimal(7,2),\n    WS_EXT_TAX                      decimal(7,2),\n    WS_COUPON_AMT                   decimal(7,2),\n    WS_EXT_SHIP_COST                decimal(7,2),\n    WS_NET_PAID                     decimal(7,2),\n    WS_NET_PAID_INC_TAX             decimal(7,2),\n    WS_NET_PAID_INC_SHIP            decimal(7,2),\n    WS_NET_PAID_INC_SHIP_TAX        decimal(7,2),\n    WS_NET_PROFIT                   decimal(7,2)\n) AS web_sales;\nGO\n\nCREATE VIEW [web_site] AS\nSELECT * FROM\nOPENROWSET(\n\tBULK N'parquet/web_site/*', FORMAT = 'PARQUET', FIELDTERMINATOR = '|', DATA_SOURCE = 'tpcds_data') \n\tWITH (\n    WEB_SITE_SK               integer,\n    WEB_SITE_ID               char(16) COLLATE Latin1_General_100_BIN2_UTF8,\n    WEB_REC_START_DATE        date,\n    WEB_REC_END_DATE          date,\n    WEB_NAME                  varchar(50) COLLATE Latin1_General_100_BIN2_UTF8,\n    WEB_OPEN_DATE_SK          integer,\n    WEB_CLOSE_DATE_SK         integer,\n    WEB_CLASS                 varchar(50) COLLATE Latin1_General_100_BIN2_UTF8,\n    WEB_MANAGER               varchar(40) COLLATE Latin1_General_100_BIN2_UTF8,\n    WEB_MKT_ID                integer,\n    WEB_MKT_CLASS             varchar(50) COLLATE Latin1_General_100_BIN2_UTF8,\n    WEB_MKT_DESC              varchar(100) COLLATE Latin1_General_100_BIN2_UTF8,\n    WEB_MARKET_MANAGER        varchar(40) COLLATE Latin1_General_100_BIN2_UTF8,\n    WEB_COMPANY_ID            integer,\n    WEB_COMPANY_NAME          char(50) COLLATE Latin1_General_100_BIN2_UTF8,\n    WEB_STREET_NUMBER         char(10) COLLATE Latin1_General_100_BIN2_UTF8,\n    WEB_STREET_NAME           varchar(60) COLLATE Latin1_General_100_BIN2_UTF8,\n    WEB_STREET_TYPE           char(15) COLLATE Latin1_General_100_BIN2_UTF8,\n    WEB_SUITE_NUMBER          char(10) COLLATE Latin1_General_100_BIN2_UTF8,\n    WEB_CITY                  varchar(60) COLLATE Latin1_General_100_BIN2_UTF8,\n    WEB_COUNTY                varchar(30) COLLATE Latin1_General_100_BIN2_UTF8,\n    WEB_STATE                 char(2) COLLATE Latin1_General_100_BIN2_UTF8,\n    WEB_ZIP                   char(10) COLLATE Latin1_General_100_BIN2_UTF8,\n    WEB_COUNTRY               varchar(20) COLLATE Latin1_General_100_BIN2_UTF8,\n    WEB_GMT_OFFSET            decimal(5,2),\n    WEB_TAX_PERCENTAGE        decimal(5,2)\n) AS web_site;\nGO\n",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "master",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/tpc-ds-external-tables')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "Misc/TPC-DS"
+				},
+				"content": {
+					"query": "-- Create the external file format if it doesn't exist already\nIF NOT EXISTS (SELECT * FROM sys.external_file_formats WHERE name = 'SynapseDelimitedTextFormat') \n\tCREATE EXTERNAL FILE FORMAT [SynapseDelimitedTextFormat] \n\tWITH ( FORMAT_TYPE = DELIMITEDTEXT ,\n\t       FORMAT_OPTIONS (\n\t\t\t FIELD_TERMINATOR = ',',\n\t\t\t USE_TYPE_DEFAULT = FALSE\n\t\t\t))\nGO\n\n-- Create the external data source if it doesn't exist already\nIF NOT EXISTS (SELECT * FROM sys.external_data_sources WHERE name = 'datalake2020_minastirith_dfs_core_windows_net') \n\tCREATE EXTERNAL DATA SOURCE [datalake2020_minastirith_dfs_core_windows_net] \n\tWITH (\n\t\tLOCATION = 'abfss://datalake2020@minastirith.dfs.core.windows.net', \n\t\tTYPE = HADOOP \n\t)\nGO\n\n\n-- Create the ext schema\ncreate schema ext;\n\n--drop EXTERNAL TABLE catalog_sales;\n\nCREATE EXTERNAL TABLE ext.catalog_sales (\n\tcs_sold_date_sk VARCHAR(2000)\n\t,cs_sold_time_sk VARCHAR(2000)\n\t,cs_ship_date_sk VARCHAR(2000)\n\t,cs_bill_customer_sk VARCHAR(2000)\n\t,cs_bill_cdemo_sk VARCHAR(2000)\n\t,cs_bill_hdemo_sk VARCHAR(2000)\n\t,cs_bill_addr_sk VARCHAR(2000)\n\t,cs_ship_customer_sk VARCHAR(2000)\n\t,cs_ship_cdemo_sk VARCHAR(2000)\n\t,cs_ship_hdemo_sk VARCHAR(2000)\n\t,cs_ship_addr_sk VARCHAR(2000)\n\t,cs_call_center_sk VARCHAR(2000)\n\t,cs_catalog_page_sk VARCHAR(2000)\n\t,cs_ship_mode_sk VARCHAR(2000)\n\t,cs_warehouse_sk VARCHAR(2000)\n\t,cs_item_sk VARCHAR(2000)\n\t,cs_promo_sk VARCHAR(2000)\n\t,cs_order_number VARCHAR(2000)\n\t,cs_quantity VARCHAR(2000)\n\t,cs_wholesale_cost VARCHAR(2000)\n\t,cs_list_price VARCHAR(2000)\n\t,cs_sales_price VARCHAR(2000)\n\t,cs_ext_discount_amt VARCHAR(2000)\n\t,cs_ext_sales_price VARCHAR(2000)\n\t,cs_ext_wholesale_cost VARCHAR(2000)\n\t,cs_ext_list_price VARCHAR(2000)\n\t,cs_ext_tax VARCHAR(2000)\n\t,cs_coupon_amt VARCHAR(2000)\n\t,cs_ext_ship_cost VARCHAR(2000)\n\t,cs_net_paid VARCHAR(2000)\n\t,cs_net_paid_inc_tax VARCHAR(2000)\n\t,cs_net_paid_inc_ship VARCHAR(2000)\n\t,cs_net_paid_inc_ship_tax VARCHAR(2000)\n\t,cs_net_profit VARCHAR(2000)\n\t)\n\tWITH (\n\tLOCATION = 'TPC-DS/SourceFiles001TB_csv/catalog_sales/part-00000-tid-8479618599068395054-a7843efc-19d3-441d-a884-fa8224b1de09-96-1-c000.csv',\n\tDATA_SOURCE = [datalake2020_minastirith_dfs_core_windows_net],\n\tFILE_FORMAT = [SynapseDelimitedTextFormat]\n\t)\nGO\n\n\nSELECT TOP 100 * FROM ext.catalog_sales\nGO\n\nSELECT count(*) FROM ext.catalog_sales\nGO\n-- 368,637,378\n\n-- Create a smaller table - 70m records instead of 368m\nCREATE EXTERNAL TABLE ext.catalog_sales70M\nWITH (  \n        LOCATION='TPC-DS/SourceFiles001TB_csv/catalog_sales70M/',  \n        DATA_SOURCE = datalake2020_minastirith_dfs_core_windows_net,\n        FILE_FORMAT = SynapseDelimitedTextFormat\n) AS \nselect top 70000000 * from ext.catalog_sales;\n-- 00:34:26\n\nselect top 10 * from ext.catalog_sales70M",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "master",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Add-Purview-Managed-Identity')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "Examples/Purview"
+				},
+				"content": {
+					"query": "-- Add MSI for my Purview account\nCREATE USER [palantir] FROM EXTERNAL PROVIDER\nGO\n\n-- Add permisions to the user in the database\nEXEC sp_addrolemember 'db_owner', [palantir]\nGO",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "master",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/COPYscriptByHand')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "Misc"
+				},
+				"content": {
+					"query": "-- Create the destination table with varchar data types\n/*\nDROP TABLE dbo.biketripstest;\nGO\n*/\nCREATE TABLE dbo.biketripstest\n\t(\n\t [tripduration] varchar(250),\n\t [starttime] varchar(250),\n\t [stoptime] varchar(250),\n\t [start station id] varchar(250),\n\t [start station name] varchar(250),\n\t [start station latitude] varchar(250),\n\t [start station longitude] varchar(250),\n\t [end station id] varchar(250),\n\t [end station name] varchar(250),\n\t [end station latitude] varchar(250),\n\t [end station longitude] varchar(250),\n\t [bikeid] varchar(250),\n\t [usertype] varchar(250),\n\t [birth year] varchar(250),\n\t [gender] varchar(250)\n\t)\nWITH\n\t(\n\tDISTRIBUTION = ROUND_ROBIN,\n\t CLUSTERED COLUMNSTORE INDEX\n\t -- HEAP\n\t)\nGO\n\n-- Table with real data types\nDROP TABLE dbo.biketripstesttypes;\nGO\nCREATE TABLE dbo.biketripstesttypes\n\t(\n\t [tripduration] bigint,\n\t [starttime] datetime2(0),\n\t [stoptime] datetime2(0),\n\t [start station id] bigint,\n\t [start station name] nvarchar(54),\n\t [start station latitude] float,\n\t [start station longitude] float,\n\t [end station id] bigint,\n\t [end station name] nvarchar(54),\n\t [end station latitude] float,\n\t [end station longitude] float,\n\t [bikeid] bigint,\n\t [usertype] nvarchar(30),\n\t [birth year] bigint,\n\t [gender] bigint\n\t)\nWITH\n\t(\n\tDISTRIBUTION = ROUND_ROBIN,\n\t CLUSTERED COLUMNSTORE INDEX\n\t -- HEAP\n\t)\nGO\n\n\n-- ::::::  Begin COPY INTO work\n\n/* -- FROM just 1 file, to test \nFROM 'https://minastirith.dfs.core.windows.net/datalake2020/01-fresh/biketrips/2020/202001-citibike-tripdata.csv'\n*/\n\n/* -- FROM 2020 year directory \nFROM 'https://minastirith.dfs.core.windows.net/datalake2020/01-fresh/biketrips/2020/'\n*/\n\n\n-- Run COPY into\nCOPY INTO dbo.biketripstest \nFROM 'https://minastirith.dfs.core.windows.net/datalake2020/01-fresh/biketrips/2020/'\nWITH (\n   FIELDTERMINATOR=',',\n   FIRSTROW=2,\n   ROWTERMINATOR='0x0A'\n);\n\n\n\n-- COPY into dbo.biketripstesttypes\nCOPY INTO dbo.biketripstesttypes\nFROM 'https://minastirith.dfs.core.windows.net/datalake2020/01-fresh/biketrips/2020/'\n--FROM 'https://minastirith.dfs.core.windows.net/datalake2020/01-fresh/biketrips/2020/202001-citibike-tripdata.csv'\nWITH (\n   FIELDTERMINATOR=',',\n   FIRSTROW=2,\n   ROWTERMINATOR='0x0A'\n);",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "master",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/demo-script')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "Misc"
+				},
+				"content": {
+					"query": "-- This is auto-generated code\nSELECT\n    TOP 100 *\nFROM\n    OPENROWSET(\n        BULK 'https://minastirith.dfs.core.windows.net/datalake2020/01-fresh/biketrips/2020/202001-citibike-tripdata.csv',\n        FORMAT = 'CSV',\n        PARSER_VERSION='2.0',\n        header_row=true\n    ) AS [result]\n\nSELECT COUNT(*) as TotalRecords\nFROM\n    OPENROWSET(\n        BULK 'https://minastirith.dfs.core.windows.net/datalake2020/01-fresh/biketrips/2020/202001-citibike-tripdata.csv',\n        FORMAT = 'CSV',\n        PARSER_VERSION='2.0',\n        header_row=true\n    ) AS [result]\n-- 1,240,596\n\n\nSELECT \n     YEAR(starttime) as [year]\n    ,MONTH(starttime) as [month]\n    ,COUNT(*) as TotalRecords\nFROM\n    OPENROWSET(\n        BULK 'https://minastirith.dfs.core.windows.net/datalake2020/01-fresh/biketrips/2020/202001-citibike-tripdata.csv',\n        FORMAT = 'CSV',\n        PARSER_VERSION='2.0',\n        header_row=true\n    ) AS [result]\ngroup by \n     YEAR(starttime)\n    ,MONTH(starttime)\n\nSELECT COUNT(*) as TotalRecords\nFROM\n    OPENROWSET(\n        BULK 'https://minastirith.dfs.core.windows.net/datalake2020/01-fresh/biketrips/2020/',\n        FORMAT = 'CSV',\n        PARSER_VERSION='2.0',\n        header_row=true\n    ) AS [result]\n-- 1,240,596\n-- 19,506,857\n\n\nSELECT \n     YEAR(starttime) as [year]\n    ,MONTH(starttime) as [month]\n    ,COUNT(*) as TotalRecords\nFROM\n    OPENROWSET(\n        BULK 'https://minastirith.dfs.core.windows.net/datalake2020/01-fresh/biketrips/2020/',\n        FORMAT = 'CSV',\n        PARSER_VERSION='2.0',\n        header_row=true\n    ) AS [result]\ngroup by \n     YEAR(starttime)\n    ,MONTH(starttime)\norder by \n     YEAR(starttime)\n    ,MONTH(starttime)\n\n\n\n-- PARQUET data\n-- Note that for YEAR() we have to do YEAR(CAST(starttime as date))\n\n-- in master\ncreate database newserverless;\n\nuse newserverless;\n\n\ncreate view dbo.biketrips2020 as \nSELECT \n     YEAR(starttime) as [year]\n    ,MONTH(starttime) as [month]\n    ,COUNT(*) as TotalRecords\nFROM\n    OPENROWSET(\n        BULK 'https://minastirith.dfs.core.windows.net/datalake2020/01-fresh/biketrips/2020/',\n        FORMAT = 'CSV',\n        PARSER_VERSION='2.0',\n        header_row=true\n    ) AS [result]\ngroup by \n     YEAR(starttime)\n    ,MONTH(starttime)",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "master",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/examples-setup-script')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "Misc"
+				},
+				"content": {
+					"query": "if db_name() = 'master'\n    throw 50001, 'This script cannot be executed in master database. Create new database and run the script there.', 1;\n\nif SERVERPROPERTY('EngineEdition') <> 11\n    throw 50001, 'This script must be executed on Azure Synapse - SQL serverless endpoint.', 1;\n\n------------------------------------------------------------------------------------------\n--      Part 1 - Cleanup script\n--      This part removes objects from sample database\n------------------------------------------------------------------------------------------\nDROP VIEW IF EXISTS parquet.YellowTaxi\nGO\nDROP VIEW IF EXISTS json.Books\nGO\nDROP VIEW IF EXISTS csv.YellowTaxi\nGO\nIF (EXISTS(SELECT * FROM sys.external_tables WHERE name = 'Population')) BEGIN\n    DROP EXTERNAL TABLE csv.Population\nEND\nIF (EXISTS(SELECT * FROM sys.external_file_formats WHERE name = 'QuotedCsvWithHeader')) BEGIN\n    DROP EXTERNAL FILE FORMAT QuotedCsvWithHeader\nEND\nGO\nIF (EXISTS(SELECT * FROM sys.external_file_formats WHERE name = 'QuotedCsvWithoutHeader')) BEGIN\n    DROP EXTERNAL FILE FORMAT QuotedCsvWithoutHeader\nEND\nGO\nIF (EXISTS(SELECT * FROM sys.external_file_formats WHERE name = 'NativeParquet')) BEGIN\n    DROP EXTERNAL FILE FORMAT NativeParquet\nEND\nGO\nDROP SCHEMA IF EXISTS parquet;\nGO\nDROP SCHEMA IF EXISTS csv;\nGO\nDROP SCHEMA IF EXISTS json;\nGO\n\nIF (EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'SqlOnDemandDemo')) BEGIN\n    DROP EXTERNAL DATA SOURCE SqlOnDemandDemo\nEND\n\nIF (EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'AzureOpenData')) BEGIN\n    DROP EXTERNAL DATA SOURCE AzureOpenData\nEND\n\nIF (EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'YellowTaxi')) BEGIN\n    DROP EXTERNAL DATA SOURCE YellowTaxi\nEND\n\nIF (EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'GreenTaxi')) BEGIN\n    DROP EXTERNAL DATA SOURCE GreenTaxi\nEND\n\nIF NOT EXISTS (SELECT * FROM sys.symmetric_keys) BEGIN\n    declare @pasword nvarchar(400) = CAST(newid() as VARCHAR(400));\n    EXEC('CREATE MASTER KEY ENCRYPTION BY PASSWORD = ''' + @pasword + '''')\nEND\n\nIF EXISTS\n   (SELECT * FROM sys.credentials\n   WHERE name = 'https://sqlondemandstorage.blob.core.windows.net')\n   DROP CREDENTIAL [https://sqlondemandstorage.blob.core.windows.net]\nGO\n\nIF EXISTS\n   (SELECT * FROM sys.database_scoped_credentials\n   WHERE name = 'sqlondemand')\n   DROP DATABASE SCOPED CREDENTIAL [sqlondemand]\nGO\n\nIF EXISTS\n   (SELECT * FROM sys.database_scoped_credentials\n   WHERE name = 'WorkspaceIdentity')\n   DROP DATABASE SCOPED CREDENTIAL [WorkspaceIdentity]\nGO\n\n\n------------------------------------------------------------------------------------------\n--      Part 2 - initialization script\n--      This part creates required objects in sample database\n------------------------------------------------------------------------------------------\n\n-- create database-scoped credential for the containers in demo storage account\n-- this credential will be used in OPENROWSET function with data source that uses relative file URL\nCREATE DATABASE SCOPED CREDENTIAL [sqlondemand]\nWITH IDENTITY='SHARED ACCESS SIGNATURE',  \nSECRET = 'sv=2018-03-28&ss=bf&srt=sco&sp=rl&st=2019-10-14T12%3A10%3A25Z&se=2061-12-31T12%3A10%3A00Z&sig=KlSU2ullCscyTS0An0nozEpo4tO5JAgGBvw%2FJX2lguw%3D'\nGO\n-- Create credential that will allow user to impersonate using Managed Identity assigned to workspace\nCREATE DATABASE SCOPED CREDENTIAL WorkspaceIdentity WITH IDENTITY = 'Managed Identity'\nGO\n\n-- SQL logins only:\n-- create server-scoped credential for the containers in demo storage account\n-- SQL logins will use this credential in OPENROWSET function without data source that uses absolute file URL\nCREATE CREDENTIAL [https://sqlondemandstorage.blob.core.windows.net]\nWITH IDENTITY='SHARED ACCESS SIGNATURE',  \nSECRET = 'sv=2018-03-28&ss=bf&srt=sco&sp=rl&st=2019-10-14T12%3A10%3A25Z&se=2061-12-31T12%3A10%3A00Z&sig=KlSU2ullCscyTS0An0nozEpo4tO5JAgGBvw%2FJX2lguw%3D'\nGO\n\nCREATE SCHEMA parquet;\nGO\nCREATE SCHEMA csv;\nGO\nCREATE SCHEMA json;\nGO\n\n-- Create external data source secured using credential\nCREATE EXTERNAL DATA SOURCE SqlOnDemandDemo WITH (\n    LOCATION = 'https://sqlondemandstorage.blob.core.windows.net',\n    CREDENTIAL = sqlondemand\n);\nGO\n-- Create publicly available external data sources\nCREATE EXTERNAL DATA SOURCE AzureOpenData\nWITH ( LOCATION = 'https://azureopendatastorage.blob.core.windows.net/')\nGO\nCREATE EXTERNAL DATA SOURCE YellowTaxi\nWITH ( LOCATION = 'https://azureopendatastorage.blob.core.windows.net/nyctlc/yellow/')\nGO\nCREATE EXTERNAL DATA SOURCE GreenTaxi\nWITH ( LOCATION = 'https://azureopendatastorage.blob.core.windows.net/nyctlc/green/')\nGO\n\nCREATE EXTERNAL FILE FORMAT QuotedCsvWithHeader\nWITH (  \n    FORMAT_TYPE = DELIMITEDTEXT,\n    FORMAT_OPTIONS (\n        FIELD_TERMINATOR = ',',\n        STRING_DELIMITER = '\"',\n        FIRST_ROW = 2\n    )\n);\nGO\nCREATE EXTERNAL FILE FORMAT QuotedCsvWithoutHeader\nWITH (  \n    FORMAT_TYPE = DELIMITEDTEXT,\n    FORMAT_OPTIONS (\n        FIELD_TERMINATOR = ',',\n        STRING_DELIMITER = '\"',\n        FIRST_ROW = 1\n    )\n);\nGO\nCREATE EXTERNAL FILE FORMAT NativeParquet\nWITH (  \n    FORMAT_TYPE = PARQUET\n);\nGO\n\nCREATE EXTERNAL TABLE csv.population\n(\n    [country_code] VARCHAR (5) COLLATE Latin1_General_BIN2,\n    [country_name] VARCHAR (100) COLLATE Latin1_General_BIN2,\n    [year] smallint,\n    [population] bigint\n)\nWITH (\n    LOCATION = 'csv/population/population.csv',\n    DATA_SOURCE = SqlOnDemandDemo,\n    FILE_FORMAT = QuotedCsvWithHeader\n);\nGO\n\nCREATE VIEW parquet.YellowTaxi\nAS SELECT *, nyc.filepath(1) AS [year], nyc.filepath(2) AS [month]\nFROM\n    OPENROWSET(\n        BULK 'parquet/taxi/year=*/month=*/*.parquet',\n        DATA_SOURCE = 'SqlOnDemandDemo',\n        FORMAT='PARQUET'\n    ) AS nyc\nGO\n\nCREATE VIEW csv.YellowTaxi\nAS\nSELECT  *, nyc.filepath(1) AS [year], nyc.filepath(2) AS [month]\nFROM OPENROWSET(\n        BULK 'csv/taxi/yellow_tripdata_*-*.csv',\n        DATA_SOURCE = 'SqlOnDemandDemo',\n        FORMAT = 'CSV', \n        FIRSTROW = 2\n    )\n    WITH (\n          vendor_id VARCHAR(100) COLLATE Latin1_General_BIN2, \n          pickup_datetime DATETIME2, \n          dropoff_datetime DATETIME2,\n          passenger_count INT,\n          trip_distance FLOAT,\n          rate_code INT,\n          store_and_fwd_flag VARCHAR(100) COLLATE Latin1_General_BIN2,\n          pickup_location_id INT,\n          dropoff_location_id INT,\n          payment_type INT,\n          fare_amount FLOAT,\n          extra FLOAT,\n          mta_tax FLOAT,\n          tip_amount FLOAT,\n          tolls_amount FLOAT,\n          improvement_surcharge FLOAT,\n          total_amount FLOAT\n    ) AS nyc\nGO\n\nCREATE VIEW json.Books\nAS SELECT *\nFROM\n    OPENROWSET(\n        BULK 'json/books/*.json',\n        DATA_SOURCE = 'SqlOnDemandDemo',\n        FORMAT='CSV',\n        FIELDTERMINATOR ='0x0b',\n        FIELDQUOTE = '0x0b',\n        ROWTERMINATOR = '0x0b'\n    )\n    WITH (\n        content varchar(8000)\n    ) AS books;",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "master",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/json-skils-list')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "Misc"
+				},
+				"content": {
+					"query": "SELECT TOP 1\n     JSON_VALUE (jsonContent, '$.skills[0].skillId') AS skillId\n    ,JSON_VALUE (jsonContent, '$.skills[0].area') AS area\n    ,JSON_VALUE (jsonContent, '$.skills[0].solutionArea') AS solutionArea\n    ,JSON_VALUE (jsonContent, '$.skills[0].category') AS category\n    ,JSON_VALUE (jsonContent, '$.skills[0].practice') AS practice\n    ,JSON_VALUE (jsonContent, '$.skills[0].buildingBlock') AS buildingBlocka\n    ,JSON_VALUE (jsonContent, '$.skills[0].name') AS name\n    ,jsonContent\nFROM OPENROWSET(BULK 'https://minastirith.dfs.core.windows.net/datalake/01-fresh/skills-json/skills.json',FORMAT = 'CSV',FIELDQUOTE = '0x0b',FIELDTERMINATOR ='0x0b',ROWTERMINATOR = '0x0b') WITH (jsonContent varchar(MAX)) AS [result]\nunion \nSELECT TOP 1\n     JSON_VALUE (jsonContent, '$.skills[1].skillId') AS skillId\n    ,JSON_VALUE (jsonContent, '$.skills[1].area') AS area\n    ,JSON_VALUE (jsonContent, '$.skills[1].solutionArea') AS solutionArea\n    ,JSON_VALUE (jsonContent, '$.skills[1].category') AS category\n    ,JSON_VALUE (jsonContent, '$.skills[1].practice') AS practice\n    ,JSON_VALUE (jsonContent, '$.skills[1].buildingBlock') AS buildingBlock\n    ,JSON_VALUE (jsonContent, '$.skills[1].name') AS name\n    ,jsonContent\nFROM OPENROWSET(BULK 'https://minastirith.dfs.core.windows.net/datalake/01-fresh/skills-json/skills.json', FORMAT = 'CSV',FIELDQUOTE = '0x0b',FIELDTERMINATOR ='0x0b',ROWTERMINATOR = '0x0b') WITH (jsonContent varchar(MAX)) AS [result]\nunion\nSELECT TOP 1\n     JSON_VALUE (jsonContent, '$.skills[2].skillId') AS skillId\n    ,JSON_VALUE (jsonContent, '$.skills[2].area') AS area\n    ,JSON_VALUE (jsonContent, '$.skills[2].solutionArea') AS solutionArea\n    ,JSON_VALUE (jsonContent, '$.skills[2].category') AS category\n    ,JSON_VALUE (jsonContent, '$.skills[2].practice') AS practice\n    ,JSON_VALUE (jsonContent, '$.skills[2].buildingBlock') AS buildingBlock\n    ,JSON_VALUE (jsonContent, '$.skills[2].name') AS name\n    ,jsonContent\nFROM OPENROWSET(BULK 'https://minastirith.dfs.core.windows.net/datalake/01-fresh/skills-json/skills.json', FORMAT = 'CSV',FIELDQUOTE = '0x0b',FIELDTERMINATOR ='0x0b',ROWTERMINATOR = '0x0b') WITH (jsonContent varchar(MAX)) AS [result]\nunion\nSELECT TOP 1\n     JSON_VALUE (jsonContent, '$.skills[3].skillId') AS skillId\n    ,JSON_VALUE (jsonContent, '$.skills[3].area') AS area\n    ,JSON_VALUE (jsonContent, '$.skills[3].solutionArea') AS solutionArea\n    ,JSON_VALUE (jsonContent, '$.skills[3].category') AS category\n    ,JSON_VALUE (jsonContent, '$.skills[3].practice') AS practice\n    ,JSON_VALUE (jsonContent, '$.skills[3].buildingBlock') AS buildingBlock\n    ,JSON_VALUE (jsonContent, '$.skills[3].name') AS name\n    ,jsonContent\nFROM OPENROWSET(BULK 'https://minastirith.dfs.core.windows.net/datalake/01-fresh/skills-json/skills.json', FORMAT = 'CSV',FIELDQUOTE = '0x0b',FIELDTERMINATOR ='0x0b',ROWTERMINATOR = '0x0b') WITH (jsonContent varchar(MAX)) AS [result]\nunion\nSELECT TOP 1\n     JSON_VALUE (jsonContent, '$.skills[4].skillId') AS skillId\n    ,JSON_VALUE (jsonContent, '$.skills[4].area') AS area\n    ,JSON_VALUE (jsonContent, '$.skills[4].solutionArea') AS solutionArea\n    ,JSON_VALUE (jsonContent, '$.skills[4].category') AS category\n    ,JSON_VALUE (jsonContent, '$.skills[4].practice') AS practice\n    ,JSON_VALUE (jsonContent, '$.skills[4].buildingBlock') AS buildingBlock\n    ,JSON_VALUE (jsonContent, '$.skills[4].name') AS name\n    ,jsonContent\nFROM OPENROWSET(BULK 'https://minastirith.dfs.core.windows.net/datalake/01-fresh/skills-json/skills.json', FORMAT = 'CSV',FIELDQUOTE = '0x0b',FIELDTERMINATOR ='0x0b',ROWTERMINATOR = '0x0b') WITH (jsonContent varchar(MAX)) AS [result]\nunion\nSELECT TOP 1\n     JSON_VALUE (jsonContent, '$.skills[5].skillId') AS skillId\n    ,JSON_VALUE (jsonContent, '$.skills[5].area') AS area\n    ,JSON_VALUE (jsonContent, '$.skills[5].solutionArea') AS solutionArea\n    ,JSON_VALUE (jsonContent, '$.skills[5].category') AS category\n    ,JSON_VALUE (jsonContent, '$.skills[5].practice') AS practice\n    ,JSON_VALUE (jsonContent, '$.skills[5].buildingBlock') AS buildingBlock\n    ,JSON_VALUE (jsonContent, '$.skills[5].name') AS name\n    ,jsonContent\nFROM OPENROWSET(BULK 'https://minastirith.dfs.core.windows.net/datalake/01-fresh/skills-json/skills.json', FORMAT = 'CSV',FIELDQUOTE = '0x0b',FIELDTERMINATOR ='0x0b',ROWTERMINATOR = '0x0b') WITH (jsonContent varchar(MAX)) AS [result]\n",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "master",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SQLserverlessByHand-1')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "Examples-SQL-Serverless"
+				},
+				"content": {
+					"query": "--=====================================================================\n--====== DELIMITED DATA ===============================================\n--=====================================================================\n\n-- Full path to one file\nSELECT top 10 *\nfrom OPENROWSET(\n    bulk 'https://minastirith.dfs.core.windows.net/datalake2020/01-fresh/biketrips/2020/202012-citibike-tripdata.csv',\n    format = 'csv',\n    parser_version = '2.0',\n    FIRSTROW = 2\n) as rows\n\n-- Use header row for column names\nSELECT top 10 *\nfrom OPENROWSET(\n    bulk 'https://minastirith.dfs.core.windows.net/datalake2020/01-fresh/biketrips/2020/202012-citibike-tripdata.csv',\n    format = 'csv',\n    parser_version = '2.0',\n    header_row = true\n) as rows\n\n\n-- Using a data source\ncreate external data source biketrips\nwith (location='https://minastirith.dfs.core.windows.net/datalake2020/01-fresh/biketrips/');\n\nselect top 10 *\nfrom OPENROWSET(\n     bulk '2020/202012-citibike-tripdata.csv'\n    ,data_source = 'biketrips'\n    ,format = 'csv'\n    ,parser_version='2.0'\n    --,FIRSTROW=2\n) as rows;\n\n-- Explicitly specify a schema\nselect top 10 *\nfrom OPENROWSET(\n    bulk '2020/202012-citibike-tripdata.csv',\n    data_source = 'biketrips',\n    format='csv',\n    parser_version='2.0',\n    FIRSTROW=2\n) with(\n     tripduration varchar(50)\n    ,starttime varchar(50)\n    ,stoptime varchar(50)\n    ,start_station_id varchar(50)\n) as rows\n\n-- Find collation of the database:\nSELECT CONVERT (varchar, SERVERPROPERTY('collation')) AS 'Server Collation';\n\n\n-- Below uses data that can be queried by running this setup script:\n-- https://github.com/Azure-Samples/Synapse/blob/main/SQL/Samples/LdwSample/SampleDB.sql\n\n-- Read Windows-style new line files \nSELECT *\nFROM OPENROWSET(\n        BULK 'csv/population/population.csv',\n        DATA_SOURCE = 'SqlOnDemandDemo',\n        FORMAT = 'CSV', PARSER_VERSION = '2.0',\n        FIELDTERMINATOR =',',\n        ROWTERMINATOR = '\\n'\n    )\nWITH (\n    [country_code] VARCHAR (5) COLLATE Latin1_General_BIN2,\n    [country_name] VARCHAR (100) COLLATE Latin1_General_BIN2,\n    [year] smallint,\n    [population] bigint\n) AS [r]\nWHERE\n    country_name = 'Luxembourg'\n    AND year = 2017;\n\n-- Read UNIX-style new line files\nSELECT * \nFROM OPENROWSET( \n    BULK 'csv/population-unix/population.csv', \n    DATA_SOURCE = 'SqlOnDemandDemo', \n    FORMAT = 'CSV', PARSER_VERSION = '2.0', \n    FIELDTERMINATOR =',', \n    ROWTERMINATOR = '0x0a' ) \nWITH ( \n    [country_code] VARCHAR (5) COLLATE Latin1_General_BIN2, \n    [country_name] VARCHAR (100) COLLATE Latin1_General_BIN2, \n    [year] smallint, [population] bigint \n) AS [r] \nWHERE \n    country_name = 'Luxembourg' \n    AND year = 2017;\n\n-- Work with custom quote character\n-- This query would return the same results if you omitted the FIELDQUOTE parameter since the default value for FIELDQUOTE is a double-quote.\nSELECT * \nFROM OPENROWSET( \n    BULK 'csv/population-unix-hdr-quoted/population.csv', \n    DATA_SOURCE = 'SqlOnDemandDemo', \n    FORMAT = 'CSV', PARSER_VERSION = '2.0', \n    FIELDTERMINATOR =',', \n    ROWTERMINATOR = '0x0a',\n    FIRSTROW = 2,\n    FIELDQUOTE = ' ” '\n) \nWITH ( \n    [country_code] VARCHAR (5) COLLATE Latin1_General_BIN2, \n    [country_name] VARCHAR (100) COLLATE Latin1_General_BIN2, \n    [year] smallint, [population] bigint \n) AS [r] \nWHERE \n    country_name = 'Luxembourg' \n    AND year = 2017;\n\n\n-- Work with escape characters\n-- This query would fail if ESCAPECHAR is not specified since the comma in \"Slov,enia\" would be treated as field delimiter instead of part of the country/region name. \"Slov,enia\" would be treated as two columns. Therefore, the row would have one column more than the other rows, and one column more than you defined in the WITH clause.\nSELECT * \nFROM OPENROWSET( \n    BULK 'csv/population-unix-hdr-escape/population.csv', \n    DATA_SOURCE = 'SqlOnDemandDemo', \n    FORMAT = 'CSV', PARSER_VERSION = '2.0', \n    FIELDTERMINATOR =',', \n    ROWTERMINATOR = '0x0a',\n    FIRSTROW = 2,\n    ESCAPECHAR = ' \\\\ '\n) \nWITH ( \n    [country_code] VARCHAR (5) COLLATE Latin1_General_BIN2, \n    [country_name] VARCHAR (100) COLLATE Latin1_General_BIN2, \n    [year] smallint, \n    [population] bigint \n) AS [r] \nWHERE \n    country_name = 'Slovenia';\n\n\n-- Work with escape quoting characters\nSELECT * \nFROM OPENROWSET( \n    BULK 'csv/population-unix-hdr-escape-quoted/population.csv', \n    DATA_SOURCE = 'SqlOnDemandDemo', \n    FORMAT = 'CSV', PARSER_VERSION = '2.0', \n    FIELDTERMINATOR =',', \n    ROWTERMINATOR = '0x0a',\n    FIRSTROW = 2\n) \nWITH ( \n    [country_code] VARCHAR (5) COLLATE Latin1_General_BIN2, \n    [country_name] VARCHAR (100) COLLATE Latin1_General_BIN2, \n    [year] smallint, \n    [population] bigint \n) AS [r] \nWHERE \n    country_name = 'Slovenia';\n\n\n-- Work with tab-delimited files\nSELECT * \nFROM OPENROWSET( \n    BULK 'csv/population-unix-hdr-tsv/population.csv', \n    DATA_SOURCE = 'SqlOnDemandDemo', \n    FORMAT = 'CSV', PARSER_VERSION = '2.0', \n    FIELDTERMINATOR ='\\t', \n    ROWTERMINATOR = '0x0a',\n    FIRSTROW = 2\n) \nWITH ( \n    [country_code] VARCHAR (5) COLLATE Latin1_General_BIN2, \n    [country_name] VARCHAR (100) COLLATE Latin1_General_BIN2, \n    [year] smallint, \n    [population] bigint \n) AS [r] \nWHERE \n    country_name = 'Slovenia'\n    AND year = 2017\n\n\n-- Return a subset of columns from a file\n-- Look at the WITH clause in the query below and note that there is \"2\" (without quotes) at the end of row where you define the [country_name] column. It means that the [country_name] column is the second column in the file. The query will ignore all columns in the file except the second one.\nSELECT \n    COUNT(DISTINCT country_name) AS countries \nFROM OPENROWSET(\n    BULK 'csv/population/population.csv', \n    DATA_SOURCE = 'SqlOnDemandDemo', \n    FORMAT = 'CSV', PARSER_VERSION = '2.0', \n    FIELDTERMINATOR =',', \n    ROWTERMINATOR = '\\n' ) \nWITH ( \n    --[country_code] VARCHAR (5), \n    [country_name] VARCHAR (100) 2 \n    --[year] smallint, \n    --[population] bigint \n) AS [r]\n\n\n--=====================================================================\n--====== PARQUET DATA =================================================\n--=====================================================================\n\n-- Parquet works much the same as CSV except you change the FORMAT value\nSELECT top 10 *\nfrom OPENROWSET(\n     bulk 'https://minastirith.dfs.core.windows.net/datalake2020/02-curated/biketrips/onefile/biketrips.parquet/part-00000-a763e5c2-062d-4f7b-8347-71f788fb0ab1-c000.snappy.parquet'\n    ,FORMAT='parquet'\n) as rows\n\n-- Again, queries below this use the setup script data\n-- https://github.com/Azure-Samples/Synapse/blob/master/SQL/Samples/LdwSample/SampleDB.sql\n\n-- Query specific column of parquet files\nSELECT \n    YEAR(tpepPickupDateTime), \n    passengerCount, \n    COUNT(*) AS cnt \nFROM \n    OPENROWSET( \n        BULK 'puYear=2018/puMonth=*/*.snappy.parquet', \n        DATA_SOURCE = 'YellowTaxi', \n        FORMAT='PARQUET' \n    ) WITH ( \n        tpepPickupDateTime DATETIME2, \n        passengerCount INT \n    ) AS nyc \nGROUP BY \n    passengerCount, \n    YEAR(tpepPickupDateTime) \nORDER BY \n    YEAR(tpepPickupDateTime), \n    passengerCount;\n\n-- Query partitioned data\n-- The serverless SQL pool query is compatible with Hive/Hadoop partitioning scheme.\nSELECT \n    YEAR(tpepPickupDateTime), \n    passengerCount, \n    COUNT(*) AS cnt \nFROM \n    OPENROWSET(\n        BULK 'puYear=*/puMonth=*/*.snappy.parquet', \n        DATA_SOURCE = 'YellowTaxi', \n        FORMAT='PARQUET' ) nyc \nWHERE \n    nyc.filepath(1) = 2017 \n    AND nyc.filepath(2) IN (1, 2, 3) \n    AND tpepPickupDateTime BETWEEN CAST('1/1/2017' AS datetime) AND CAST('3/31/2017' AS datetime)\nGROUP BY \n    passengerCount, \n    YEAR(tpepPickupDateTime) \nORDER BY \n    YEAR(tpepPickupDateTime), \n    passengerCount;\n\n-- Data type mapping\n-- https://docs.microsoft.com/en-us/learn/modules/query-data-lake-using-azure-synapse-serverless-sql-pools/3-query-parquet-file#data-type-mapping\n\n\n--=====================================================================\n--====== JSDON DATA ===================================================\n--=====================================================================\n\n-- Pandemic Data Lake data used below is publically accessible\n\n-- Read JSONL files\nselect top 10 * \nfrom \n    openrowset( \n        bulk 'https://pandemicdatalake.blob.core.windows.net/public/curated/covid-19/ecdc_cases/latest/ecdc_cases.jsonl', \n        format = 'csv', \n        fieldterminator ='0x0b', \n        fieldquote = '0x0b' \n    ) with (doc nvarchar(max)) as rows\n\n-- Read JSON files\nselect top 10 * \nfrom \n    openrowset( \n        bulk 'https://pandemicdatalake.blob.core.windows.net/public/curated/covid-19/ecdc_cases/latest/ecdc_cases.json', \n        format = 'csv', \n        fieldterminator ='0x0b', \n        fieldquote = '0x0b', \n        rowterminator = '0x0b' --> You need to override rowterminator to read classic JSON \n    ) with (doc nvarchar(max)) as rows\n\n-- Parse the JSON files using JSON_VALUE\nselect \n    JSON_VALUE(doc, '$.date_rep') AS date_reported, \n    JSON_VALUE(doc, '$.countries_and_territories') AS country, \n    JSON_VALUE(doc, '$.cases') as cases, \n    doc \nfrom \n    openrowset( \n        bulk 'latest/ecdc_cases.jsonl', \n        data_source = 'covid', \n        format = 'csv', \n        fieldterminator ='0x0b', \n        fieldquote = '0x0b' \n    ) with (doc nvarchar(max)) as rows \norder by JSON_VALUE(doc, '$.geo_id') desc\n\n-- Parse the JSON files using OPENJSON\nselect * \nfrom \n    openrowset( \n        bulk 'latest/ecdc_cases.jsonl', \n        data_source = 'covid', \n        format = 'csv', \n        fieldterminator ='0x0b', \n        fieldquote = '0x0b' \n    ) with (doc nvarchar(max)) as rows \n    cross apply openjson (doc) \n        with ( date_rep datetime2, \n                   cases int, \n                   fatal int '$.deaths', \n                   country varchar(100) '$.countries_and_territories') \nwhere country = 'Serbia' \norder by country, date_rep desc;\n\n\n--=====================================================================\n--====== MULTIPLE FILES ===============================================\n--=====================================================================\n\n-- Again, queries below this use the setup script data\n-- https://github.com/Azure-Samples/Synapse/blob/master/SQL/Samples/LdwSample/SampleDB.sql\n\n-- Read all files in folder\n-- All files accessed with the single OPENROWSET must have the same structure (i.e., number of columns and their data types).\nSELECT \n    YEAR(pickup_datetime) AS [year], \n    SUM(passenger_count) AS passengers_total, \n    COUNT(*) AS [rides_total] \nFROM \n    OPENROWSET( \n        BULK 'csv/taxi/*.csv',                 -- LOOK HERE\n        DATA_SOURCE = 'sqlondemanddemo', \n        FORMAT = 'CSV', \n        PARSER_VERSION = '2.0', \n        FIRSTROW = 2 \n    ) WITH ( \n        pickup_datetime DATETIME2 2, \n        passenger_count INT 4 \n    ) AS nyc \nGROUP BY \n    YEAR(pickup_datetime) \nORDER BY \n    YEAR(pickup_datetime);\n\n\n-- Read subset of files in folder\nSELECT \n    payment_type,\n    SUM(fare_amount) AS fare_total\nFROM \n    OPENROWSET( \n        BULK 'csv/taxi/yellow_tripdata_2017-*.csv', \n        DATA_SOURCE = 'sqlondemanddemo', \n        FORMAT = 'CSV', \n        PARSER_VERSION = '2.0', \n        FIRSTROW = 2 \n    ) WITH ( \n        payment_type INT 10, \n        fare_amount FLOAT 11 \n    ) AS nyc \nGROUP BY \n    payment_type \nORDER BY \n    payment_type;\n\n-- Read all files from a specific folder\nSELECT \n    YEAR(pickup_datetime) as [year], \n    SUM(passenger_count) AS passengers_total, \n    COUNT(*) AS [rides_total] \nFROM OPENROWSET( \n    BULK 'csv/taxi/', \n    DATA_SOURCE = 'sqlondemanddemo', \n    FORMAT = 'CSV', \n    PARSER_VERSION = '2.0', \n    FIRSTROW = 2 \n) WITH ( \n    vendor_id VARCHAR(100) COLLATE Latin1_General_BIN2, \n    pickup_datetime DATETIME2, \n    dropoff_datetime DATETIME2, \n    passenger_count INT, \n    trip_distance FLOAT, \n    rate_code INT, \n    store_and_fwd_flag VARCHAR(100) COLLATE Latin1_General_BIN2, \n    pickup_location_id INT, \n    dropoff_location_id INT, \n    payment_type INT, \n    fare_amount FLOAT, \n    extra FLOAT, \n    mta_tax FLOAT, \n    tip_amount FLOAT, \n    tolls_amount FLOAT, \n    improvement_surcharge FLOAT, \n    total_amount FLOAT \n) AS nyc \nGROUP BY \n    YEAR(pickup_datetime) \nORDER BY \n    YEAR(pickup_datetime);\n\n\n-- Read all files from multiple folders\nSELECT\n    YEAR(pickup_datetime) as [year],\n    SUM(passenger_count) AS passengers_total,\n    COUNT(*) AS [rides_total]\nFROM OPENROWSET(\n        BULK 'csv/t*i/', \n        DATA_SOURCE = 'sqlondemanddemo',\n        FORMAT = 'CSV', PARSER_VERSION = '2.0',\n        FIRSTROW = 2\n    )\n    WITH (\n        vendor_id VARCHAR(100) COLLATE Latin1_General_BIN2, \n        pickup_datetime DATETIME2, \n        dropoff_datetime DATETIME2,\n        passenger_count INT,\n        trip_distance FLOAT,\n        rate_code INT,\n        store_and_fwd_flag VARCHAR(100) COLLATE Latin1_General_BIN2,\n        pickup_location_id INT,\n        dropoff_location_id INT,\n        payment_type INT,\n        fare_amount FLOAT,\n        extra FLOAT,\n        mta_tax FLOAT,\n        tip_amount FLOAT,\n        tolls_amount FLOAT,\n        improvement_surcharge FLOAT,\n        total_amount FLOAT\n    ) AS nyc\nGROUP BY\n    YEAR(pickup_datetime)\nORDER BY\n    YEAR(pickup_datetime);\n\n-- Use multiple wildcards\nSELECT\n    YEAR(pickup_datetime) as [year],\n    SUM(passenger_count) AS passengers_total,\n    COUNT(*) AS [rides_total]\nFROM OPENROWSET(\n        BULK 'csv/t*i/yellow_tripdata_2017-*.csv',\n        DATA_SOURCE = 'sqlondemanddemo',\n        FORMAT = 'CSV', PARSER_VERSION = '2.0',\n        FIRSTROW = 2\n    )\n    WITH (\n        vendor_id VARCHAR(100) COLLATE Latin1_General_BIN2, \n        pickup_datetime DATETIME2, \n        dropoff_datetime DATETIME2,\n        passenger_count INT,\n        trip_distance FLOAT,\n        rate_code INT,\n        store_and_fwd_flag VARCHAR(100) COLLATE Latin1_General_BIN2,\n        pickup_location_id INT,\n        dropoff_location_id INT,\n        payment_type INT,\n        fare_amount FLOAT,\n        extra FLOAT,\n        mta_tax FLOAT,\n        tip_amount FLOAT,\n        tolls_amount FLOAT,\n        improvement_surcharge FLOAT,\n        total_amount FLOAT\n    ) AS nyc\nGROUP BY\n    YEAR(pickup_datetime)\nORDER BY\n    YEAR(pickup_datetime);\n\n\n\n\n\n",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "master",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SQLserverlessByHand-2')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "Examples-SQL-Serverless"
+				},
+				"content": {
+					"query": "-- Creating SQL Serverless databases\nCREATE DATABASE newdbname;\n\n\n-- Creating credentials in Azure Synapse serverless SQL pools\n-- AAD\nCREATE DATABASE SCOPED CREDENTIAL [sqlondemand] \nWITH IDENTITY='User Identity'\n\n-- Managed Identity for this Synapse workspace\nCREATE DATABASE SCOPED CREDENTIAL [sqlondemand] \nWITH IDENTITY='Managed Identity'\n\n-- SAS token\nCREATE DATABASE SCOPED CREDENTIAL [sqlondemand] \nWITH IDENTITY='SHARED ACCESS SIGNATURE',   \nSECRET = 'sv=2018-03-28&ss=bf&srt=sco&sp=rl&st=2019-10-14T12%3A10%3A25Z&se=2061-12-31T12%3A10%3A00Z&sig=KlSU2ullCscyTS0An0nozEpo4tO5JAgGBvw%2FJX2lguw%3D'\n\n\n-- External data sources\nCREATE EXTERNAL DATA SOURCE YellowTaxi \nWITH ( LOCATION = 'https://azureopendatastorage.blob.core.windows.net/nyctlc/yellow/')\n\nCREATE EXTERNAL DATA SOURCE SqlOnDemandDemo WITH ( \n    LOCATION = 'https://sqlondemandstorage.blob.core.windows.net', \n    CREDENTIAL = sqlondemand \n);\n\n-- External tables\n-- 3 objects needed\n--    External data source\n--    External file format\n--    External table\n\n-- Below uses the setup script\n-- https://github.com/Azure-Samples/Synapse/blob/master/SQL/Samples/LdwSample/SampleDB.sql\n\n-- Database scoped credential\nCREATE DATABASE SCOPED CREDENTIAL [sqlondemand] \nWITH IDENTITY='SHARED ACCESS SIGNATURE',   \nSECRET = 'sv=2018-03-28&ss=bf&srt=sco&sp=rl&st=2019-10-14T12%3A10%3A25Z&se=2061-12-31T12%3A10%3A00Z&sig=KlSU2ullCscyTS0An0nozEpo4tO5JAgGBvw%2FJX2lguw%3D'\n\n-- External data source\nCREATE EXTERNAL DATA SOURCE SqlOnDemandDemo WITH ( \n    LOCATION = 'https://sqlondemandstorage.blob.core.windows.net', \n    CREDENTIAL = sqlondemand \n); \nGO \nCREATE EXTERNAL DATA SOURCE YellowTaxi \nWITH ( LOCATION = 'https://azureopendatastorage.blob.core.windows.net/nyctlc/yellow/')\nGO\n\n-- External file format\nCREATE EXTERNAL FILE FORMAT QuotedCsvWithHeaderFormat \nWITH (   \n    FORMAT_TYPE = DELIMITEDTEXT, \n    FORMAT_OPTIONS ( FIELD_TERMINATOR = ',', STRING_DELIMITER = '\"', FIRST_ROW = 2   ) \n); \nGO \nCREATE EXTERNAL FILE FORMAT ParquetFormat WITH (  FORMAT_TYPE = PARQUET );\nGO\n\n-- Create the external table (on the secured data)\nUSE [mydbname]; \nGO \nCREATE EXTERNAL TABLE populationExternalTable \n( \n    [country_code] VARCHAR (5) COLLATE Latin1_General_BIN2, \n    [country_name] VARCHAR (100) COLLATE Latin1_General_BIN2, \n    [year] smallint, \n    [population] bigint \n) \nWITH ( \n    LOCATION = 'csv/population/population.csv', \n    DATA_SOURCE = sqlondemanddemo, \n    FILE_FORMAT = QuotedCSVWithHeaderFormat \n);\n\n\n-- Create the external table (on the public data)\nCREATE EXTERNAL TABLE Taxi ( \n    vendor_id VARCHAR(100) COLLATE Latin1_General_BIN2,  \n    pickup_datetime DATETIME2,  \n    dropoff_datetime DATETIME2, \n    passenger_count INT, \n    trip_distance FLOAT, \n    fare_amount FLOAT, \n    tip_amount FLOAT, \n    tolls_amount FLOAT, \n    total_amount FLOAT \n) WITH ( \n        LOCATION = 'puYear=*/puMonth=*/*.parquet', \n        DATA_SOURCE = YellowTaxi, \n        FILE_FORMAT = ParquetFormat \n);\n\n",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "master",
 						"poolName": "Built-in"
 					},
 					"resultLimit": 5000
