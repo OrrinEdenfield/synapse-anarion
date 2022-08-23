@@ -121,7 +121,13 @@
 				"inputs": [
 					{
 						"referenceName": "AzureIPRangeJSONFile",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"paramURL": {
+								"value": "@string(activity('ParseDownloadPage').output.runStatus.output.relativeURL.value[0].url3)",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"outputs": [
