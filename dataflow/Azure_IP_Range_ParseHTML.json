@@ -1,6 +1,9 @@
 {
 	"name": "Azure_IP_Range_ParseHTML",
 	"properties": {
+		"folder": {
+			"name": "Examples"
+		},
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [
