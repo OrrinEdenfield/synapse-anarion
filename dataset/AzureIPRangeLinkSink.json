@@ -1,0 +1,19 @@
+{
+	"name": "AzureIPRangeLinkSink",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "anarion-WorkspaceDefaultStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "linkresponse.html",
+				"folderPath": "01-raw/azure-ip-range",
+				"fileSystem": "calembel"
+			}
+		}
+	}
+}
