@@ -2,7 +2,7 @@
 	"name": "AzureIPRangeJSONFile",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "MicrosoftDotCom",
+			"referenceName": "DownloadDotMicrosoftDotCom",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
