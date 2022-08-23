@@ -18,6 +18,14 @@
 		"biketrips_http_source_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://s3.amazonaws.com/tripdata/"
+		},
+		"MicrosoftDotCom_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://www.microsoft.com"
+		},
+		"DownloadDotMicrosoftDotCom_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://download.microsoft.com"
 		}
 	},
 	"variables": {
@@ -9763,6 +9771,413 @@
 				"type": "KqlQuery"
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Azure_IP_Range_ParseHTML')]",
+			"type": "Microsoft.Synapse/workspaces/dataflows",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "Examples"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "Azure_IP_Source_TXT_linkresponse",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"name": "relativeURL"
+						}
+					],
+					"transformations": [
+						{
+							"name": "DerivedColumn1"
+						},
+						{
+							"name": "Flatten1"
+						},
+						{
+							"name": "SurrogateKey1"
+						},
+						{
+							"name": "Filter1"
+						},
+						{
+							"name": "DerivedColumn2"
+						},
+						{
+							"name": "SurrogateKey2"
+						},
+						{
+							"name": "Filter2"
+						},
+						{
+							"name": "Flatten2"
+						},
+						{
+							"name": "DerivedColumn3"
+						},
+						{
+							"name": "Select1"
+						}
+					],
+					"script": "source(output(\n\t\t{_col0_} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source1\nsource1 derive(url = regexSplit({_col0_},'download.microsoft.com')) ~> DerivedColumn1\nDerivedColumn1 foldDown(unroll(url, url),\n\tmapColumn(\n\t\t{_col0_},\n\t\turl\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> Flatten1\nFlatten1 keyGenerate(output(rownbr as long),\n\tstartAt: 1L,\n\tstepValue: 1L) ~> SurrogateKey1\nSurrogateKey1 filter(rownbr == 2) ~> Filter1\nFilter1 derive(url2 = regexSplit(url,'.json\"')) ~> DerivedColumn2\nFlatten2 keyGenerate(output(rownbr2 as long),\n\tstartAt: 1L,\n\tstepValue: 1L) ~> SurrogateKey2\nSurrogateKey2 filter(rownbr2 == 1) ~> Filter2\nDerivedColumn2 foldDown(unroll(url2, url2),\n\tmapColumn(\n\t\t{_col0_},\n\t\turl,\n\t\trownbr,\n\t\turl2\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> Flatten2\nFilter2 derive(url3 = concat(ltrim(url2,'/'),'.json')) ~> DerivedColumn3\nDerivedColumn3 select(mapColumn(\n\t\turl3\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nSelect1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['jsonlink.txt'],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tstore: 'cache',\n\tformat: 'inline',\n\toutput: true,\n\tsaveOrder: 1,\n\tpartitionBy('hash', 1)) ~> relativeURL"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/datasets/Azure_IP_Source_TXT_linkresponse')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/GetJSONfromHTTP')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "GetDownloadPage",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "HttpReadSettings",
+									"requestMethod": "GET"
+								},
+								"formatSettings": {
+									"type": "BinaryReadSettings"
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "AzureIPRangeLink",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "AzureIPRangeLinkSink",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "ParseDownloadPage",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [
+							{
+								"activity": "GetDownloadPage",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "1.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "Azure_IP_Range_ParseHTML",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {},
+									"relativeURL": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "None",
+							"cacheSinks": {
+								"firstRowOnly": true
+							}
+						}
+					},
+					{
+						"name": "GetJsonFile",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "ParseDownloadPage",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "HttpReadSettings",
+									"requestMethod": "GET"
+								},
+								"formatSettings": {
+									"type": "BinaryReadSettings"
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "AzureIPRangeJSONFile",
+								"type": "DatasetReference",
+								"parameters": {
+									"paramURL": {
+										"value": "@string(activity('ParseDownloadPage').output.runStatus.output.relativeURL.value[0].url3)",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Azure_IP_Range_JSON_Sink",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Examples"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/datasets/AzureIPRangeLink')]",
+				"[concat(variables('workspaceId'), '/datasets/AzureIPRangeLinkSink')]",
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
+				"[concat(variables('workspaceId'), '/dataflows/Azure_IP_Range_ParseHTML')]",
+				"[concat(variables('workspaceId'), '/datasets/AzureIPRangeJSONFile')]",
+				"[concat(variables('workspaceId'), '/datasets/Azure_IP_Range_JSON_Sink')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/MicrosoftDotCom')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "HttpServer",
+				"typeProperties": {
+					"url": "[parameters('MicrosoftDotCom_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/AzureIPRangeLink')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "MicrosoftDotCom",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "HttpServerLocation",
+						"relativeUrl": "en-us/download/confirmation.aspx?id=56519"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/MicrosoftDotCom')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/AzureIPRangeLinkSink')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "anarion-WorkspaceDefaultStorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "linkresponse.html",
+						"folderPath": "01-raw/azure-ip-range",
+						"fileSystem": "calembel"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/anarion-WorkspaceDefaultStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/AzureIPRangeJSONFile')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "DownloadDotMicrosoftDotCom",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"paramURL": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "HttpServerLocation",
+						"relativeUrl": {
+							"value": "@dataset().paramURL",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/DownloadDotMicrosoftDotCom')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Azure_IP_Range_JSON_Sink')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "anarion-WorkspaceDefaultStorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "iprange.json",
+						"folderPath": "02-curated/azure-ip-range-json",
+						"fileSystem": "calembel"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/anarion-WorkspaceDefaultStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Azure_IP_Source_TXT_linkresponse')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "anarion-WorkspaceDefaultStorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "linkresponse.html",
+						"folderPath": "01-raw/azure-ip-range",
+						"fileSystem": "calembel"
+					},
+					"columnDelimiter": "",
+					"rowDelimiter": "",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/anarion-WorkspaceDefaultStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/DownloadDotMicrosoftDotCom')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "HttpServer",
+				"typeProperties": {
+					"url": "[parameters('DownloadDotMicrosoftDotCom_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
 		}
 	]
 }

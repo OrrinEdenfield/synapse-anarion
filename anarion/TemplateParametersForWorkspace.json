@@ -13,6 +13,12 @@
 		},
 		"biketrips_http_source_properties_typeProperties_url": {
 			"value": "https://s3.amazonaws.com/tripdata/"
+		},
+		"MicrosoftDotCom_properties_typeProperties_url": {
+			"value": "https://www.microsoft.com"
+		},
+		"DownloadDotMicrosoftDotCom_properties_typeProperties_url": {
+			"value": "https://download.microsoft.com"
 		}
 	}
 }
