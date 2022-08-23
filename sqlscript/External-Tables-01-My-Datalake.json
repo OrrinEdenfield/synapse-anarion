@@ -1,0 +1,20 @@
+{
+	"name": "External-Tables-01-My-Datalake",
+	"properties": {
+		"folder": {
+			"name": "Examples-SQL-Serverless"
+		},
+		"content": {
+			"query": "-- Example external tables/resources\n/*\nYou can use external tables to:\n  - Query Azure Blob Storage and Azure Data Lake Gen2 with Transact-SQL statements.\n  - Store query results to files in Azure Blob Storage or Azure Data Lake Storage using CETAS\n  - Import data from Azure Blob Storage and Azure Data Lake Storage and store it in a dedicated SQL pool (only Hadoop tables in dedicated pool).\n    - On secont thought, use COPY INTO for this.\n*/\n\n\n-- Credential\ncreate database scoped credential msi_cred\nwith identity = 'Managed Service Identity';\n\n\n-- External data source\ndrop external data source datalake_source;\ngo\ncreate external data source datalake_source\nwith(\n    location = 'abfss://datalake@minastirith.dfs.core.windows.net'\n    ,credential = msi_cred\n    ,type = HADOOP\n);\n\n-- External file format\ncreate external file format parquet_snappy\nwith(\n     format_type = PARQUET\n    ,data_compression = 'org.apache.hadoop.io.compress.SnappyCodec'\n);\n\ncreate external file format delimitedtext_csv\nwith(\n     format_type = delimitedtext\n    ,format_options(\n        field_terminator = ','\n    )\n);\n\ncreate external file format delimitedtext_csv_skiprow1\nwith(\n     format_type = delimitedtext\n    ,format_options(\n         field_terminator = ','\n        ,first_row = 2\n    )\n);\n\n\ncreate schema ext;\n\n-- External table\ndrop external table ext.biketrips2020;\ngo\ncreate external table ext.biketrips2020\n(\n     [tripduration] [varchar](250)  NULL\n\t,[starttime] [varchar](250)  NULL\n\t,[stoptime] [varchar](250)  NULL\n\t,[start station id] [varchar](250)  NULL\n\t,[start station name] [varchar](250)  NULL\n\t,[start station latitude] [varchar](250)  NULL\n\t,[start station longitude] [varchar](250)  NULL\n\t,[end station id] [varchar](250)  NULL\n\t,[end station name] [varchar](250)  NULL\n\t,[end station latitude] [varchar](250)  NULL\n\t,[end station longitude] [varchar](250)  NULL\n\t,[bikeid] [varchar](250)  NULL\n\t,[usertype] [varchar](250)  NULL\n\t,[birth year] [varchar](250)  NULL\n\t,[gender] [varchar](250)  NULL\n)\nWITH\n(\n    LOCATION='/01-fresh/biketrips/2020/' ,\n    DATA_SOURCE = datalake_source ,\n    FILE_FORMAT = delimitedtext_csv_skiprow1\n);\n\n-- Query data\nselect top 10 * from ext.biketrips2020;",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

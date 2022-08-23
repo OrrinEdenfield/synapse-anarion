@@ -1,0 +1,20 @@
+{
+	"name": "Read-Delta-Lake",
+	"properties": {
+		"folder": {
+			"name": "Examples-SQL-Serverless"
+		},
+		"content": {
+			"query": "use serverlessDB;\n\n-- openrowset example\n-- The URI in the OPENROWSET function must reference the root Delta Lake folder that contains a subfolder called _delta_log\nselect top 10 *\nfrom openrowset(\n    bulk 'https://minastirith.blob.core.windows.net/datalake/03-serve/biketrips-deltalake/',\n    format = 'delta') as rows\n\n-- Calculate some aggregate columns\nselect YEAR(StartTime) as [Year], MONTH(StartTime) as [Month], count(*) as [RecordCount]\nfrom openrowset(\n    bulk 'https://minastirith.blob.core.windows.net/datalake/03-serve/biketrips-deltalake/',\n    format = 'delta') as rows\ngroup by YEAR(StartTime), MONTH(StartTime)\n\n\n-- Create external data source\ncreate external data source DeltaLakeStorageBikeTrips\nwith ( location = 'https://minastirith.blob.core.windows.net/datalake/03-serve/biketrips-deltalake/' );\n\n-- openrowset with external data source\nselect top 10 *\nfrom openrowset(\n        bulk '/',\n        data_source = 'DeltaLakeStorageBikeTrips',\n        format = 'delta'\n    ) as rows\n\n-- best practice to specify a schema\nselect top 10 *\nfrom openrowset(\n        bulk '/',\n        data_source = 'DeltaLakeStorageBikeTrips',\n        format = 'delta'\n    )\n    with (  TripDuration varchar(75)\n           ,StartTime varchar(75)\n           ,StopTime varchar(75)\n           ,StartStationId varchar(75)\n           ,StartStationName varchar(75)\n           ,StartStationLatitude varchar(75)\n           ,StartStationLongitude varchar(75)\n           ,EndStationId varchar(75)\n           ,EndStationName varchar(75)\n           ,EndStationLatitude varchar(75)\n           ,EndStationLongitude varchar(75)\n           ,BikeId varchar(75)\n           ,UserType varchar(75)\n           ,BirthYear varchar(75)\n           ,Gender varchar(75)\n           ) as rows",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
