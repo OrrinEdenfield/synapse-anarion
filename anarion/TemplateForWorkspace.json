@@ -10178,6 +10178,20 @@
 			"dependsOn": [
 				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/PowerBIWorkspace')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "PowerBIWorkspace",
+				"typeProperties": {
+					"workspaceID": "29d1e616-f424-482d-a0e3-3f9158f647b3",
+					"tenantID": "72f988bf-86f1-41af-91ab-2d7cd011db47"
+				}
+			},
+			"dependsOn": []
 		}
 	]
 }
