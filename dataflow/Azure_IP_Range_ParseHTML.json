@@ -1,0 +1,51 @@
+{
+	"name": "Azure_IP_Range_ParseHTML",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"name": "relativeURL"
+				}
+			],
+			"transformations": [
+				{
+					"name": "DerivedColumn1"
+				},
+				{
+					"name": "Flatten1"
+				},
+				{
+					"name": "SurrogateKey1"
+				},
+				{
+					"name": "Filter1"
+				},
+				{
+					"name": "DerivedColumn2"
+				},
+				{
+					"name": "SurrogateKey2"
+				},
+				{
+					"name": "Filter2"
+				},
+				{
+					"name": "Flatten2"
+				},
+				{
+					"name": "DerivedColumn3"
+				},
+				{
+					"name": "Select1"
+				}
+			],
+			"script": "source(output(\n\t\t{_col0_} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 derive(url = regexSplit({_col0_},'download.microsoft.com')) ~> DerivedColumn1\nDerivedColumn1 foldDown(unroll(url, url),\n\tmapColumn(\n\t\t{_col0_},\n\t\turl\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> Flatten1\nFlatten1 keyGenerate(output(rownbr as long),\n\tstartAt: 1L,\n\tstepValue: 1L) ~> SurrogateKey1\nSurrogateKey1 filter(rownbr == 2) ~> Filter1\nFilter1 derive(url2 = regexSplit(url,'.json\"')) ~> DerivedColumn2\nFlatten2 keyGenerate(output(rownbr2 as long),\n\tstartAt: 1L,\n\tstepValue: 1L) ~> SurrogateKey2\nSurrogateKey2 filter(rownbr2 == 1) ~> Filter2\nDerivedColumn2 foldDown(unroll(url2, url2),\n\tmapColumn(\n\t\t{_col0_},\n\t\turl,\n\t\trownbr,\n\t\turl2\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> Flatten2\nFilter2 derive(url3 = concat(ltrim(url2,'/'),'.json')) ~> DerivedColumn3\nDerivedColumn3 select(mapColumn(\n\t\turl3\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nSelect1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['jsonlink.txt'],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tstore: 'cache',\n\tformat: 'inline',\n\toutput: true,\n\tsaveOrder: 1,\n\tpartitionBy('hash', 1)) ~> relativeURL"
+		}
+	}
+}
