@@ -1,0 +1,20 @@
+{
+	"name": "SynapseLink-CosmosDB-01",
+	"properties": {
+		"folder": {
+			"name": "Examples-SQL-Serverless"
+		},
+		"content": {
+			"query": "/*  \n-- Create the credential that is used to access\nCREATE CREDENTIAL [howtoanalytics-cosmosdb]\nWITH IDENTITY = 'SHARED ACCESS SIGNATURE', SECRET = '2EBVHRxK6KLS7ZCyrWHrY4k5CEmqyL25CGM18AFIwGCgHibwoVfhKCuLAU0fLvE5ChueH3gTGXSGw14I36y3gw=='\n*/\n\n\n\nSELECT TOP 100 *\nFROM OPENROWSET(​PROVIDER = 'CosmosDB', CONNECTION = 'Account=howtoanalytics;Database=biketrips',\n    OBJECT = 'data2021', SERVER_CREDENTIAL = 'howtoanalytics-cosmosdb' ) AS [data2021];\n\n-- Create database\n--create database sqlserverless;\n\n-- To copy the data into the data lake, we need to use CETAS & to use that we need to create an external data source & format\nCREATE EXTERNAL DATA SOURCE [datalake] WITH (LOCATION = 'https://minastirith.dfs.core.windows.net/datalake2020');\nCREATE EXTERNAL FILE FORMAT [parquet] WITH (FORMAT_TYPE = PARQUET, DATA_COMPRESSION = 'org.apache.hadoop.io.compress.SnappyCodec'); \nCREATE EXTERNAL FILE FORMAT [delimitedtext] WITH (FORMAT_TYPE = DELIMITEDTEXT);\n\nCREATE EXTERNAL FILE FORMAT csvtext WITH (FORMAT_TYPE = DELIMITEDTEXT, FORMAT_OPTIONS (FIELD_TERMINATOR = ','));\n\n\n-- 01-fresh/synapselink-cosmosdb/\n\n-- Drop external tables\ndrop EXTERNAL TABLE biketrips2021_parquet;\ndrop EXTERNAL TABLE biketrips2021_delimited;\n\n-- Create External table to copy data into Data Lake from Cosmos DB:\nCREATE EXTERNAL TABLE biketrips2021_parquet\nWITH (\n    LOCATION = '01-fresh/synapselink-cosmosdb/parquet',\n    DATA_SOURCE = datalake,  \n    FILE_FORMAT = parquet\n)  \nAS\nSELECT *\nFROM OPENROWSET(​PROVIDER = 'CosmosDB', CONNECTION = 'Account=howtoanalytics;Database=biketrips',\n                OBJECT = 'data2021', SERVER_CREDENTIAL = 'howtoanalytics-cosmosdb' ) AS [data2021];\nGO\n-- 00:00:16\n\nCREATE EXTERNAL TABLE biketrips2021_delimited\nWITH (\n    LOCATION = '01-fresh/synapselink-cosmosdb/delimitedtext',\n    DATA_SOURCE = datalake,  \n    FILE_FORMAT = csvtext\n)  \nAS\nSELECT *\nFROM OPENROWSET(​PROVIDER = 'CosmosDB', CONNECTION = 'Account=howtoanalytics;Database=biketrips',\n                OBJECT = 'data2021', SERVER_CREDENTIAL = 'howtoanalytics-cosmosdb' ) AS [data2021];\nGO\n-- 00:00:14\n\n-- you can query the newly created external table\nSELECT count(*) FROM biketrips2021_parquet\n-- 3,224,034\n\nSELECT count(*) FROM biketrips2021_delimited\n-- 3,224,034",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
