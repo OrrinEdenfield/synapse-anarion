@@ -1,0 +1,58 @@
+{
+	"name": "SynapseLink2SQLDB-Generate",
+	"properties": {
+		"activities": [
+			{
+				"name": "Scale to S3-DTU100",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[spScaleDB_S3]"
+				},
+				"linkedServiceName": {
+					"referenceName": "brandybuck_primula",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Scale to Basic",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Scale to S3-DTU100",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[spScaleDB_Basic]"
+				},
+				"linkedServiceName": {
+					"referenceName": "brandybuck_primula",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"folder": {
+			"name": "Examples"
+		},
+		"annotations": []
+	}
+}
