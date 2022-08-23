@@ -8,6 +8,9 @@
 		"anarion-WorkspaceDefaultSqlServer_connectionString": {
 			"value": ""
 		},
+		"brandybuck_primula_connectionString": {
+			"value": ""
+		},
 		"anarion-WorkspaceDefaultStorage_properties_typeProperties_url": {
 			"value": "https://gondor2.dfs.core.windows.net"
 		},
