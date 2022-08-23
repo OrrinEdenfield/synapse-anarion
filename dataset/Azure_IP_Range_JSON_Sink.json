@@ -1,0 +1,19 @@
+{
+	"name": "Azure_IP_Range_JSON_Sink",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "anarion-WorkspaceDefaultStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "iprange.json",
+				"folderPath": "02-curated/azure-ip-range-json",
+				"fileSystem": "calembel"
+			}
+		}
+	}
+}

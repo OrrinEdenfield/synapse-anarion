@@ -1,0 +1,17 @@
+{
+	"name": "AzureIPRangeLink",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "MicrosoftDotCom",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "HttpServerLocation",
+				"relativeUrl": "en-us/download/confirmation.aspx?id=56519"
+			}
+		}
+	}
+}
