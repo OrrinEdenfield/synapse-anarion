@@ -1,0 +1,20 @@
+{
+	"name": "tpc-ds-external-tables",
+	"properties": {
+		"folder": {
+			"name": "Misc/TPC-DS"
+		},
+		"content": {
+			"query": "-- Create the external file format if it doesn't exist already\nIF NOT EXISTS (SELECT * FROM sys.external_file_formats WHERE name = 'SynapseDelimitedTextFormat') \n\tCREATE EXTERNAL FILE FORMAT [SynapseDelimitedTextFormat] \n\tWITH ( FORMAT_TYPE = DELIMITEDTEXT ,\n\t       FORMAT_OPTIONS (\n\t\t\t FIELD_TERMINATOR = ',',\n\t\t\t USE_TYPE_DEFAULT = FALSE\n\t\t\t))\nGO\n\n-- Create the external data source if it doesn't exist already\nIF NOT EXISTS (SELECT * FROM sys.external_data_sources WHERE name = 'datalake2020_minastirith_dfs_core_windows_net') \n\tCREATE EXTERNAL DATA SOURCE [datalake2020_minastirith_dfs_core_windows_net] \n\tWITH (\n\t\tLOCATION = 'abfss://datalake2020@minastirith.dfs.core.windows.net', \n\t\tTYPE = HADOOP \n\t)\nGO\n\n\n-- Create the ext schema\ncreate schema ext;\n\n--drop EXTERNAL TABLE catalog_sales;\n\nCREATE EXTERNAL TABLE ext.catalog_sales (\n\tcs_sold_date_sk VARCHAR(2000)\n\t,cs_sold_time_sk VARCHAR(2000)\n\t,cs_ship_date_sk VARCHAR(2000)\n\t,cs_bill_customer_sk VARCHAR(2000)\n\t,cs_bill_cdemo_sk VARCHAR(2000)\n\t,cs_bill_hdemo_sk VARCHAR(2000)\n\t,cs_bill_addr_sk VARCHAR(2000)\n\t,cs_ship_customer_sk VARCHAR(2000)\n\t,cs_ship_cdemo_sk VARCHAR(2000)\n\t,cs_ship_hdemo_sk VARCHAR(2000)\n\t,cs_ship_addr_sk VARCHAR(2000)\n\t,cs_call_center_sk VARCHAR(2000)\n\t,cs_catalog_page_sk VARCHAR(2000)\n\t,cs_ship_mode_sk VARCHAR(2000)\n\t,cs_warehouse_sk VARCHAR(2000)\n\t,cs_item_sk VARCHAR(2000)\n\t,cs_promo_sk VARCHAR(2000)\n\t,cs_order_number VARCHAR(2000)\n\t,cs_quantity VARCHAR(2000)\n\t,cs_wholesale_cost VARCHAR(2000)\n\t,cs_list_price VARCHAR(2000)\n\t,cs_sales_price VARCHAR(2000)\n\t,cs_ext_discount_amt VARCHAR(2000)\n\t,cs_ext_sales_price VARCHAR(2000)\n\t,cs_ext_wholesale_cost VARCHAR(2000)\n\t,cs_ext_list_price VARCHAR(2000)\n\t,cs_ext_tax VARCHAR(2000)\n\t,cs_coupon_amt VARCHAR(2000)\n\t,cs_ext_ship_cost VARCHAR(2000)\n\t,cs_net_paid VARCHAR(2000)\n\t,cs_net_paid_inc_tax VARCHAR(2000)\n\t,cs_net_paid_inc_ship VARCHAR(2000)\n\t,cs_net_paid_inc_ship_tax VARCHAR(2000)\n\t,cs_net_profit VARCHAR(2000)\n\t)\n\tWITH (\n\tLOCATION = 'TPC-DS/SourceFiles001TB_csv/catalog_sales/part-00000-tid-8479618599068395054-a7843efc-19d3-441d-a884-fa8224b1de09-96-1-c000.csv',\n\tDATA_SOURCE = [datalake2020_minastirith_dfs_core_windows_net],\n\tFILE_FORMAT = [SynapseDelimitedTextFormat]\n\t)\nGO\n\n\nSELECT TOP 100 * FROM ext.catalog_sales\nGO\n\nSELECT count(*) FROM ext.catalog_sales\nGO\n-- 368,637,378\n\n-- Create a smaller table - 70m records instead of 368m\nCREATE EXTERNAL TABLE ext.catalog_sales70M\nWITH (  \n        LOCATION='TPC-DS/SourceFiles001TB_csv/catalog_sales70M/',  \n        DATA_SOURCE = datalake2020_minastirith_dfs_core_windows_net,\n        FILE_FORMAT = SynapseDelimitedTextFormat\n) AS \nselect top 70000000 * from ext.catalog_sales;\n-- 00:34:26\n\nselect top 10 * from ext.catalog_sales70M",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
