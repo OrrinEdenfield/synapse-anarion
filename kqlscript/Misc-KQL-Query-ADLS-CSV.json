@@ -1,0 +1,12 @@
+{
+	"name": "Misc-KQL-Query-ADLS-CSV",
+	"properties": {
+		"content": {
+			"query": "// This seems to create the table, but I don't think the connection string is correct\n.create external table ExternalTable (tripduration:string, starttime:string, stoptime:string, start_station_id:string, start_station_name:string, start_station_lat:string, start_station_long:string, end_station_id:string, end_station_name:string, end_station_lat:string, end_station_long:string, bikeid:string, usertype:string, birth_year:string, gender:string)  \nkind=adl\ndataformat=csv \n( \n   h@'https://minastirith.dfs.core.windows.net/datalake2020/01-fresh/biketrips/2020/202001-citibike-tripdata.csv' \n)\n\n// show me the data - shows me an empty table with error\nexternal_table('ExternalTable') | take 1000\n\n\n// drop the table\n.drop external table ExternalTable",
+			"metadata": {
+				"language": "kql"
+			}
+		},
+		"type": "KqlQuery"
+	}
+}

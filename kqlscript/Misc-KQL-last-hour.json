@@ -1,0 +1,12 @@
+{
+	"name": "Misc-KQL-last-hour",
+	"properties": {
+		"content": {
+			"query": "// Compare yesterday's data to the day before, and the day before that\nbuidingenv_v2\n| where toint(datetime_part(\"day\", timestamp)) == datetime_part(\"day\", now(-3d))\n| count\n// 162,208\n\n// Count of records per hour, exclude first hour data was sent in & latest 1 hour increment\nbuidingenv_v2\n| summarize RecordCount = count() by ISO8601 = substring(tostring(timestamp),0,13), deviceid\n| where ISO8601 != '' and ISO8601 != '2021-09-24T13' and ISO8601 != substring(tostring(now()),0,13)\n| order by ISO8601 desc, deviceid asc\n\n// Records from the last 1 hour\nbuidingenv_v2\n| where timestamp > ago(8h)\n| order by timestamp desc\n| limit 15",
+			"metadata": {
+				"language": "kql"
+			}
+		},
+		"type": "KqlQuery"
+	}
+}

@@ -1,0 +1,12 @@
+{
+	"name": "Misc-KQL-Create-IoT-Table",
+	"properties": {
+		"content": {
+			"query": "// Create a table to ingest data into from IoT Hub\n//.create table PerceptInferences (col1: string, col2: string)\n\n.drop table PerceptInferences\n\n.create table PerceptInferences (label: string, confidence: real, timestamp: real)\n.create table PerceptInferences ingestion json mapping 'PerceptMapping' '[{\"column\":\"label\",\"path\":\"$.NEURAL_NETWORK.label\",\"datatype\":\"string\"},{\"column\":\"confidence\",\"path\":\"$.NEURAL_NETWORK.confidence\",\"datatype\":\"real\"},,{\"column\":\"timestamp\",\"path\":\"$.NEURAL_NETWORK.timestamp\",\"datatype\":\"real\"}]'\n\n\n",
+			"metadata": {
+				"language": "kql"
+			}
+		},
+		"type": "KqlQuery"
+	}
+}
