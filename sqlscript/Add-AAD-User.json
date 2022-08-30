@@ -1,0 +1,20 @@
+{
+	"name": "Add-AAD-User",
+	"properties": {
+		"folder": {
+			"name": "Examples-SQL-Dedicated"
+		},
+		"content": {
+			"query": "-- Add login from AAD:\n--CREATE USER [ored@microsoft.com] FROM EXTERNAL PROVIDER;\nCREATE USER [Orrin.Edenfield_microsoft.com#EXT#@fdpo.onmicrosoft.com] FROM EXTERNAL PROVIDER;\n\n-- Give permissions:\nEXEC sp_addrolemember 'db_datareader', 'Orrin.Edenfield_microsoft.com#EXT#@fdpo.onmicrosoft.com';\nEXEC sp_addrolemember 'db_datawriter', 'Orrin.Edenfield_microsoft.com#EXT#@fdpo.onmicrosoft.com';\nEXEC sp_addrolemember 'db_ddladmin', 'Orrin.Edenfield_microsoft.com#EXT#@fdpo.onmicrosoft.com';\nEXEC sp_addrolemember 'db_owner', 'Orrin.Edenfield_microsoft.com#EXT#@fdpo.onmicrosoft.com';",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "SynapseSQLDedicated",
+				"poolName": "SynapseSQLDedicated"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
