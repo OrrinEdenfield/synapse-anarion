@@ -1,0 +1,53 @@
+{
+	"name": "Parquet_US_Pop_By_Zip",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "anarion-WorkspaceDefaultStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "01-raw/US-Population-by-postal-code/parquet",
+				"fileSystem": "calembel"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "decennialTime",
+				"type": "UTF8"
+			},
+			{
+				"name": "zipCode",
+				"type": "UTF8"
+			},
+			{
+				"name": "population",
+				"type": "INT32"
+			},
+			{
+				"name": "race",
+				"type": "UTF8"
+			},
+			{
+				"name": "sex",
+				"type": "UTF8"
+			},
+			{
+				"name": "minAge",
+				"type": "INT32"
+			},
+			{
+				"name": "maxAge",
+				"type": "INT32"
+			},
+			{
+				"name": "year",
+				"type": "INT32"
+			}
+		]
+	}
+}
