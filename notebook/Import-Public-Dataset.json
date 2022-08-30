@@ -20,7 +20,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "ff88d6cc-ffa7-42e2-9bde-4a014e79f6e3"
+				"spark.autotune.trackingId": "19936666-ca0a-4838-9d01-8b34684e9a5d"
 			}
 		},
 		"metadata": {
@@ -73,13 +73,14 @@
 						"transient": {
 							"deleting": false
 						}
-					}
+					},
+					"collapsed": false
 				},
 				"source": [
 					"# Display top 5 rows\r\n",
 					"display(population_df.limit(5))"
 				],
-				"execution_count": null
+				"execution_count": 13
 			},
 			{
 				"cell_type": "code",
@@ -95,22 +96,45 @@
 					}
 				},
 				"source": [
-					"# To write data\r\n",
-					"import fsspec\r\n",
-					"import pandas\r\n",
-					"\r\n",
-					"adls_account_name = 'gondor2' #Provide exact ADLS account name\r\n",
-					"\r\n",
-					"data = pandas.DataFrame({'Name':['Tom', 'nick', 'krish', 'jack'], 'Age':[20, 21, 19, 18]})\r\n",
-					"\r\n",
-					"sas_key = TokenLibrary.getConnectionString(anarion-WorkspaceDefaultStorage) \r\n",
-					"\r\n",
-					"fsspec_handle = fsspec.open('abfs[s]://calembel/01-raw/US-Population-by-postal-code', account_name =    adls_account_name, sas_token=sas_key, mode=\"wt\") \r\n",
-					"\r\n",
-					"with fsspec_handle.open() as f:\r\n",
-					"    data.to_csv(f) "
+					"population_df.distinct().count()"
 				],
-				"execution_count": null
+				"execution_count": 16
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"population_df.write.parquet(\"abfss://calembel@gondor2.dfs.core.windows.net/01-raw/US-Population-by-postal-code/parquet\")"
+				],
+				"execution_count": 18
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"population_df.write.csv(\"abfss://calembel@gondor2.dfs.core.windows.net/01-raw/US-Population-by-postal-code/csv\")"
+				],
+				"execution_count": 19
 			}
 		]
 	}
