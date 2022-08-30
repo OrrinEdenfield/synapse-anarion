@@ -263,7 +263,8 @@
 			},
 			"dependsOn": [
 				"[concat(variables('workspaceId'), '/dataflows/Load_US_Pop_by_Zip_Parquet')]",
-				"[concat(variables('workspaceId'), '/linkedServices/anarion-WorkspaceDefaultStorage')]"
+				"[concat(variables('workspaceId'), '/linkedServices/anarion-WorkspaceDefaultStorage')]",
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
 			]
 		},
 		{
@@ -1524,12 +1525,12 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/SQL script 1')]",
+			"name": "[concat(parameters('workspaceName'), '/US-Zip-Code-01')]",
 			"type": "Microsoft.Synapse/workspaces/sqlscripts",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
 				"content": {
-					"query": "SELECT TOP (100) [decennialTime]\n,[zipCode]\n,[population]\n,[race]\n,[sex]\n,[minAge]\n,[maxAge]\n,[year]\n FROM [dbo].[US_Pop_by_Zip]\n\n select \n FROM [dbo].[US_Pop_by_Zip]\n\n\n\n drop table [dbo].[US_Pop_by_Zip]",
+					"query": "SELECT TOP (100) [decennialTime]\n,[zipCode]\n,[population]\n,[race]\n,[sex]\n,[minAge]\n,[maxAge]\n,[year]\n FROM [dbo].[US_Pop_by_Zip]\n\n select \n FROM [dbo].[US_Pop_by_Zip]\n\n\n\n \n select top 10 *\n from dbo.US_Zip",
 					"metadata": {
 						"language": "sql"
 					},
@@ -3921,7 +3922,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "19936666-ca0a-4838-9d01-8b34684e9a5d"
+						"spark.autotune.trackingId": "e3740bf7-f0d9-416c-9d9b-c6e1fad24b04"
 					}
 				},
 				"metadata": {
@@ -3946,13 +3947,15 @@
 						"sparkVersion": "3.1",
 						"nodeCount": 3,
 						"cores": 4,
-						"memory": 28
+						"memory": 28,
+						"automaticScaleJobs": false
 					},
 					"sessionKeepAliveTimeout": 30
 				},
 				"cells": [
 					{
 						"cell_type": "code",
+						"metadata": {},
 						"source": [
 							"# This is a package in preview.\r\n",
 							"from azureml.opendatasets import UsPopulationZip\r\n",
