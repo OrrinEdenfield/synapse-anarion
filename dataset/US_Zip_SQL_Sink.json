@@ -3,7 +3,10 @@
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "anarion-WorkspaceDefaultSqlServer",
-			"type": "LinkedServiceReference"
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"DBName": "SynapseSQLDedicated"
+			}
 		},
 		"annotations": [],
 		"type": "AzureSqlDWTable",
