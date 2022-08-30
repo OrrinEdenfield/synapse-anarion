@@ -3574,7 +3574,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "ed559534-08b3-4468-a25c-731e38b36576"
+						"spark.autotune.trackingId": "3e67650a-a177-4145-9104-a635ca2a3dc2"
 					}
 				},
 				"metadata": {
@@ -10619,7 +10619,10 @@
 			"properties": {
 				"linkedServiceName": {
 					"referenceName": "anarion-WorkspaceDefaultSqlServer",
-					"type": "LinkedServiceReference"
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"DBName": "SynapseSQLDedicated"
+					}
 				},
 				"annotations": [],
 				"type": "AzureSqlDWTable",
