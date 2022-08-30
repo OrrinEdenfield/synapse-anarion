@@ -3574,7 +3574,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "5e79e0f3-22ba-4e32-981f-b18a7017af42"
+						"spark.autotune.trackingId": "9ea16aa3-56b7-46d3-9d62-4b613c05887d"
 					}
 				},
 				"metadata": {
@@ -3582,7 +3582,7 @@
 					"enableDebugMode": false,
 					"kernelspec": {
 						"name": "synapse_pyspark",
-						"display_name": "python"
+						"display_name": "Synapse PySpark"
 					},
 					"language_info": {
 						"name": "python"
@@ -3616,7 +3616,28 @@
 							"population_df = population.to_spark_dataframe()"
 						],
 						"outputs": [],
-						"execution_count": null
+						"execution_count": 1
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							},
+							"collapsed": false
+						},
+						"source": [
+							"# Display top 5 rows\r\n",
+							"display(population_df.limit(5))"
+						],
+						"outputs": [],
+						"execution_count": 13
 					},
 					{
 						"cell_type": "code",
@@ -3632,11 +3653,48 @@
 							}
 						},
 						"source": [
-							"# Display top 5 rows\r\n",
-							"display(population_df.limit(5))"
+							"population_df.distinct().count()"
 						],
 						"outputs": [],
-						"execution_count": null
+						"execution_count": 16
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"population_df.write.parquet(\"abfss://calembel@gondor2.dfs.core.windows.net/01-raw/US-Population-by-postal-code/parquet\")"
+						],
+						"outputs": [],
+						"execution_count": 18
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"population_df.write.csv(\"abfss://calembel@gondor2.dfs.core.windows.net/01-raw/US-Population-by-postal-code/csv\")"
+						],
+						"outputs": [],
+						"execution_count": 19
 					}
 				]
 			},
