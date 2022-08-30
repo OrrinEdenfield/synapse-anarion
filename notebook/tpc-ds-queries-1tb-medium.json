@@ -2,7 +2,7 @@
 	"name": "tpc-ds-queries-1tb-medium",
 	"properties": {
 		"folder": {
-			"name": "TPC-DS-02-Run-Queries"
+			"name": "TPC-DS/TPC-DS-02-Run-Queries"
 		},
 		"nbformat": 4,
 		"nbformat_minor": 2,
@@ -45,8 +45,7 @@
 				"sparkVersion": "3.2",
 				"nodeCount": 3,
 				"cores": 8,
-				"memory": 56,
-				"automaticScaleJobs": false
+				"memory": 56
 			},
 			"sessionKeepAliveTimeout": 30
 		},

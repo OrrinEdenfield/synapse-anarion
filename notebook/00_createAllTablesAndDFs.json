@@ -2,7 +2,7 @@
 	"name": "00_createAllTablesAndDFs",
 	"properties": {
 		"folder": {
-			"name": "TPC-DS-01-Create"
+			"name": "TPC-DS/TPC-DS-01-Create"
 		},
 		"nbformat": 4,
 		"nbformat_minor": 2,
@@ -45,8 +45,7 @@
 				"sparkVersion": "3.2",
 				"nodeCount": 3,
 				"cores": 32,
-				"memory": 224,
-				"automaticScaleJobs": false
+				"memory": 224
 			},
 			"sessionKeepAliveTimeout": 30
 		},
