@@ -1,8 +1,8 @@
 {
-	"name": "SQL script 1",
+	"name": "US-Zip-Code-01",
 	"properties": {
 		"content": {
-			"query": "SELECT TOP (100) [decennialTime]\n,[zipCode]\n,[population]\n,[race]\n,[sex]\n,[minAge]\n,[maxAge]\n,[year]\n FROM [dbo].[US_Pop_by_Zip]\n\n select \n FROM [dbo].[US_Pop_by_Zip]\n\n\n\n drop table [dbo].[US_Pop_by_Zip]",
+			"query": "SELECT TOP (100) [decennialTime]\n,[zipCode]\n,[population]\n,[race]\n,[sex]\n,[minAge]\n,[maxAge]\n,[year]\n FROM [dbo].[US_Pop_by_Zip]\n\n select \n FROM [dbo].[US_Pop_by_Zip]\n\n\n\n \n select top 10 *\n from dbo.US_Zip",
 			"metadata": {
 				"language": "sql"
 			},
