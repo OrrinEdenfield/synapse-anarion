@@ -1,0 +1,16 @@
+{
+	"name": "SQL_Dedicated_SalesLT_SalesOrderDetail",
+	"properties": {
+		"annotations": [],
+		"type": "SqlPoolTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "SalesLT",
+			"table": "SalesOrderDetail"
+		},
+		"sqlPool": {
+			"referenceName": "SynapseSQLDedicated",
+			"type": "SqlPoolReference"
+		}
+	}
+}
