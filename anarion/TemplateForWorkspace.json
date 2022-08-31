@@ -263,8 +263,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('workspaceId'), '/dataflows/Load_US_Pop_by_Zip_Parquet')]",
-				"[concat(variables('workspaceId'), '/linkedServices/anarion-WorkspaceDefaultStorage')]",
-				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+				"[concat(variables('workspaceId'), '/linkedServices/anarion-WorkspaceDefaultStorage')]"
 			]
 		},
 		{
@@ -1410,6 +1409,29 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('workspaceName'), '/Add-AAD-User')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "Examples-SQL-Dedicated"
+				},
+				"content": {
+					"query": "-- Add login from AAD:\n--CREATE USER [ored@microsoft.com] FROM EXTERNAL PROVIDER;\nCREATE USER [Orrin.Edenfield_microsoft.com#EXT#@fdpo.onmicrosoft.com] FROM EXTERNAL PROVIDER;\n\n-- Give permissions:\nEXEC sp_addrolemember 'db_datareader', 'Orrin.Edenfield_microsoft.com#EXT#@fdpo.onmicrosoft.com';\nEXEC sp_addrolemember 'db_datawriter', 'Orrin.Edenfield_microsoft.com#EXT#@fdpo.onmicrosoft.com';\nEXEC sp_addrolemember 'db_ddladmin', 'Orrin.Edenfield_microsoft.com#EXT#@fdpo.onmicrosoft.com';\nEXEC sp_addrolemember 'db_owner', 'Orrin.Edenfield_microsoft.com#EXT#@fdpo.onmicrosoft.com';",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "SynapseSQLDedicated",
+						"poolName": "SynapseSQLDedicated"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/Add-Purview-Managed-Identity')]",
 			"type": "Microsoft.Synapse/workspaces/sqlscripts",
 			"apiVersion": "2019-06-01-preview",
@@ -1525,26 +1547,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/US-Zip-Code-01')]",
-			"type": "Microsoft.Synapse/workspaces/sqlscripts",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"content": {
-					"query": "SELECT TOP (100) [decennialTime]\n,[zipCode]\n,[population]\n,[race]\n,[sex]\n,[minAge]\n,[maxAge]\n,[year]\n FROM [dbo].[US_Pop_by_Zip]\n\n select \n FROM [dbo].[US_Pop_by_Zip]\n\n\n\n \n select top 10 *\n from dbo.US_Zip",
-					"metadata": {
-						"language": "sql"
-					},
-					"currentConnection": {
-						"databaseName": "SynapseSQLDedicated",
-						"poolName": "SynapseSQLDedicated"
-					},
-					"resultLimit": 5000
-				},
-				"type": "SqlQuery"
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('workspaceName'), '/SQL-Dedicated-DDM-Example-01')]",
 			"type": "Microsoft.Synapse/workspaces/sqlscripts",
 			"apiVersion": "2019-06-01-preview",
@@ -1652,6 +1654,26 @@
 					"currentConnection": {
 						"databaseName": "master",
 						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/US-Zip-Code-01')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "SELECT TOP (100) [decennialTime]\n,[zipCode]\n,[population]\n,[race]\n,[sex]\n,[minAge]\n,[maxAge]\n,[year]\n FROM [dbo].[US_Pop_by_Zip]\n\n select \n FROM [dbo].[US_Pop_by_Zip]\n\n\n\n \n select top 10 *\n from dbo.US_Zip",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "SynapseSQLDedicated",
+						"poolName": "SynapseSQLDedicated"
 					},
 					"resultLimit": 5000
 				},
@@ -3922,7 +3944,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "6a39286d-880c-49ba-b0f9-dd29cb111514"
+						"spark.autotune.trackingId": "6538840b-06b5-43b0-b88b-0fce39ca58e3"
 					}
 				},
 				"metadata": {
@@ -3947,15 +3969,13 @@
 						"sparkVersion": "3.1",
 						"nodeCount": 3,
 						"cores": 4,
-						"memory": 28,
-						"automaticScaleJobs": false
+						"memory": 28
 					},
 					"sessionKeepAliveTimeout": 30
 				},
 				"cells": [
 					{
 						"cell_type": "code",
-						"metadata": {},
 						"source": [
 							"# This is a package in preview.\r\n",
 							"from azureml.opendatasets import UsPopulationZip\r\n",
@@ -10781,27 +10801,44 @@
 			"location": "westeurope"
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/Add-AAD-User')]",
-			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"name": "[concat(parameters('workspaceName'), '/ScaleSQLDBforSynapseLink2SQLDB')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
+				"activities": [
+					{
+						"name": "Scale to S3-DTU100",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[dbo].[spScaleDB_S3]"
+						},
+						"linkedServiceName": {
+							"referenceName": "brandybuck_primula",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
 				"folder": {
-					"name": "Examples-SQL-Dedicated"
+					"name": "Examples"
 				},
-				"content": {
-					"query": "-- Add login from AAD:\n--CREATE USER [ored@microsoft.com] FROM EXTERNAL PROVIDER;\nCREATE USER [Orrin.Edenfield_microsoft.com#EXT#@fdpo.onmicrosoft.com] FROM EXTERNAL PROVIDER;\n\n-- Give permissions:\nEXEC sp_addrolemember 'db_datareader', 'Orrin.Edenfield_microsoft.com#EXT#@fdpo.onmicrosoft.com';\nEXEC sp_addrolemember 'db_datawriter', 'Orrin.Edenfield_microsoft.com#EXT#@fdpo.onmicrosoft.com';\nEXEC sp_addrolemember 'db_ddladmin', 'Orrin.Edenfield_microsoft.com#EXT#@fdpo.onmicrosoft.com';\nEXEC sp_addrolemember 'db_owner', 'Orrin.Edenfield_microsoft.com#EXT#@fdpo.onmicrosoft.com';",
-					"metadata": {
-						"language": "sql"
-					},
-					"currentConnection": {
-						"databaseName": "SynapseSQLDedicated",
-						"poolName": "SynapseSQLDedicated"
-					},
-					"resultLimit": 5000
-				},
-				"type": "SqlQuery"
+				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/brandybuck_primula')]"
+			]
 		}
 	]
 }
