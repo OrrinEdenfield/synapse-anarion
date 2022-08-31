@@ -10839,6 +10839,46 @@
 			"dependsOn": [
 				"[concat(variables('workspaceId'), '/linkedServices/brandybuck_primula')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ScaleSQLDB-to-Basic')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "Scale to Basic",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[dbo].[spScaleDB_Basic]"
+						},
+						"linkedServiceName": {
+							"referenceName": "brandybuck_primula",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Examples"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/brandybuck_primula')]"
+			]
 		}
 	]
 }
