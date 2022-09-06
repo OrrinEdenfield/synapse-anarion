@@ -1,5 +1,5 @@
 {
-	"name": "OnPrem_FileServer",
+	"name": "OnPrem_biketrips",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "HomeServer_WindowsFileShare",
