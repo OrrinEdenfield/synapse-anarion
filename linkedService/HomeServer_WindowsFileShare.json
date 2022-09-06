@@ -1,0 +1,23 @@
+{
+	"name": "HomeServer_WindowsFileShare",
+	"properties": {
+		"annotations": [],
+		"type": "FileServer",
+		"typeProperties": {
+			"host": "C:\\DemoData",
+			"userId": "Administrator",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "RingOfPowerAKV",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "HomeServerAdmin"
+			}
+		},
+		"connectVia": {
+			"referenceName": "AutoResolveIntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
