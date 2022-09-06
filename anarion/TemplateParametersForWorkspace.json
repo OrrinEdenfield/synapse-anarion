@@ -8,6 +8,9 @@
 		"anarion-WorkspaceDefaultSqlServer_connectionString": {
 			"value": ""
 		},
+		"brandybuck_amaranth_connectionString": {
+			"value": ""
+		},
 		"brandybuck_primula_connectionString": {
 			"value": ""
 		},
