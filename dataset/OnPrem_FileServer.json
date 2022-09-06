@@ -1,0 +1,17 @@
+{
+	"name": "OnPrem_FileServer",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "HomeServer_WindowsFileShare",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "FileServerLocation",
+				"folderPath": "biketrips"
+			}
+		}
+	}
+}
