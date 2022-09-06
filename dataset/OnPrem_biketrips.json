@@ -13,7 +13,7 @@
 				"folderPath": "biketrips"
 			},
 			"compression": {
-				"type": "ZipDeflate",
+				"type": "gzip",
 				"level": "Fastest"
 			}
 		}
