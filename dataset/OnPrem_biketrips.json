@@ -11,6 +11,10 @@
 			"location": {
 				"type": "FileServerLocation",
 				"folderPath": "biketrips"
+			},
+			"compression": {
+				"type": "ZipDeflate",
+				"level": "Fastest"
 			}
 		}
 	}
