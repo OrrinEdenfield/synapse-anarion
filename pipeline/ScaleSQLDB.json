@@ -1,5 +1,5 @@
 {
-	"name": "SynapseLink2SQLDB-Generate",
+	"name": "ScaleSQLDB",
 	"properties": {
 		"activities": [
 			{
