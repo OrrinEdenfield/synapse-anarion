@@ -1,0 +1,6 @@
+{
+	"name": "HomeServer",
+	"properties": {
+		"type": "SelfHosted"
+	}
+}
