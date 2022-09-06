@@ -22,6 +22,15 @@
 		},
 		"biketrips_http_source_properties_typeProperties_url": {
 			"value": "https://s3.amazonaws.com/tripdata/"
+		},
+		"RingOfPowerAKV_properties_typeProperties_baseUrl": {
+			"value": "https://GreatRingofPower.vault.azure.net/"
+		},
+		"HomeServer_WindowsFileShare_properties_typeProperties_host": {
+			"value": "C:\\DemoData"
+		},
+		"HomeServer_WindowsFileShare_properties_typeProperties_userId": {
+			"value": "Administrator"
 		}
 	}
 }
