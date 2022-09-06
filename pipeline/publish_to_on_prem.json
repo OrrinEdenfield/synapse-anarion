@@ -42,7 +42,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "OnPrem_FileServer",
+						"referenceName": "OnPrem_biketrips",
 						"type": "DatasetReference"
 					}
 				]
