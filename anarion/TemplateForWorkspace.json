@@ -11482,7 +11482,7 @@
 					"name": "Examples-IoT"
 				},
 				"content": {
-					"query": "-- Let's explore the IoT data in CSV format.\n\nselect top 30 * \nfrom openrowset(\n    BULK 'https://gondor2.dfs.core.windows.net/calembel/01-raw/iot/csv/**',\n    FORMAT = 'CSV',\n    FIELDTERMINATOR ='|',\n    PARSER_VERSION = '2.0',\n    header_row = true\n) AS [result]\n\n\n\nselect count(*) as reccount\nfrom openrowset(\n    BULK 'https://gondor2.dfs.core.windows.net/calembel/01-raw/iot/csv/**',\n    FORMAT = 'CSV',\n    FIELDTERMINATOR ='|',\n    PARSER_VERSION = '2.0',\n    header_row = true\n) AS [result]",
+					"query": "-- Let's explore the IoT data in CSV format.\n\nselect top 30 * \nfrom openrowset(\n    BULK 'https://gondor2.dfs.core.windows.net/calembel/01-raw/iot/csv/**',\n    FORMAT = 'CSV',\n    FIELDTERMINATOR ='|',\n    PARSER_VERSION = '2.0',\n    header_row = true\n) AS [result]\n\n\n-- Count records in the CSV:\nselect count(*) as reccount\nfrom openrowset(\n    BULK 'https://gondor2.dfs.core.windows.net/calembel/01-raw/iot/csv/**',\n    FORMAT = 'CSV',\n    FIELDTERMINATOR ='|',\n    PARSER_VERSION = '2.0',\n    header_row = true\n) AS [result]",
 					"metadata": {
 						"language": "sql"
 					},
