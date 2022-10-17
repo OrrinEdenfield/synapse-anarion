@@ -19,9 +19,21 @@
 			"type": "string",
 			"defaultValue": "https://download.microsoft.com"
 		},
+		"HomeServer_WindowsFileShare_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "C:\\DemoData"
+		},
+		"HomeServer_WindowsFileShare_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "Administrator"
+		},
 		"MicrosoftDotCom_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://www.microsoft.com"
+		},
+		"RingOfPowerAKV_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://GreatRingofPower.vault.azure.net/"
 		},
 		"anarion-WorkspaceDefaultStorage_properties_typeProperties_url": {
 			"type": "string",
@@ -30,18 +42,6 @@
 		"biketrips_http_source_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://s3.amazonaws.com/tripdata/"
-		},
-		"RingOfPowerAKV_properties_typeProperties_baseUrl": {
-			"type": "string",
-			"defaultValue": "https://GreatRingofPower.vault.azure.net/"
-		},
-		"HomeServer_WindowsFileShare_properties_typeProperties_host": {
-			"type": "string",
-			"defaultValue": "C:\\DemoData"
-		},
-		"HomeServer_WindowsFileShare_properties_typeProperties_userId": {
-			"type": "string",
-			"defaultValue": "Administrator"
 		}
 	},
 	"variables": {
@@ -804,6 +804,74 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('workspaceName'), '/publish_to_on_prem')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true
+								},
+								"formatSettings": {
+									"type": "BinaryReadSettings"
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "FileServerWriteSettings",
+									"copyBehavior": "PreserveHierarchy"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "biketrips_csv_sink",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "OnPrem_biketrips",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Examples"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/datasets/biketrips_csv_sink')]",
+				"[concat(variables('workspaceId'), '/datasets/OnPrem_biketrips')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/AzureIPRangeJSONFile')]",
 			"type": "Microsoft.Synapse/workspaces/datasets",
 			"apiVersion": "2019-06-01-preview",
@@ -992,6 +1060,32 @@
 			},
 			"dependsOn": [
 				"[concat(variables('workspaceId'), '/linkedServices/anarion-WorkspaceDefaultStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/OnPrem_biketrips')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "HomeServer_WindowsFileShare",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "FileServerLocation",
+						"folderPath": "biketrips"
+					},
+					"compression": {
+						"type": "gzip",
+						"level": "Fastest"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/HomeServer_WindowsFileShare')]"
 			]
 		},
 		{
@@ -1545,6 +1639,35 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('workspaceName'), '/HomeServer_WindowsFileShare')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "FileServer",
+				"typeProperties": {
+					"host": "[parameters('HomeServer_WindowsFileShare_properties_typeProperties_host')]",
+					"userId": "[parameters('HomeServer_WindowsFileShare_properties_typeProperties_userId')]",
+					"password": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "RingOfPowerAKV",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "HomeServerAdmin"
+					}
+				},
+				"connectVia": {
+					"referenceName": "HomeServer",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/HomeServer')]",
+				"[concat(variables('workspaceId'), '/linkedServices/RingOfPowerAKV')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/MicrosoftDotCom')]",
 			"type": "Microsoft.Synapse/workspaces/linkedServices",
 			"apiVersion": "2019-06-01-preview",
@@ -1575,6 +1698,19 @@
 				"typeProperties": {
 					"workspaceID": "29d1e616-f424-482d-a0e3-3f9158f647b3",
 					"tenantID": "72f988bf-86f1-41af-91ab-2d7cd011db47"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/RingOfPowerAKV')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('RingOfPowerAKV_properties_typeProperties_baseUrl')]"
 				}
 			},
 			"dependsOn": []
@@ -1724,6 +1860,16 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('workspaceName'), '/HomeServer')]",
+			"type": "Microsoft.Synapse/workspaces/integrationRuntimes",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/Azure_IP_Range_ParseHTML')]",
 			"type": "Microsoft.Synapse/workspaces/dataflows",
 			"apiVersion": "2019-06-01-preview",
@@ -1863,8 +2009,7 @@
 						"     staged: true,",
 						"     allowCopyCommand: true,",
 						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError') ~> sink1",
+						"     skipDuplicateMapOutputs: true) ~> sink1",
 						"source2 sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     deletable:false,",
@@ -1875,8 +2020,7 @@
 						"     staged: true,",
 						"     allowCopyCommand: true,",
 						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError') ~> sink2"
+						"     skipDuplicateMapOutputs: true) ~> sink2"
 					]
 				}
 			},
@@ -11330,150 +11474,27 @@
 			"location": "westeurope"
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/HomeServer')]",
-			"type": "Microsoft.Synapse/workspaces/integrationRuntimes",
+			"name": "[concat(parameters('workspaceName'), '/iot-exploration-01')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
-				"type": "SelfHosted",
-				"typeProperties": {}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/publish_to_on_prem')]",
-			"type": "Microsoft.Synapse/workspaces/pipelines",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy data1",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "BinarySource",
-								"storeSettings": {
-									"type": "AzureBlobFSReadSettings",
-									"recursive": true
-								},
-								"formatSettings": {
-									"type": "BinaryReadSettings"
-								}
-							},
-							"sink": {
-								"type": "BinarySink",
-								"storeSettings": {
-									"type": "FileServerWriteSettings",
-									"copyBehavior": "PreserveHierarchy"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "biketrips_csv_sink",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "OnPrem_biketrips",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
 				"folder": {
-					"name": "Examples"
+					"name": "Examples-IoT"
 				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('workspaceId'), '/datasets/biketrips_csv_sink')]",
-				"[concat(variables('workspaceId'), '/datasets/OnPrem_biketrips')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/RingOfPowerAKV')]",
-			"type": "Microsoft.Synapse/workspaces/linkedServices",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"annotations": [],
-				"type": "AzureKeyVault",
-				"typeProperties": {
-					"baseUrl": "[parameters('RingOfPowerAKV_properties_typeProperties_baseUrl')]"
-				}
+				"content": {
+					"query": "-- This is auto-generated code\nSELECT\n    TOP 100 *\nFROM\n    OPENROWSET(\n        BULK 'https://gondor2.dfs.core.windows.net/calembel/01-raw/iot/csv/**',\n        FORMAT = 'CSV',\n        FIELDTERMINATOR ='|',\n        PARSER_VERSION = '2.0',\n        header_row = true\n    ) AS [result]\n",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "master",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
 			},
 			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/HomeServer_WindowsFileShare')]",
-			"type": "Microsoft.Synapse/workspaces/linkedServices",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"annotations": [],
-				"type": "FileServer",
-				"typeProperties": {
-					"host": "[parameters('HomeServer_WindowsFileShare_properties_typeProperties_host')]",
-					"userId": "[parameters('HomeServer_WindowsFileShare_properties_typeProperties_userId')]",
-					"password": {
-						"type": "AzureKeyVaultSecret",
-						"store": {
-							"referenceName": "RingOfPowerAKV",
-							"type": "LinkedServiceReference"
-						},
-						"secretName": "HomeServerAdmin"
-					}
-				},
-				"connectVia": {
-					"referenceName": "HomeServer",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('workspaceId'), '/integrationRuntimes/HomeServer')]",
-				"[concat(variables('workspaceId'), '/linkedServices/RingOfPowerAKV')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/OnPrem_biketrips')]",
-			"type": "Microsoft.Synapse/workspaces/datasets",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "HomeServer_WindowsFileShare",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "FileServerLocation",
-						"folderPath": "biketrips"
-					},
-					"compression": {
-						"type": "gzip",
-						"level": "Fastest"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('workspaceId'), '/linkedServices/HomeServer_WindowsFileShare')]"
-			]
 		}
 	]
 }
