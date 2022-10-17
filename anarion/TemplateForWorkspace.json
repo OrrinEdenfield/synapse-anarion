@@ -11518,6 +11518,29 @@
 				"type": "SqlQuery"
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/iot-cetas-delimited-01')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "Examples-IoT"
+				},
+				"content": {
+					"query": "------------ ONLY EVER NEED TO RUN ONCE ------------\n/*\n-- Create the [iot] database\ncreate database iot;\n\n-- Create external data source for curated data\nCREATE EXTERNAL DATA SOURCE [IoT-data-curated]\nWITH (LOCATION = 'https://gondor2.dfs.core.windows.net/calembel/02-curated/iot/');\n\n-- Create external file format for curated data\nCREATE EXTERNAL FILE FORMAT datalake_parquet\nWITH (FORMAT_TYPE = PARQUET,DATA_COMPRESSION = 'org.apache.hadoop.io.compress.SnappyCodec');\n*/\n------------ ONLY EVER NEED TO RUN ONCE ------------\n\n-- Ensure we're running in the [iot] database\nuse iot;\n\n\n-- Create variable and set it to be yesterday's YYYY-MM-DD date\ndeclare @yesterday varchar(10);\ndeclare @yesterdayClean varchar(10);\ndeclare @yesterdayTable varchar(20);\n\nset @yesterday = convert(char(10), GetDate(),126);\nset @yesterdayClean = convert(char(10), GetDate(),112);\nset @yesterdayTable = 'iot_data_' + @yesterdayClean\n--select @yesterdayTable\n\n-- drop table if needed\n/*\ndrop external table iot_data_temp;\n*/\n\n-- Create external table as select for yesterday's data\nCREATE EXTERNAL TABLE iot_data_temp\nWITH (\n    LOCATION = 'IoTPi3Sense/',\n    DATA_SOURCE = [IoT-data-curated],\n    FILE_FORMAT = datalake_parquet\n)  \nAS\nselect top 10 \n    [timestamp]\n    ,cast(FORMAT(cast(timestamp as datetime),'yyyy-MM-dd') as date) as [eventdate]\n    ,[deviceid]\n    ,[temperature]\n    ,[humidity]\n    ,[EventProcessedUtcTime]\nfrom openrowset(\n    BULK 'https://gondor2.dfs.core.windows.net/calembel/01-raw/iot/csv/IoTPi3Sense/2022/10/17/temp.csv',\n    FORMAT = 'CSV',\n    FIELDTERMINATOR ='|',\n    PARSER_VERSION = '2.0',\n    header_row = true\n) AS [result]\nwhere \n    --FORMAT(cast(timestamp as datetime),'yyyy-MM-dd') = convert(char(10), GetDate(),126)\n    FORMAT(cast(timestamp as datetime),'yyyy-MM-dd') = @yesterday;\nGO\n\n\n-- There is no way to rename an external table.\n\n\n-- you can query the newly created external table\nSELECT * FROM iot_data_temp;",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "iot",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
 		}
 	]
 }
