@@ -5,7 +5,7 @@
 			"name": "Examples-IoT"
 		},
 		"content": {
-			"query": "-- This is auto-generated code\nSELECT\n    TOP 100 *\nFROM\n    OPENROWSET(\n        BULK 'https://gondor2.dfs.core.windows.net/calembel/01-raw/iot/csv/**',\n        FORMAT = 'CSV',\n        FIELDTERMINATOR ='|',\n        PARSER_VERSION = '2.0',\n        header_row = true\n    ) AS [result]\n",
+			"query": "-- Let's explore the IoT data that has come in.\n\nselect top 30 * from openrowset(\n    BULK 'https://gondor2.dfs.core.windows.net/calembel/01-raw/iot/csv/**',\n    FORMAT = 'CSV',\n    FIELDTERMINATOR ='|',\n    PARSER_VERSION = '2.0',\n    header_row = true\n) AS [result]",
 			"metadata": {
 				"language": "sql"
 			},
