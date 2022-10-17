@@ -1,0 +1,20 @@
+{
+	"name": "iot-cetas-delimited-01",
+	"properties": {
+		"folder": {
+			"name": "Examples-IoT"
+		},
+		"content": {
+			"query": "\nselect top 1 * \nfrom openrowset(\n    BULK 'https://gondor2.dfs.core.windows.net/calembel/01-raw/iot/csv/**',\n    FORMAT = 'CSV',\n    FIELDTERMINATOR ='|',\n    PARSER_VERSION = '2.0',\n    header_row = true\n) AS [result]\n\n\n-- Count records in the CSV:\nselect count(*) as reccount\nfrom openrowset(\n    BULK 'https://gondor2.dfs.core.windows.net/calembel/01-raw/iot/csv/**',\n    FORMAT = 'CSV',\n    FIELDTERMINATOR ='|',\n    PARSER_VERSION = '2.0',\n    header_row = true\n) AS [result]\n\n\n\n/*\ncreate database iot;\n*/\n\nuse iot;\n\n-- Create external table as select for yesterday's data\nCREATE EXTERNAL TABLE iot_\nWITH (\n    LOCATION = 'aggregated_data/',\n    DATA_SOURCE = population_ds,  \n    FILE_FORMAT = census_file_format\n)  \nAS\nSELECT decennialTime, stateName, SUM(population) AS population\nFROM\n    OPENROWSET(\n\n        bulk 'https://gondor2.dfs.core.windows.net/calembel/01-raw/iot/csv/**',\n        FORMAT = 'CSV',\n        FIELDTERMINATOR ='|',\n        PARSER_VERSION = '2.0',\n        header_row = true\n        ) AS [result]\n\nGROUP BY decennialTime, stateName\nGO\n\n-- you can query the newly created external table\nSELECT * FROM population_by_year_state\n\n\nselect CONVERT(char(10), GetDate()-1,126)\n\n-- Create variable and set it to be yesterday's YYYY-MM-DD date\ndeclare @yesterday varchar(10);\nset @yesterday = convert(char(10), GetDate()-1,126);\n-- Test the variable value\nselect @yesterday;\n\n\n\nselect top 10 \n    [timestamp]\n    ,cast(FORMAT(cast(timestamp as datetime),'yyyy-MM-dd') as date) as [eventdate]\n    ,[deviceid]\n    ,[temperature]\n    ,[humidity]\n    ,[EventProcessedUtcTime]\nfrom openrowset(\n    BULK 'https://gondor2.dfs.core.windows.net/calembel/01-raw/iot/csv/IoTPi3Sense/2022/10/17/temp.csv',\n    FORMAT = 'CSV',\n    FIELDTERMINATOR ='|',\n    PARSER_VERSION = '2.0',\n    header_row = true\n) AS [result]\nwhere \n    FORMAT(cast(timestamp as datetime),'yyyy-MM-dd') = convert(char(10), GetDate(),126)\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "iot",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
