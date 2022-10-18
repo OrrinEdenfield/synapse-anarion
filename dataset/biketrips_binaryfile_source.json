@@ -11,7 +11,7 @@
 			"location": {
 				"type": "HttpServerLocation",
 				"relativeUrl": {
-					"value": "@concat(formatDatetime(getPastTime(1,'Month'),'yyyy'),formatDatetime(getPastTime(1,'Month'),'MM'),'-citbike-tripdata.csv.zip')",
+					"value": "@concat(formatDatetime(getPastTime(1,'Month'),'yyyy'),formatDatetime(getPastTime(1,'Month'),'MM'),'-citibike-tripdata.csv.zip')",
 					"type": "Expression"
 				}
 			}
