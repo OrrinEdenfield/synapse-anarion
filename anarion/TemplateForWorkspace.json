@@ -1511,7 +1511,7 @@
 					"location": {
 						"type": "HttpServerLocation",
 						"relativeUrl": {
-							"value": "@concat(formatDatetime(getPastTime(1,'Month'),'yyyy'),formatDatetime(getPastTime(1,'Month'),'MM'),'-citbike-tripdata.csv.zip')",
+							"value": "@concat(formatDatetime(getPastTime(1,'Month'),'yyyy'),formatDatetime(getPastTime(1,'Month'),'MM'),'-citibike-tripdata.csv.zip')",
 							"type": "Expression"
 						}
 					}
@@ -11609,12 +11609,12 @@
 					"name": "Examples-SQL-Serverless"
 				},
 				"content": {
-					"query": "use [biketrips];\nuse [default];\nuse [iot];\n\n\n\ndrop USER palantiri\nGO\n\nCREATE USER palantiri FROM EXTERNAL PROVIDER\nGO\n\nALTER ROLE db_datareader ADD MEMBER palantiri;\n\n-- GRANT REFERENCES ON DATABASE SCOPED CREDENTIAL::[scoped_credential] TO palantiri;",
+					"query": "use [biketrips];\nuse [iot];\n\n\ndrop USER palantiri\nGO\n\nCREATE USER palantiri FROM EXTERNAL PROVIDER\nGO\n\nCREATE USER palantiri FOR LOGIN palantiri;\nGO\n\nALTER ROLE db_datareader ADD MEMBER palantiri;\nGO\n\n\nGRANT REFERENCES ON DATABASE SCOPED CREDENTIAL::[WorkspaceIdentity] TO [palantiri];\n\n\nselect * from sys.database_scoped_credentials",
 					"metadata": {
 						"language": "sql"
 					},
 					"currentConnection": {
-						"databaseName": "iot",
+						"databaseName": "biketrips",
 						"poolName": "Built-in"
 					},
 					"resultLimit": 5000
