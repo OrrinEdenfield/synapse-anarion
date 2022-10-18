@@ -5,12 +5,12 @@
 			"name": "Examples-SQL-Serverless"
 		},
 		"content": {
-			"query": "drop USER palantiri \nGO\n\nCREATE USER palantiri FROM EXTERNAL PROVIDER\nGO\n",
+			"query": "use [biketrips];\nuse [default];\nuse [iot];\n\n\n\ndrop USER palantiri\nGO\n\nCREATE USER palantiri FROM EXTERNAL PROVIDER\nGO\n\nALTER ROLE db_datareader ADD MEMBER palantiri;\n\n-- GRANT REFERENCES ON DATABASE SCOPED CREDENTIAL::[scoped_credential] TO palantiri;",
 			"metadata": {
 				"language": "sql"
 			},
 			"currentConnection": {
-				"databaseName": "tpcds1tb",
+				"databaseName": "iot",
 				"poolName": "Built-in"
 			},
 			"resultLimit": 5000
