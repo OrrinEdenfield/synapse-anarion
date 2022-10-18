@@ -1,0 +1,17 @@
+{
+	"name": "SQL-Dedicated-Give-Purview-Access",
+	"properties": {
+		"content": {
+			"query": "drop USER palantiri \nGO\n\nCREATE USER palantiri FROM EXTERNAL PROVIDER\nGO\n\nEXEC sp_addrolemember 'db_datareader', palantiri\nGO\n\nEXEC sp_addrolemember 'db_owner', palantiri\nGO",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "SynapseSQLDedicated",
+				"poolName": "SynapseSQLDedicated"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
