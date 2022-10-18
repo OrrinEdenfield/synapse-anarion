@@ -1,5 +1,5 @@
 {
-	"name": "Give-Purview-Access",
+	"name": "SQL-Serverless-Give-Purview-Access",
 	"properties": {
 		"folder": {
 			"name": "Examples-SQL-Serverless"
