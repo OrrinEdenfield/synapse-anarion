@@ -5,12 +5,12 @@
 			"name": "Examples-SQL-Serverless"
 		},
 		"content": {
-			"query": "drop USER palantiri \nGO\n\nCREATE USER palantiri FROM EXTERNAL PROVIDER\nGO\n\nEXEC sp_addrolemember 'db_datareader', palantiri\nGO\n\nEXEC sp_addrolemember 'db_owner', palantiri\nGO",
+			"query": "drop USER palantiri \nGO\n\nCREATE USER palantiri FROM EXTERNAL PROVIDER\nGO\n",
 			"metadata": {
 				"language": "sql"
 			},
 			"currentConnection": {
-				"databaseName": "biketrips",
+				"databaseName": "tpcds1tb",
 				"poolName": "Built-in"
 			},
 			"resultLimit": 5000
