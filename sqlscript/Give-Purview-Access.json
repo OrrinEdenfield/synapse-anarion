@@ -1,0 +1,20 @@
+{
+	"name": "Give-Purview-Access",
+	"properties": {
+		"folder": {
+			"name": "Examples-SQL-Serverless"
+		},
+		"content": {
+			"query": "drop USER palantiri \nGO\n\nCREATE USER palantiri FROM EXTERNAL PROVIDER\nGO\n\nEXEC sp_addrolemember 'db_datareader', palantiri\nGO\n\nEXEC sp_addrolemember 'db_owner', palantiri\nGO",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "biketrips",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
