@@ -1,0 +1,20 @@
+{
+	"name": "hybrid-cetas-external-ip",
+	"properties": {
+		"folder": {
+			"name": "Examples-IoT"
+		},
+		"content": {
+			"query": "use iot;\nGO\n\n-- Query view\nselect [external-ip-address] from vLatestExternalIp;\nGO\n\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "iot",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
