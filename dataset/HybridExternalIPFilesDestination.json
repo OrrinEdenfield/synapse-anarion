@@ -11,7 +11,7 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"folderPath": "01-raw/hybridenv",
-				"fileSystem": "celembel"
+				"fileSystem": "calembel"
 			}
 		}
 	}
