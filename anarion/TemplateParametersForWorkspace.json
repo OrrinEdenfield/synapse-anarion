@@ -14,6 +14,9 @@
 		"DownloadDotMicrosoftDotCom_properties_typeProperties_url": {
 			"value": "https://download.microsoft.com"
 		},
+		"GreatRingOfPowerAKV_properties_typeProperties_baseUrl": {
+			"value": "https://GreatRingofPower.vault.azure.net/"
+		},
 		"HomeServer_WindowsFileShare_properties_typeProperties_host": {
 			"value": "C:\\DemoData"
 		},
@@ -23,17 +26,11 @@
 		"MicrosoftDotCom_properties_typeProperties_url": {
 			"value": "https://www.microsoft.com"
 		},
-		"RingOfPowerAKV_properties_typeProperties_baseUrl": {
-			"value": "https://GreatRingofPower.vault.azure.net/"
-		},
 		"anarion-WorkspaceDefaultStorage_properties_typeProperties_url": {
 			"value": "https://gondor2.dfs.core.windows.net"
 		},
 		"biketrips_http_source_properties_typeProperties_url": {
 			"value": "https://s3.amazonaws.com/tripdata/"
-		},
-		"GreatRingOfPowerAKV_properties_typeProperties_baseUrl": {
-			"value": "https://GreatRingofPower.vault.azure.net/"
 		}
 	}
 }
