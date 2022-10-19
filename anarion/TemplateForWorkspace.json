@@ -11799,7 +11799,7 @@
 					"name": "Examples-IoT"
 				},
 				"content": {
-					"query": "use iot;\nGO\n\n-- Query view\nselect [external-ip-address] from vLatestExternalIp;\nGO\n\n",
+					"query": "use iot;\nGO\n\n-- Query view\n--select [external-ip-address] from vLatestExternalIp;\n--GO\n\n\n-- Update the file that stores the latest external IP\ndrop EXTERNAL TABLE latest_external_ip;\nGO\n\n-- Create external table as select for the latest data\nCREATE EXTERNAL TABLE latest_external_ip\nWITH (\n    LOCATION = 'latestexternalip/',\n    DATA_SOURCE = [IoT-data-curated],\n    FILE_FORMAT = SynapseDelimitedTextFormat\n)  \nAS\nselect [external-ip-address] from vLatestExternalIp;\nGO",
 					"metadata": {
 						"language": "sql"
 					},
@@ -11812,6 +11812,75 @@
 				"type": "SqlQuery"
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/get-latest-external-ip')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "Delete1",
+						"type": "Delete",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "latest_external_ip",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"enableLogging": false,
+							"storeSettings": {
+								"type": "AzureBlobFSReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Hybrid"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/datasets/latest_external_ip')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/latest_external_ip')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "anarion-WorkspaceDefaultStorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "02-curated/iot/latestexternalip",
+						"fileSystem": "calembel"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/anarion-WorkspaceDefaultStorage')]"
+			]
 		}
 	]
 }
