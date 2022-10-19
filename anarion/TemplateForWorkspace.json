@@ -11648,7 +11648,8 @@
 								"type": "BinarySource",
 								"storeSettings": {
 									"type": "FileServerReadSettings",
-									"recursive": true
+									"recursive": true,
+									"deleteFilesAfterCompletion": false
 								},
 								"formatSettings": {
 									"type": "BinaryReadSettings"
@@ -11707,7 +11708,6 @@
 				"typeProperties": {
 					"location": {
 						"type": "FileServerLocation",
-						"fileName": "*.txt",
 						"folderPath": "ExternalIP"
 					}
 				}
@@ -11730,9 +11730,8 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileName": "*",
 						"folderPath": "01-raw/hybridenv",
-						"fileSystem": "celembel"
+						"fileSystem": "calembel"
 					}
 				}
 			},
