@@ -9,7 +9,7 @@
 			"password": {
 				"type": "AzureKeyVaultSecret",
 				"store": {
-					"referenceName": "RingOfPowerAKV",
+					"referenceName": "GreatRingOfPowerAKV",
 					"type": "LinkedServiceReference"
 				},
 				"secretName": "HomeServerAdmin"
