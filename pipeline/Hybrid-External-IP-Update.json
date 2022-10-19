@@ -20,6 +20,7 @@
 						"storeSettings": {
 							"type": "FileServerReadSettings",
 							"recursive": true,
+							"wildcardFolderPath": "ExternalIP",
 							"wildcardFileName": "*.txt",
 							"deleteFilesAfterCompletion": false
 						},
