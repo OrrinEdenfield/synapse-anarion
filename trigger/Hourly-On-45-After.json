@@ -1,0 +1,17 @@
+{
+	"name": "Hourly-On-45-After",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Hour",
+				"interval": 1,
+				"startTime": "2022-10-19T13:45:00Z",
+				"timeZone": "UTC"
+			}
+		}
+	}
+}
