@@ -1,0 +1,19 @@
+{
+	"name": "HybridExternalIPFilesDestination",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "anarion-WorkspaceDefaultStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "*",
+				"folderPath": "01-raw/hybridenv",
+				"fileSystem": "celembel"
+			}
+		}
+	}
+}
