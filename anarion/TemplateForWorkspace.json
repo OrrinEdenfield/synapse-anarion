@@ -42,6 +42,10 @@
 		"biketrips_http_source_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://s3.amazonaws.com/tripdata/"
+		},
+		"GreatRingOfPowerAKV_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://GreatRingofPower.vault.azure.net/"
 		}
 	},
 	"variables": {
@@ -1684,7 +1688,7 @@
 					"password": {
 						"type": "AzureKeyVaultSecret",
 						"store": {
-							"referenceName": "RingOfPowerAKV",
+							"referenceName": "GreatRingOfPowerAKV",
 							"type": "LinkedServiceReference"
 						},
 						"secretName": "HomeServerAdmin"
@@ -1697,7 +1701,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('workspaceId'), '/integrationRuntimes/HomeServer')]",
-				"[concat(variables('workspaceId'), '/linkedServices/RingOfPowerAKV')]"
+				"[concat(variables('workspaceId'), '/linkedServices/GreatRingOfPowerAKV')]"
 			]
 		},
 		{
@@ -2042,8 +2046,7 @@
 						"     staged: true,",
 						"     allowCopyCommand: true,",
 						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError') ~> sink1",
+						"     skipDuplicateMapOutputs: true) ~> sink1",
 						"source2 sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     deletable:false,",
@@ -2054,8 +2057,7 @@
 						"     staged: true,",
 						"     allowCopyCommand: true,",
 						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError') ~> sink2"
+						"     skipDuplicateMapOutputs: true) ~> sink2"
 					]
 				}
 			},
@@ -2229,6 +2231,52 @@
 					},
 					"currentConnection": {
 						"databaseName": "master",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SQL-Dedicated-Give-Purview-Access')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "Examples-SQL-Dedicated"
+				},
+				"content": {
+					"query": "drop USER palantiri FROM EXTERNAL PROVIDER\nGO\n\nCREATE USER palantiri FROM EXTERNAL PROVIDER\nGO\n\nEXEC sp_addrolemember 'db_datareader', palantiri\nGO\n\nEXEC sp_addrolemember 'db_owner', palantiri\nGO",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "SynapseSQLDedicated",
+						"poolName": "SynapseSQLDedicated"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SQL-Serverless-Give-Purview-Access')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "Examples-SQL-Serverless"
+				},
+				"content": {
+					"query": "use [biketrips];\nuse [iot];\n\n\ndrop USER palantiri\nGO\n\nCREATE USER palantiri FROM EXTERNAL PROVIDER\nGO\n\nCREATE USER palantiri FOR LOGIN palantiri;\nGO\n\nALTER ROLE db_datareader ADD MEMBER palantiri;\nGO\n\n\nGRANT REFERENCES ON DATABASE SCOPED CREDENTIAL::[WorkspaceIdentity] TO [palantiri];\n\n\nselect * from sys.database_scoped_credentials",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "biketrips",
 						"poolName": "Built-in"
 					},
 					"resultLimit": 5000
@@ -11578,48 +11626,130 @@
 			"location": "westeurope"
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/SQL-Dedicated-Give-Purview-Access')]",
-			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"name": "[concat(parameters('workspaceName'), '/Hybrid-External-IP-Update')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
+				"activities": [
+					{
+						"name": "Copy file from on-prem",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "FileServerReadSettings",
+									"recursive": true
+								},
+								"formatSettings": {
+									"type": "BinaryReadSettings"
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings",
+									"copyBehavior": "PreserveHierarchy"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "HybridExternalIPFilesSource",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "HybridExternalIPFilesDestination",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
 				"folder": {
-					"name": "Examples-SQL-Dedicated"
+					"name": "Examples"
 				},
-				"content": {
-					"query": "drop USER palantiri FROM EXTERNAL PROVIDER\nGO\n\nCREATE USER palantiri FROM EXTERNAL PROVIDER\nGO\n\nEXEC sp_addrolemember 'db_datareader', palantiri\nGO\n\nEXEC sp_addrolemember 'db_owner', palantiri\nGO",
-					"metadata": {
-						"language": "sql"
-					},
-					"currentConnection": {
-						"databaseName": "SynapseSQLDedicated",
-						"poolName": "SynapseSQLDedicated"
-					},
-					"resultLimit": 5000
-				},
-				"type": "SqlQuery"
+				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/datasets/HybridExternalIPFilesSource')]",
+				"[concat(variables('workspaceId'), '/datasets/HybridExternalIPFilesDestination')]"
+			]
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/SQL-Serverless-Give-Purview-Access')]",
-			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"name": "[concat(parameters('workspaceName'), '/HybridExternalIPFilesSource')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
-				"folder": {
-					"name": "Examples-SQL-Serverless"
+				"linkedServiceName": {
+					"referenceName": "HomeServer_WindowsFileShare",
+					"type": "LinkedServiceReference"
 				},
-				"content": {
-					"query": "use [biketrips];\nuse [iot];\n\n\ndrop USER palantiri\nGO\n\nCREATE USER palantiri FROM EXTERNAL PROVIDER\nGO\n\nCREATE USER palantiri FOR LOGIN palantiri;\nGO\n\nALTER ROLE db_datareader ADD MEMBER palantiri;\nGO\n\n\nGRANT REFERENCES ON DATABASE SCOPED CREDENTIAL::[WorkspaceIdentity] TO [palantiri];\n\n\nselect * from sys.database_scoped_credentials",
-					"metadata": {
-						"language": "sql"
-					},
-					"currentConnection": {
-						"databaseName": "biketrips",
-						"poolName": "Built-in"
-					},
-					"resultLimit": 5000
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "FileServerLocation",
+						"fileName": "*.txt",
+						"folderPath": "ExternalIP"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/HomeServer_WindowsFileShare')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/HybridExternalIPFilesDestination')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "anarion-WorkspaceDefaultStorage",
+					"type": "LinkedServiceReference"
 				},
-				"type": "SqlQuery"
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "*",
+						"folderPath": "01-raw/hybridenv",
+						"fileSystem": "celembel"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/anarion-WorkspaceDefaultStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/GreatRingOfPowerAKV')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('GreatRingOfPowerAKV_properties_typeProperties_baseUrl')]"
+				}
 			},
 			"dependsOn": []
 		}
