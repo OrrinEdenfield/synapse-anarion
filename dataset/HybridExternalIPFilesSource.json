@@ -10,7 +10,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "FileServerLocation",
-				"fileName": "*"
+				"fileName": "*.txt",
+				"folderPath": "ExternalIP"
 			}
 		}
 	}
