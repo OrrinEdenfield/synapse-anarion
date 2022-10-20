@@ -102,7 +102,7 @@
 					"scripts": [
 						{
 							"type": "Query",
-							"text": "use iot;\ndrop EXTERNAL TABLE latest_external_ip;"
+							"text": "use iot;\ndrop external table [dbo].[latest_external_ip];;"
 						}
 					]
 				}
