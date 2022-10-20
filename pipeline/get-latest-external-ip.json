@@ -47,7 +47,7 @@
 				},
 				"userProperties": [],
 				"linkedServiceName": {
-					"referenceName": "SynapseSQLServerless",
+					"referenceName": "SynapseSQLServerlessAAD",
 					"type": "LinkedServiceReference"
 				},
 				"typeProperties": {
