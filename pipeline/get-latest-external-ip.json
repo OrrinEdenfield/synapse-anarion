@@ -39,7 +39,7 @@
 				"type": "Script",
 				"dependsOn": [
 					{
-						"activity": "Delete1",
+						"activity": "Wait1",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -89,6 +89,22 @@
 							"text": "use iot;\n\ndrop EXTERNAL TABLE latest_external_ip;"
 						}
 					]
+				}
+			},
+			{
+				"name": "Wait1",
+				"type": "Wait",
+				"dependsOn": [
+					{
+						"activity": "Delete1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 60
 				}
 			}
 		],
