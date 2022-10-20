@@ -5,7 +5,7 @@
 			"name": "Examples-IoT"
 		},
 		"content": {
-			"query": "use iot;\nGO\n\n-- Query view\n--select [external-ip-address] from vLatestExternalIp;\n--GO\n\n\n-- Update the file that stores the latest external IP\ndrop EXTERNAL TABLE latest_external_ip;\nGO\n\n-- Create external table as select for the latest data\nCREATE EXTERNAL TABLE latest_external_ip\nWITH (\n    LOCATION = 'latestexternalip/',\n    DATA_SOURCE = [IoT-data-curated],\n    FILE_FORMAT = SynapseDelimitedTextFormat\n)  \nAS\nselect [external-ip-address] from vLatestExternalIp;\nGO",
+			"query": "use iot;\nGO\n\n-- Query view\n/*\nselect [external-ip-address] from vLatestExternalIp;\nGO\n*/\n\n-- Update the file that stores the latest external IP\ndrop EXTERNAL TABLE latest_external_ip;\nGO\n\n-- Create external table as select for the latest data\nCREATE EXTERNAL TABLE latest_external_ip\nWITH (\n    LOCATION = 'latestexternalip/',\n    DATA_SOURCE = [IoT-data-curated],\n    FILE_FORMAT = SynapseDelimitedTextFormat\n)  \nAS\nselect [external-ip-address] from vLatestExternalIp;\nGO",
 			"metadata": {
 				"language": "sql"
 			},
