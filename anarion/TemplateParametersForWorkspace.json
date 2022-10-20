@@ -11,6 +11,9 @@
 		"brandybuck_primula_connectionString": {
 			"value": ""
 		},
+		"SynapseSQLServerless_connectionString": {
+			"value": ""
+		},
 		"DownloadDotMicrosoftDotCom_properties_typeProperties_url": {
 			"value": "https://download.microsoft.com"
 		},
