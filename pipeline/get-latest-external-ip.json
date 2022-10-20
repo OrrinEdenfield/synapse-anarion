@@ -54,7 +54,7 @@
 					"scripts": [
 						{
 							"type": "Query",
-							"text": "use iot;\nGO\n\n-- Update the file that stores the latest external IP\ndrop EXTERNAL TABLE latest_external_ip;\nGO\n\n-- Create external table as select for the latest data\nCREATE EXTERNAL TABLE latest_external_ip\nWITH (\n    LOCATION = 'latestexternalip/',\n    DATA_SOURCE = [IoT-data-curated],\n    FILE_FORMAT = SynapseDelimitedTextFormat\n)  \nAS\nselect [external-ip-address] from vLatestExternalIp;\nGO"
+							"text": "use iot;\n\ndrop EXTERNAL TABLE latest_external_ip;\n\nCREATE EXTERNAL TABLE latest_external_ip\nWITH (\n    LOCATION = 'latestexternalip/',\n    DATA_SOURCE = [IoT-data-curated],\n    FILE_FORMAT = SynapseDelimitedTextFormat\n)  \nAS\nselect [external-ip-address] from vLatestExternalIp;"
 						}
 					]
 				}
