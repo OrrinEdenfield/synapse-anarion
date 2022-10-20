@@ -3,11 +3,11 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Delete1",
+				"name": "delete file on ADLS",
 				"type": "Delete",
 				"dependsOn": [
 					{
-						"activity": "Script2",
+						"activity": "drop existing table in SQL Serverless",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -35,11 +35,11 @@
 				}
 			},
 			{
-				"name": "Script1",
+				"name": "recreate file on ADLS",
 				"type": "Script",
 				"dependsOn": [
 					{
-						"activity": "Wait1",
+						"activity": "Wait 10 seconds",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -67,11 +67,11 @@
 				}
 			},
 			{
-				"name": "Wait1",
+				"name": "Wait 10 seconds",
 				"type": "Wait",
 				"dependsOn": [
 					{
-						"activity": "Delete1",
+						"activity": "delete file on ADLS",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -83,7 +83,7 @@
 				}
 			},
 			{
-				"name": "Script2",
+				"name": "drop existing table in SQL Serverless",
 				"type": "Script",
 				"dependsOn": [],
 				"policy": {
