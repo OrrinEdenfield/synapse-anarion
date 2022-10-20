@@ -5,7 +5,14 @@
 			{
 				"name": "Delete1",
 				"type": "Delete",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Script2",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -54,7 +61,32 @@
 					"scripts": [
 						{
 							"type": "Query",
-							"text": "use iot;\n\ndrop EXTERNAL TABLE latest_external_ip;\n\nCREATE EXTERNAL TABLE latest_external_ip\nWITH (\n    LOCATION = 'latestexternalip/',\n    DATA_SOURCE = [IoT-data-curated],\n    FILE_FORMAT = SynapseDelimitedTextFormat\n)  \nAS\nselect [external-ip-address] from vLatestExternalIp;"
+							"text": "use iot;\n\nCREATE EXTERNAL TABLE latest_external_ip\nWITH (\n    LOCATION = 'latestexternalip/',\n    DATA_SOURCE = [IoT-data-curated],\n    FILE_FORMAT = SynapseDelimitedTextFormat\n)  \nAS\nselect [external-ip-address] from vLatestExternalIp;"
+						}
+					]
+				}
+			},
+			{
+				"name": "Script2",
+				"type": "Script",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "SynapseSQLServerless",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": "use iot;\n\ndrop EXTERNAL TABLE latest_external_ip;"
 						}
 					]
 				}
