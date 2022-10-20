@@ -7,6 +7,10 @@
 			"metadata": "Workspace name",
 			"defaultValue": "anarion"
 		},
+		"SynapseSQLServerless_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'SynapseSQLServerless'"
+		},
 		"anarion-WorkspaceDefaultSqlServer_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'anarion-WorkspaceDefaultSqlServer'"
@@ -15,9 +19,9 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'brandybuck_primula'"
 		},
-		"SynapseSQLServerless_connectionString": {
+		"SynapseSQLServerlessAAD_connectionString": {
 			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'SynapseSQLServerless'"
+			"metadata": "Secure string for 'connectionString' of 'SynapseSQLServerlessAAD'"
 		},
 		"DownloadDotMicrosoftDotCom_properties_typeProperties_url": {
 			"type": "string",
@@ -885,7 +889,14 @@
 					{
 						"name": "Delete1",
 						"type": "Delete",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "Script2",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
@@ -928,7 +939,7 @@
 						},
 						"userProperties": [],
 						"linkedServiceName": {
-							"referenceName": "SynapseSQLServerless",
+							"referenceName": "SynapseSQLServerlessAAD",
 							"type": "LinkedServiceReference"
 						},
 						"typeProperties": {
@@ -955,6 +966,31 @@
 						"typeProperties": {
 							"waitTimeInSeconds": 30
 						}
+					},
+					{
+						"name": "Script2",
+						"type": "Script",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "SynapseSQLServerlessAAD",
+							"type": "LinkedServiceReference"
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": "use iot;\ndrop EXTERNAL TABLE atest_external_ip;"
+								}
+							]
+						}
 					}
 				],
 				"policy": {
@@ -968,7 +1004,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('workspaceId'), '/datasets/latest_external_ip')]",
-				"[concat(variables('workspaceId'), '/linkedServices/SynapseSQLServerless')]"
+				"[concat(variables('workspaceId'), '/linkedServices/SynapseSQLServerlessAAD')]"
 			]
 		},
 		{
@@ -1983,6 +2019,25 @@
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SynapseSQLServerless')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"connectionString": "[parameters('SynapseSQLServerless_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('workspaceName'), '/anarion-WorkspaceDefaultSqlServer')]",
@@ -11936,14 +11991,14 @@
 			"location": "westeurope"
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/SynapseSQLServerless')]",
+			"name": "[concat(parameters('workspaceName'), '/SynapseSQLServerlessAAD')]",
 			"type": "Microsoft.Synapse/workspaces/linkedServices",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
 				"annotations": [],
-				"type": "SqlServer",
+				"type": "AzureSqlDatabase",
 				"typeProperties": {
-					"connectionString": "[parameters('SynapseSQLServerless_connectionString')]"
+					"connectionString": "[parameters('SynapseSQLServerlessAAD_connectionString')]"
 				},
 				"connectVia": {
 					"referenceName": "AutoResolveIntegrationRuntime",

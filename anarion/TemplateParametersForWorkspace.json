@@ -5,13 +5,16 @@
 		"workspaceName": {
 			"value": "anarion"
 		},
+		"SynapseSQLServerless_connectionString": {
+			"value": ""
+		},
 		"anarion-WorkspaceDefaultSqlServer_connectionString": {
 			"value": ""
 		},
 		"brandybuck_primula_connectionString": {
 			"value": ""
 		},
-		"SynapseSQLServerless_connectionString": {
+		"SynapseSQLServerlessAAD_connectionString": {
 			"value": ""
 		},
 		"DownloadDotMicrosoftDotCom_properties_typeProperties_url": {
