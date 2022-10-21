@@ -8,13 +8,13 @@
 		"SynapseSQLServerless_connectionString": {
 			"value": ""
 		},
+		"SynapseSQLServerlessAAD_connectionString": {
+			"value": ""
+		},
 		"anarion-WorkspaceDefaultSqlServer_connectionString": {
 			"value": ""
 		},
 		"brandybuck_primula_connectionString": {
-			"value": ""
-		},
-		"SynapseSQLServerlessAAD_connectionString": {
 			"value": ""
 		},
 		"DownloadDotMicrosoftDotCom_properties_typeProperties_url": {
