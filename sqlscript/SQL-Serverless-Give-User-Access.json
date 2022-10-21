@@ -1,16 +1,16 @@
 {
-	"name": "SQL-Serverless-Give-Purview-Access",
+	"name": "SQL-Serverless-Give-User-Access",
 	"properties": {
 		"folder": {
 			"name": "Examples-SQL-Serverless"
 		},
 		"content": {
-			"query": "use [biketrips];\nuse [iot];\n\n\ndrop USER palantiri\nGO\n\nCREATE USER palantiri FROM EXTERNAL PROVIDER\nGO\n\nCREATE USER palantiri FOR LOGIN palantiri;\nGO\n\nALTER ROLE db_datareader ADD MEMBER palantiri;\nGO\n\n\nGRANT REFERENCES ON DATABASE SCOPED CREDENTIAL::[WorkspaceIdentity] TO [palantiri];\n\n\nselect * from sys.database_scoped_credentials",
+			"query": "use [biketrips];\nuse [iot];\n\n\ndrop USER palantiri\nGO\n\nCREATE USER palantiri FROM EXTERNAL PROVIDER\nGO\n\nCREATE USER palantiri FOR LOGIN palantiri;\nGO\n\nALTER ROLE db_datareader ADD MEMBER palantiri;\nGO\n\n\nGRANT REFERENCES ON DATABASE SCOPED CREDENTIAL::[WorkspaceIdentity] TO [palantiri];\n\n\nselect * from sys.database_scoped_credentials\n\n\n\n-- Azure Automation Managed Identity\nuse [iot];\nGO\n\nCREATE USER oredautomation FROM EXTERNAL PROVIDER\nGO\n\nALTER ROLE db_datareader ADD MEMBER oredautomation;\nGO\n\n",
 			"metadata": {
 				"language": "sql"
 			},
 			"currentConnection": {
-				"databaseName": "biketrips",
+				"databaseName": "iot",
 				"poolName": "Built-in"
 			},
 			"resultLimit": 5000
