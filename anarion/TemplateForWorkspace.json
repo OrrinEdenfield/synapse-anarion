@@ -2654,12 +2654,12 @@
 					"name": "Examples-IoT"
 				},
 				"content": {
-					"query": "-- count of records\nselect count(*) from openrowset(BULK 'https://gondor2.dfs.core.windows.net/iotcentral/ae903b55-ae40-4e38-860f-2970c7593735/8/2022/10/27/**', format = 'csv', fieldterminator ='0x0b', fieldquote = '0x0b') with (jsondoc nvarchar(max)) as rows\n--1393\n\n-- Parse the JSON files using JSON_VALUE\nselect top 20 \n    JSON_VALUE(jsondoc, '$.component') AS component, \n    JSON_VALUE(jsondoc, '$.deviceId') as deviceId, \n    JSON_VALUE(jsondoc, '$.enqueuedTime') as enqueuedTime,\n    JSON_VALUE(jsondoc, '$.telemetry.temperature') as temperature,\n    jsondoc \nfrom \n    openrowset( \n        BULK 'https://gondor2.dfs.core.windows.net/iotcentral/ae903b55-ae40-4e38-860f-2970c7593735/8/2022/10/27/**',\n        format = 'csv', \n        fieldterminator ='0x0b', \n        fieldquote = '0x0b' \n    ) with (jsondoc nvarchar(max)) as rows \nwhere JSON_VALUE(jsondoc, '$.component') is not null\norder by JSON_VALUE(jsondoc, '$.enqueuedTime') desc",
+					"query": "use iot;\n\n-- count of records\nselect count(*) from openrowset(BULK 'https://gondor2.dfs.core.windows.net/iotcentral/ae903b55-ae40-4e38-860f-2970c7593735/8/2022/10/27/**', format = 'csv', fieldterminator ='0x0b', fieldquote = '0x0b') with (jsondoc nvarchar(max)) as rows\n--1393\n\n-- Parse the JSON files using JSON_VALUE\nselect top 20 \n    JSON_VALUE(jsondoc, '$.component') AS component, \n    JSON_VALUE(jsondoc, '$.deviceId') as deviceId, \n    JSON_VALUE(jsondoc, '$.enqueuedTime') as enqueuedTime,\n    JSON_VALUE(jsondoc, '$.telemetry.temperature') as temperature,\n    jsondoc \nfrom \n    openrowset( \n        BULK 'https://gondor2.dfs.core.windows.net/iotcentral/ae903b55-ae40-4e38-860f-2970c7593735/8/2022/10/27/**',\n        format = 'csv', \n        fieldterminator ='0x0b', \n        fieldquote = '0x0b' \n    ) with (jsondoc nvarchar(max)) as rows \nwhere JSON_VALUE(jsondoc, '$.component') is not null\norder by JSON_VALUE(jsondoc, '$.enqueuedTime') desc",
 					"metadata": {
 						"language": "sql"
 					},
 					"currentConnection": {
-						"databaseName": "master",
+						"databaseName": "iot",
 						"poolName": "Built-in"
 					},
 					"resultLimit": 5000
