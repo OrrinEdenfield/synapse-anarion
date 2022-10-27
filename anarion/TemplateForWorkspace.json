@@ -2404,7 +2404,8 @@
 						"     staged: true,",
 						"     allowCopyCommand: true,",
 						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> sink1",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink1",
 						"source2 sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     deletable:false,",
@@ -2415,7 +2416,8 @@
 						"     staged: true,",
 						"     allowCopyCommand: true,",
 						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> sink2"
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink2"
 					]
 				}
 			},
@@ -11893,6 +11895,18 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('workspaceName'), '/SynapseSQLDedicated')]",
+			"type": "Microsoft.Synapse/workspaces/sqlPools",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"collation": "SQL_Latin1_General_CP1_CI_AS",
+				"maxSizeBytes": 263882790666240,
+				"annotations": []
+			},
+			"dependsOn": [],
+			"location": "westeurope"
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/SynapseSpark')]",
 			"type": "Microsoft.Synapse/workspaces/bigDataPools",
 			"apiVersion": "2019-06-01-preview",
@@ -12018,16 +12032,27 @@
 			"location": "westeurope"
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/SynapseSQLDedicated')]",
-			"type": "Microsoft.Synapse/workspaces/sqlPools",
+			"name": "[concat(parameters('workspaceName'), '/SQLserverless-IoT-Central-JSON')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
-				"collation": "SQL_Latin1_General_CP1_CI_AS",
-				"maxSizeBytes": 263882790666240,
-				"annotations": []
+				"folder": {
+					"name": "Examples-IoT"
+				},
+				"content": {
+					"query": "-- Parse the JSON files using JSON_VALUE\nselect top 10 \n    JSON_VALUE(jsondoc, '$.component') AS component, \n    JSON_VALUE(jsondoc, '$.deviceId') as deviceId, \n    JSON_VALUE(jsondoc, '$.enqueuedTime') as enqueuedTime,\n    JSON_VALUE(jsondoc, '$.telemetry.temperature') as temperature,\n    jsondoc \nfrom \n    openrowset( \n        BULK 'https://gondor2.dfs.core.windows.net/iotcentral/ae903b55-ae40-4e38-860f-2970c7593735/8/2022/10/27/10/29/kqkbejgjh2cas.json',\n        format = 'csv', \n        fieldterminator ='0x0b', \n        fieldquote = '0x0b' \n    ) with (jsondoc nvarchar(max)) as rows \nwhere JSON_VALUE(jsondoc, '$.component') is not null\norder by JSON_VALUE(jsondoc, '$.enqueuedTime') desc",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "master",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
 			},
-			"dependsOn": [],
-			"location": "westeurope"
+			"dependsOn": []
 		}
 	]
 }
