@@ -1,0 +1,16 @@
+{
+	"name": "L01C01",
+	"properties": {
+		"content": {
+			"query": "print(\"Hello world!\")",
+			"metadata": {
+				"language": "kql"
+			},
+			"currentConnection": {
+				"poolName": "sdxpool01",
+				"databaseName": ""
+			}
+		},
+		"type": "KqlQuery"
+	}
+}
