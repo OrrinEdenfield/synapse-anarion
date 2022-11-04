@@ -1,0 +1,16 @@
+{
+	"name": "dx-in-a-day-L02",
+	"properties": {
+		"content": {
+			"query": "// Challenge 5, Task 1\n.alter-merge table LogisticsTelemetryManipulated policy retention softdelete = 60d recoverability = enabled \n\n\n// Challenge 6, Task 1\n.show queries\n.show commands\n.show journal\n.show tables details\n\n// Challenge 6, Task 2\n.show queries | where StartedOn >= ago(7d) and User == 'ored@microsoft.com' | count \n\n\n// Challenge 6, Task 3\n.show journal | project EventTimestamp, Event | where Event == 'CREATE-MATERIALIZED-VIEW'\n\n// Challenge 6, Task 4\n.show commands | where StartedOn >= ago(7d) and User == 'ored@microsoft.com'  | count \n\n// Challenge 6, Task 5\n.show tables details | project TableName, TotalOriginalSize, HotExtentSize, TotalExtentSize | extend TotalExtentSizeInMB = format_bytes(TotalExtentSize, 0, \"MB\")\n\n\n// Challenge 7, Task 1\nlet devIDs = LogisticsTelemetryHistorical | project deviceId, Shock | sort by Shock desc | take 10; LogisticsTelemetryHistorical | project deviceId, Temp | summarize avg(toint(Temp)) by deviceId | where deviceId in (devIDs)\n\n\n// Challenge 7, Task 2\nLogisticsTelemetryHistorical\n| project TransportationMode, bin(enqueuedTime, 10m)\n| summarize count() by TransportationMode\n| render timechart \n\n\n// Challenge 7, Task 3\n// Challenge 7, Task 4\n// Challenge 7, Task 5\n// Challenge 8, Task 1\n// Challenge 8, Task 2",
+			"metadata": {
+				"language": "kql"
+			},
+			"currentConnection": {
+				"poolName": "oredsdxpool01",
+				"databaseName": "db01"
+			}
+		},
+		"type": "KqlQuery"
+	}
+}
