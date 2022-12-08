@@ -13,15 +13,22 @@
 		},
 		"SynapseSQLServerlessAAD_connectionString": {
 			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'SynapseSQLServerlessAAD'"
+			"metadata": "Secure string for 'connectionString' of 'SynapseSQLServerlessAAD'",
+			"defaultValue": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=anarion-ondemand.sql.azuresynapse.net;Initial Catalog=iot"
 		},
 		"anarion-WorkspaceDefaultSqlServer_connectionString": {
 			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'anarion-WorkspaceDefaultSqlServer'"
+			"metadata": "Secure string for 'connectionString' of 'anarion-WorkspaceDefaultSqlServer'",
+			"defaultValue": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=tcp:anarion.sql.azuresynapse.net,1433;Initial Catalog=@{linkedService().DBName}"
 		},
 		"brandybuck_primula_connectionString": {
 			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'brandybuck_primula'"
+			"metadata": "Secure string for 'connectionString' of 'brandybuck_primula'",
+			"defaultValue": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=brandybuck.database.windows.net;Initial Catalog=primula"
+		},
+		"localnet_aragorn_MSSQL_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'localnet_aragorn_MSSQL'"
 		},
 		"DownloadDotMicrosoftDotCom_properties_typeProperties_url": {
 			"type": "string",
@@ -503,6 +510,346 @@
 			"dependsOn": [
 				"[concat(variables('workspaceId'), '/dataflows/Load_US_Pop_by_Zip_Parquet')]",
 				"[concat(variables('workspaceId'), '/linkedServices/anarion-WorkspaceDefaultStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/LocalMSSQL_copy')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "ForEach_yeg",
+						"type": "ForEach",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@pipeline().parameters.cw_items",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Copy_yeg",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [
+										{
+											"name": "Source",
+											"value": "@{item().source.schema}.@{item().source.table}"
+										},
+										{
+											"name": "Destination",
+											"value": "calembel/01-raw/ChicagoParkingTickets/@{item().destination.fileName}"
+										}
+									],
+									"typeProperties": {
+										"source": {
+											"type": "SqlServerSource",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "ParquetSink",
+											"storeSettings": {
+												"type": "AzureBlobFSWriteSettings"
+											},
+											"formatSettings": {
+												"type": "ParquetWriteSettings"
+											}
+										},
+										"enableStaging": false,
+										"validateDataConsistency": false
+									},
+									"inputs": [
+										{
+											"referenceName": "SourceDataset_yeg",
+											"type": "DatasetReference",
+											"parameters": {
+												"cw_schema": "@item().source.schema",
+												"cw_table": "@item().source.table"
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "DestinationDataset_yeg",
+											"type": "DatasetReference",
+											"parameters": {
+												"cw_fileName": "@item().destination.fileName"
+											}
+										}
+									]
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"cw_items": {
+						"type": "Array",
+						"defaultValue": [
+							{
+								"source": {
+									"schema": "Chicago",
+									"table": "Buildings"
+								},
+								"destination": {
+									"fileName": "ChicagoBuildings.parquet"
+								}
+							},
+							{
+								"source": {
+									"schema": "Chicago",
+									"table": "Census_Tracts"
+								},
+								"destination": {
+									"fileName": "ChicagoCensus_Tracts.parquet"
+								}
+							},
+							{
+								"source": {
+									"schema": "Chicago",
+									"table": "Community_Areas"
+								},
+								"destination": {
+									"fileName": "ChicagoCommunity_Areas.parquet"
+								}
+							},
+							{
+								"source": {
+									"schema": "Chicago",
+									"table": "Neighborhoods"
+								},
+								"destination": {
+									"fileName": "ChicagoNeighborhoods.parquet"
+								}
+							},
+							{
+								"source": {
+									"schema": "Chicago",
+									"table": "Population_by_Census_Block"
+								},
+								"destination": {
+									"fileName": "ChicagoPopulation_by_Census_Block.parquet"
+								}
+							},
+							{
+								"source": {
+									"schema": "Chicago",
+									"table": "Population_by_Zip_Code"
+								},
+								"destination": {
+									"fileName": "ChicagoPopulation_by_Zip_Code.parquet"
+								}
+							},
+							{
+								"source": {
+									"schema": "Chicago",
+									"table": "Socioeconomic_Indicators_per_Community_Area"
+								},
+								"destination": {
+									"fileName": "ChicagoSocioeconomic_Indicators_per_Community_Area.parquet"
+								}
+							},
+							{
+								"source": {
+									"schema": "Chicago",
+									"table": "StreetNames"
+								},
+								"destination": {
+									"fileName": "ChicagoStreetNames.parquet"
+								}
+							},
+							{
+								"source": {
+									"schema": "Chicago",
+									"table": "Wards"
+								},
+								"destination": {
+									"fileName": "ChicagoWards.parquet"
+								}
+							},
+							{
+								"source": {
+									"schema": "Chicago",
+									"table": "ZipCodes"
+								},
+								"destination": {
+									"fileName": "ChicagoZipCodes.parquet"
+								}
+							},
+							{
+								"source": {
+									"schema": "ReferenceData",
+									"table": "License_Plate_Types"
+								},
+								"destination": {
+									"fileName": "ReferenceDataLicense_Plate_Types.parquet"
+								}
+							},
+							{
+								"source": {
+									"schema": "ReferenceData",
+									"table": "Months"
+								},
+								"destination": {
+									"fileName": "ReferenceDataMonths.parquet"
+								}
+							},
+							{
+								"source": {
+									"schema": "ReferenceData",
+									"table": "Vehicle_Makes"
+								},
+								"destination": {
+									"fileName": "ReferenceDataVehicle_Makes.parquet"
+								}
+							},
+							{
+								"source": {
+									"schema": "ReferenceData",
+									"table": "ZipCodes"
+								},
+								"destination": {
+									"fileName": "ReferenceDataZipCodes.parquet"
+								}
+							},
+							{
+								"source": {
+									"schema": "Tickets",
+									"table": "Accounting"
+								},
+								"destination": {
+									"fileName": "TicketsAccounting.parquet"
+								}
+							},
+							{
+								"source": {
+									"schema": "Tickets",
+									"table": "Fine_amounts"
+								},
+								"destination": {
+									"fileName": "TicketsFine_amounts.parquet"
+								}
+							},
+							{
+								"source": {
+									"schema": "Tickets",
+									"table": "License_Plates"
+								},
+								"destination": {
+									"fileName": "TicketsLicense_Plates.parquet"
+								}
+							},
+							{
+								"source": {
+									"schema": "Tickets",
+									"table": "Location_Text"
+								},
+								"destination": {
+									"fileName": "TicketsLocation_Text.parquet"
+								}
+							},
+							{
+								"source": {
+									"schema": "Tickets",
+									"table": "Locations"
+								},
+								"destination": {
+									"fileName": "TicketsLocations.parquet"
+								}
+							},
+							{
+								"source": {
+									"schema": "Tickets",
+									"table": "Notice_Level"
+								},
+								"destination": {
+									"fileName": "TicketsNotice_Level.parquet"
+								}
+							},
+							{
+								"source": {
+									"schema": "Tickets",
+									"table": "Officers"
+								},
+								"destination": {
+									"fileName": "TicketsOfficers.parquet"
+								}
+							},
+							{
+								"source": {
+									"schema": "Tickets",
+									"table": "Parking_Violations"
+								},
+								"destination": {
+									"fileName": "TicketsParking_Violations.parquet"
+								}
+							},
+							{
+								"source": {
+									"schema": "Tickets",
+									"table": "Ticket_Status"
+								},
+								"destination": {
+									"fileName": "TicketsTicket_Status.parquet"
+								}
+							},
+							{
+								"source": {
+									"schema": "Tickets",
+									"table": "Units"
+								},
+								"destination": {
+									"fileName": "TicketsUnits.parquet"
+								}
+							},
+							{
+								"source": {
+									"schema": "Tickets",
+									"table": "Violation"
+								},
+								"destination": {
+									"fileName": "TicketsViolation.parquet"
+								}
+							},
+							{
+								"source": {
+									"schema": "Weather",
+									"table": "Precipitation"
+								},
+								"destination": {
+									"fileName": "WeatherPrecipitation.parquet"
+								}
+							},
+							{
+								"source": {
+									"schema": "Weather",
+									"table": "Temperature"
+								},
+								"destination": {
+									"fileName": "WeatherTemperature.parquet"
+								}
+							}
+						]
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/datasets/SourceDataset_yeg')]",
+				"[concat(variables('workspaceId'), '/datasets/DestinationDataset_yeg')]"
 			]
 		},
 		{
@@ -1289,6 +1636,40 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('workspaceName'), '/DestinationDataset_yeg')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "anarion-WorkspaceDefaultStorage",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"cw_fileName": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().cw_fileName",
+							"type": "Expression"
+						},
+						"folderPath": "01-raw/ChicagoParkingTickets",
+						"fileSystem": "calembel"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/anarion-WorkspaceDefaultStorage')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/HybridExternalIPFilesDestination')]",
 			"type": "Microsoft.Synapse/workspaces/datasets",
 			"apiVersion": "2019-06-01-preview",
@@ -1694,6 +2075,41 @@
 			},
 			"dependsOn": [
 				"[concat(variables('workspaceId'), '/linkedServices/brandybuck_primula')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SourceDataset_yeg')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "localnet_aragorn_MSSQL",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"cw_schema": {
+						"type": "String"
+					},
+					"cw_table": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": {
+						"value": "@dataset().cw_schema",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset().cw_table",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/localnet_aragorn_MSSQL')]"
 			]
 		},
 		{
@@ -2161,6 +2577,25 @@
 			},
 			"dependsOn": [
 				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/localnet_aragorn_MSSQL')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"connectionString": "[parameters('localnet_aragorn_MSSQL_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "HomeServer",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/HomeServer')]"
 			]
 		},
 		{
@@ -3188,6 +3623,44 @@
 					"query": "// Compare yesterday's data to the day before, and the day before that\nbuidingenv_v2\n| where toint(datetime_part(\"day\", timestamp)) == datetime_part(\"day\", now(-3d))\n| count\n// 162,208\n\n// Count of records per hour, exclude first hour data was sent in & latest 1 hour increment\nbuidingenv_v2\n| summarize RecordCount = count() by ISO8601 = substring(tostring(timestamp),0,13), deviceid\n| where ISO8601 != '' and ISO8601 != '2021-09-24T13' and ISO8601 != substring(tostring(now()),0,13)\n| order by ISO8601 desc, deviceid asc\n\n// Records from the last 1 hour\nbuidingenv_v2\n| where timestamp > ago(8h)\n| order by timestamp desc\n| limit 15",
 					"metadata": {
 						"language": "kql"
+					}
+				},
+				"type": "KqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/dx-in-a-day-L01')]",
+			"type": "Microsoft.Synapse/workspaces/kqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "LogisticsTelemetryHistorical | count \n// 1,375,849\n\n\nLogisticsTelemetryHistorical\n| where messageSource == \"telemetry\"\n| count \n// 1,375,849\n\n\n// Challenge 3, Task 1\nLogisticsTelemetryHistorical\n| where deviceId startswith \"x\"\n| take 10\n\nLogisticsTelemetryHistorical\n| where enqueuedTime > ago(200000m) // You might get 0 records if data is old. Use above query to check enqueuedTime in data\n| take 10 \n\nLogisticsTelemetryHistorical\n| summarize count() // or: count\n// 1,375,849\n\nLogisticsTelemetryHistorical\n| where deviceId startswith \"x\"\n| summarize count()\n// 53377\n\nLogisticsTelemetryHistorical\n| where deviceId startswith \"x\"\n| summarize count() by deviceId\n\n\n\nLogisticsTelemetryHistorical\n| where deviceId startswith \"x\"\n| summarize count() by deviceId\n| render piechart \n\n\nLogisticsTelemetryHistorical\n// | where enqueuedTime > ago(10d) \n| extend h = telemetry.Humidity\n| summarize avg(toint(h)) by bin(enqueuedTime, 1h)\n| render timechart \n\n\n// Challenge 3, Task 2\nLogisticsTelemetryHistorical | getschema\n\nLogisticsTelemetryHistorical\n| extend d=parse_json(telemetry) \n| take 10\n\n// Challenge 3, Task 3\n//deviceId, enqueuedTime, Temp. Take arbitrary 10 records\nLogisticsTelemetryHistorical\n| project deviceId, enqueuedTime, Temp\n| take 10\n\n\n// Challenge 3, Task 4\nLogisticsTelemetryHistorical\n| project deviceId, enqueuedTime, Temp\n| where enqueuedTime > ago(180d)\n| take 10\n\n// Challenge 3, Task 5\nLogisticsTelemetryHistorical\n| project deviceId, enqueuedTime, Temp\n| sort by Temp asc\n| take 5\n\n\n// Challenge 3, 6\nLogisticsTelemetryHistorical\n| extend F_Temp = Temp\n| extend C_Temp = (Temp - 32)* (5.0/9.0) \n| project F_Temp, C_Temp, deviceId, messageSource, enqueuedTime, messageProperties\n| take 5\n\n\n// Challenge 3, 7\nLogisticsTelemetryHistorical\n| count\n\n// Challenge 3, 8\nLogisticsTelemetryHistorical\n| where deviceId startswith \"x\"\n| count\n\nLogisticsTelemetryHistorical\n| where deviceId startswith \"x\"\n| summarize count() by deviceId\n\n\n// Challenge 3, 9\nLogisticsTelemetryHistorical\n| where deviceId startswith \"x\"\n| summarize count() by deviceId\n| render piechart \n\n\n// Challenge 3, Task 10\nLogisticsTelemetryHistorical\n| project deviceId, enqueuedTime\n| summarize count() by bin(enqueuedTime, 10m)\n| render timechart \n\n\n\n// Challenge 3, Task 11\nLogisticsTelemetryHistorical\n| extend temp = telemetry.Temp\n| summarize avg(toint(temp)) by bin(enqueuedTime, 30m)\n| render timechart \n\n\n// Challenge 4, Task 1\n//.drop function C04T01\n.create function with (docstring = 'Challenge 4, Task 1 function', folder='ADXInADay') C04T01() {LogisticsTelemetryHistorical | extend NumofTagsCalculated = (toint(telemetry.TotalTags) - toint(telemetry.LostTags)) | project deviceId, enqueuedTime, NumofTagsCalculated, Temp}\n\n// Challenge 4, Task 2\n.create table LogisticsTelemetryManipulated  (deviceId:string, enqueuedTime:datetime, NumOfTagsCalculated:long, Temp:real)\n\n// Test out the function\nC04T01\n| take 5\n\n\n.alter table LogisticsTelemetryManipulated policy update \n@'[{\"IsEnabled\": true,\"Source\": \"LogisticsTelemetryHistorical\",\"Query\": \"C04T01()\",\"IsTransactional\": true,\"PropagateIngestionProperties\": false}]'\n\nLogisticsTelemetryManipulated\n| take 5\n// Nothing shows up since new records are not inserted yet.\n\n// Insert some new records\n.set-or-append LogisticsTelemetryHistorical <| LogisticsTelemetryHistorical | take 1000\n\nLogisticsTelemetryManipulated\n| take 10\n// Now I see records\n\n\n// Challenge 4, Task 3\n//.drop materialized-view matView1\n\n.create materialized-view matView1 on table LogisticsTelemetryHistorical {LogisticsTelemetryHistorical | summarize arg_max(deviceId, enqueuedTime) by deviceId}\n//.create materialized-view matView1 on table LogisticsTelemetryManipulated {LogisticsTelemetryManipulated | summarize arg_max(deviceId, enqueuedTime) by deviceId}\n\n// Sometimes SQL works - but not in Synapse Analytics Studio\nselect deviceId, max(enqueuedTime) as maxenqueuedTime \nfrom LogisticsTelemetryManipulated \ngroup by deviceId\n\n\n// Challenge 4, Task 4\nmatView1\nmaterialized_view(\"matView1\")\n// I'm not sure this is working as expected, no records shown.\n",
+					"metadata": {
+						"language": "kql"
+					},
+					"currentConnection": {
+						"poolName": "oredsdxpool01",
+						"databaseName": "db01"
+					}
+				},
+				"type": "KqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/dx-in-a-day-L02')]",
+			"type": "Microsoft.Synapse/workspaces/kqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "// Challenge 5, Task 1\n.alter-merge table LogisticsTelemetryManipulated policy retention softdelete = 60d recoverability = enabled \n\n\n// Challenge 6, Task 1\n.show queries\n.show commands\n.show journal\n.show tables details\n\n// Challenge 6, Task 2\n.show queries | where StartedOn >= ago(7d) and User == 'ored@microsoft.com' | count \n\n\n// Challenge 6, Task 3\n.show journal | project EventTimestamp, Event | where Event == 'CREATE-MATERIALIZED-VIEW'\n\n// Challenge 6, Task 4\n.show commands | where StartedOn >= ago(7d) and User == 'ored@microsoft.com'  | count \n\n// Challenge 6, Task 5\n.show tables details | project TableName, TotalOriginalSize, HotExtentSize, TotalExtentSize | extend TotalExtentSizeInMB = format_bytes(TotalExtentSize, 0, \"MB\")\n\n\n// Challenge 7, Task 1\nlet devIDs = LogisticsTelemetryHistorical | project deviceId, Shock | sort by Shock desc | take 10; LogisticsTelemetryHistorical | project deviceId, Temp | summarize avg(toint(Temp)) by deviceId | where deviceId in (devIDs)\n\n\n// Challenge 7, Task 2\nLogisticsTelemetryHistorical \n| summarize count() by TransportationMode, bin(enqueuedTime, 10m) \n| render timechart \n\n\n// Challenge 7, Task 3\n// Challenge 7, Task 4\n// Challenge 7, Task 5\nlet min_t = (toscalar(LogisticsTelemetryHistorical | summarize min(enqueuedTime)));\nlet max_t = (toscalar(LogisticsTelemetryHistorical | summarize max(enqueuedTime)));\nlet step_interval = 10m;\nLogisticsTelemetryHistorical\n| make-series avg_shock_series=avg(Shock) on (enqueuedTime) from (min_t) to (max_t) step step_interval \n| extend anomalies_flags = series_decompose_anomalies(avg_shock_series, 1) \n| render anomalychart  with(anomalycolumns=anomalies_flags, title='avg shock anomalies')\n\n\n// Challenge 8, Task 1\nLogisticsTelemetryHistorical\n| distinct TransportationMode\n\n// Challenge 8, Task 2",
+					"metadata": {
+						"language": "kql"
+					},
+					"currentConnection": {
+						"poolName": "oredsdxpool01",
+						"databaseName": "db01"
 					}
 				},
 				"type": "KqlQuery"
@@ -12138,44 +12611,6 @@
 			},
 			"dependsOn": [],
 			"location": "westeurope"
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/dx-in-a-day-L01')]",
-			"type": "Microsoft.Synapse/workspaces/kqlscripts",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"content": {
-					"query": "LogisticsTelemetryHistorical | count \n// 1,375,849\n\n\nLogisticsTelemetryHistorical\n| where messageSource == \"telemetry\"\n| count \n// 1,375,849\n\n\n// Challenge 3, Task 1\nLogisticsTelemetryHistorical\n| where deviceId startswith \"x\"\n| take 10\n\nLogisticsTelemetryHistorical\n| where enqueuedTime > ago(200000m) // You might get 0 records if data is old. Use above query to check enqueuedTime in data\n| take 10 \n\nLogisticsTelemetryHistorical\n| summarize count() // or: count\n// 1,375,849\n\nLogisticsTelemetryHistorical\n| where deviceId startswith \"x\"\n| summarize count()\n// 53377\n\nLogisticsTelemetryHistorical\n| where deviceId startswith \"x\"\n| summarize count() by deviceId\n\n\n\nLogisticsTelemetryHistorical\n| where deviceId startswith \"x\"\n| summarize count() by deviceId\n| render piechart \n\n\nLogisticsTelemetryHistorical\n// | where enqueuedTime > ago(10d) \n| extend h = telemetry.Humidity\n| summarize avg(toint(h)) by bin(enqueuedTime, 1h)\n| render timechart \n\n\n// Challenge 3, Task 2\nLogisticsTelemetryHistorical | getschema\n\nLogisticsTelemetryHistorical\n| extend d=parse_json(telemetry) \n| take 10\n\n// Challenge 3, Task 3\n//deviceId, enqueuedTime, Temp. Take arbitrary 10 records\nLogisticsTelemetryHistorical\n| project deviceId, enqueuedTime, Temp\n| take 10\n\n\n// Challenge 3, Task 4\nLogisticsTelemetryHistorical\n| project deviceId, enqueuedTime, Temp\n| where enqueuedTime > ago(180d)\n| take 10\n\n// Challenge 3, Task 5\nLogisticsTelemetryHistorical\n| project deviceId, enqueuedTime, Temp\n| sort by Temp asc\n| take 5\n\n\n// Challenge 3, 6\nLogisticsTelemetryHistorical\n| extend F_Temp = Temp\n| extend C_Temp = (Temp - 32)* (5.0/9.0) \n| project F_Temp, C_Temp, deviceId, messageSource, enqueuedTime, messageProperties\n| take 5\n\n\n// Challenge 3, 7\nLogisticsTelemetryHistorical\n| count\n\n// Challenge 3, 8\nLogisticsTelemetryHistorical\n| where deviceId startswith \"x\"\n| count\n\nLogisticsTelemetryHistorical\n| where deviceId startswith \"x\"\n| summarize count() by deviceId\n\n\n// Challenge 3, 9\nLogisticsTelemetryHistorical\n| where deviceId startswith \"x\"\n| summarize count() by deviceId\n| render piechart \n\n\n// Challenge 3, Task 10\nLogisticsTelemetryHistorical\n| project deviceId, enqueuedTime\n| summarize count() by bin(enqueuedTime, 10m)\n| render timechart \n\n\n\n// Challenge 3, Task 11\nLogisticsTelemetryHistorical\n| extend temp = telemetry.Temp\n| summarize avg(toint(temp)) by bin(enqueuedTime, 30m)\n| render timechart \n\n\n// Challenge 4, Task 1\n//.drop function C04T01\n.create function with (docstring = 'Challenge 4, Task 1 function', folder='ADXInADay') C04T01() {LogisticsTelemetryHistorical | extend NumofTagsCalculated = (toint(telemetry.TotalTags) - toint(telemetry.LostTags)) | project deviceId, enqueuedTime, NumofTagsCalculated, Temp}\n\n// Challenge 4, Task 2\n.create table LogisticsTelemetryManipulated  (deviceId:string, enqueuedTime:datetime, NumOfTagsCalculated:long, Temp:real)\n\n// Test out the function\nC04T01\n| take 5\n\n\n.alter table LogisticsTelemetryManipulated policy update \n@'[{\"IsEnabled\": true,\"Source\": \"LogisticsTelemetryHistorical\",\"Query\": \"C04T01()\",\"IsTransactional\": true,\"PropagateIngestionProperties\": false}]'\n\nLogisticsTelemetryManipulated\n| take 5\n// Nothing shows up since new records are not inserted yet.\n\n// Insert some new records\n.set-or-append LogisticsTelemetryHistorical <| LogisticsTelemetryHistorical | take 1000\n\nLogisticsTelemetryManipulated\n| take 10\n// Now I see records\n\n\n// Challenge 4, Task 3\n//.drop materialized-view matView1\n\n.create materialized-view matView1 on table LogisticsTelemetryHistorical {LogisticsTelemetryHistorical | summarize arg_max(deviceId, enqueuedTime) by deviceId}\n//.create materialized-view matView1 on table LogisticsTelemetryManipulated {LogisticsTelemetryManipulated | summarize arg_max(deviceId, enqueuedTime) by deviceId}\n\n// Sometimes SQL works - but not in Synapse Analytics Studio\nselect deviceId, max(enqueuedTime) as maxenqueuedTime \nfrom LogisticsTelemetryManipulated \ngroup by deviceId\n\n\n// Challenge 4, Task 4\nmatView1\nmaterialized_view(\"matView1\")\n// I'm not sure this is working as expected, no records shown.\n",
-					"metadata": {
-						"language": "kql"
-					},
-					"currentConnection": {
-						"poolName": "oredsdxpool01",
-						"databaseName": "db01"
-					}
-				},
-				"type": "KqlQuery"
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/dx-in-a-day-L02')]",
-			"type": "Microsoft.Synapse/workspaces/kqlscripts",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"content": {
-					"query": "// Challenge 5, Task 1\n.alter-merge table LogisticsTelemetryManipulated policy retention softdelete = 60d recoverability = enabled \n\n\n// Challenge 6, Task 1\n.show queries\n.show commands\n.show journal\n.show tables details\n\n// Challenge 6, Task 2\n.show queries | where StartedOn >= ago(7d) and User == 'ored@microsoft.com' | count \n\n\n// Challenge 6, Task 3\n.show journal | project EventTimestamp, Event | where Event == 'CREATE-MATERIALIZED-VIEW'\n\n// Challenge 6, Task 4\n.show commands | where StartedOn >= ago(7d) and User == 'ored@microsoft.com'  | count \n\n// Challenge 6, Task 5\n.show tables details | project TableName, TotalOriginalSize, HotExtentSize, TotalExtentSize | extend TotalExtentSizeInMB = format_bytes(TotalExtentSize, 0, \"MB\")\n\n\n// Challenge 7, Task 1\nlet devIDs = LogisticsTelemetryHistorical | project deviceId, Shock | sort by Shock desc | take 10; LogisticsTelemetryHistorical | project deviceId, Temp | summarize avg(toint(Temp)) by deviceId | where deviceId in (devIDs)\n\n\n// Challenge 7, Task 2\nLogisticsTelemetryHistorical \n| summarize count() by TransportationMode, bin(enqueuedTime, 10m) \n| render timechart \n\n\n// Challenge 7, Task 3\n// Challenge 7, Task 4\n// Challenge 7, Task 5\nlet min_t = (toscalar(LogisticsTelemetryHistorical | summarize min(enqueuedTime)));\nlet max_t = (toscalar(LogisticsTelemetryHistorical | summarize max(enqueuedTime)));\nlet step_interval = 10m;\nLogisticsTelemetryHistorical\n| make-series avg_shock_series=avg(Shock) on (enqueuedTime) from (min_t) to (max_t) step step_interval \n| extend anomalies_flags = series_decompose_anomalies(avg_shock_series, 1) \n| render anomalychart  with(anomalycolumns=anomalies_flags, title='avg shock anomalies')\n\n\n// Challenge 8, Task 1\nLogisticsTelemetryHistorical\n| distinct TransportationMode\n\n// Challenge 8, Task 2",
-					"metadata": {
-						"language": "kql"
-					},
-					"currentConnection": {
-						"poolName": "oredsdxpool01",
-						"databaseName": "db01"
-					}
-				},
-				"type": "KqlQuery"
-			},
-			"dependsOn": []
 		}
 	]
 }

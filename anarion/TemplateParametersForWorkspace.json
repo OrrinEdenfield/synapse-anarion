@@ -9,12 +9,15 @@
 			"value": ""
 		},
 		"SynapseSQLServerlessAAD_connectionString": {
-			"value": ""
+			"value": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=anarion-ondemand.sql.azuresynapse.net;Initial Catalog=iot"
 		},
 		"anarion-WorkspaceDefaultSqlServer_connectionString": {
-			"value": ""
+			"value": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=tcp:anarion.sql.azuresynapse.net,1433;Initial Catalog=@{linkedService().DBName}"
 		},
 		"brandybuck_primula_connectionString": {
+			"value": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=brandybuck.database.windows.net;Initial Catalog=primula"
+		},
+		"localnet_aragorn_MSSQL_connectionString": {
 			"value": ""
 		},
 		"DownloadDotMicrosoftDotCom_properties_typeProperties_url": {
