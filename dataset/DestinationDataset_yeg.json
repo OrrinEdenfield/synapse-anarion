@@ -1,0 +1,29 @@
+{
+	"name": "DestinationDataset_yeg",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "anarion-WorkspaceDefaultStorage",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"cw_fileName": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().cw_fileName",
+					"type": "Expression"
+				},
+				"folderPath": "01-raw/ChicagoParkingTickets",
+				"fileSystem": "calembel"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}

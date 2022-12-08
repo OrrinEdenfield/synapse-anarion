@@ -1,0 +1,330 @@
+{
+	"name": "LocalMSSQL_copy",
+	"properties": {
+		"activities": [
+			{
+				"name": "ForEach_yeg",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@pipeline().parameters.cw_items",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Copy_yeg",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [
+								{
+									"name": "Source",
+									"value": "@{item().source.schema}.@{item().source.table}"
+								},
+								{
+									"name": "Destination",
+									"value": "calembel/01-raw/ChicagoParkingTickets/@{item().destination.fileName}"
+								}
+							],
+							"typeProperties": {
+								"source": {
+									"type": "SqlServerSource",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "ParquetSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "ParquetWriteSettings"
+									}
+								},
+								"enableStaging": false,
+								"validateDataConsistency": false
+							},
+							"inputs": [
+								{
+									"referenceName": "SourceDataset_yeg",
+									"type": "DatasetReference",
+									"parameters": {
+										"cw_schema": "@item().source.schema",
+										"cw_table": "@item().source.table"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DestinationDataset_yeg",
+									"type": "DatasetReference",
+									"parameters": {
+										"cw_fileName": "@item().destination.fileName"
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"cw_items": {
+				"type": "Array",
+				"defaultValue": [
+					{
+						"source": {
+							"schema": "Chicago",
+							"table": "Buildings"
+						},
+						"destination": {
+							"fileName": "ChicagoBuildings.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Chicago",
+							"table": "Census_Tracts"
+						},
+						"destination": {
+							"fileName": "ChicagoCensus_Tracts.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Chicago",
+							"table": "Community_Areas"
+						},
+						"destination": {
+							"fileName": "ChicagoCommunity_Areas.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Chicago",
+							"table": "Neighborhoods"
+						},
+						"destination": {
+							"fileName": "ChicagoNeighborhoods.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Chicago",
+							"table": "Population_by_Census_Block"
+						},
+						"destination": {
+							"fileName": "ChicagoPopulation_by_Census_Block.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Chicago",
+							"table": "Population_by_Zip_Code"
+						},
+						"destination": {
+							"fileName": "ChicagoPopulation_by_Zip_Code.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Chicago",
+							"table": "Socioeconomic_Indicators_per_Community_Area"
+						},
+						"destination": {
+							"fileName": "ChicagoSocioeconomic_Indicators_per_Community_Area.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Chicago",
+							"table": "StreetNames"
+						},
+						"destination": {
+							"fileName": "ChicagoStreetNames.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Chicago",
+							"table": "Wards"
+						},
+						"destination": {
+							"fileName": "ChicagoWards.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Chicago",
+							"table": "ZipCodes"
+						},
+						"destination": {
+							"fileName": "ChicagoZipCodes.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "ReferenceData",
+							"table": "License_Plate_Types"
+						},
+						"destination": {
+							"fileName": "ReferenceDataLicense_Plate_Types.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "ReferenceData",
+							"table": "Months"
+						},
+						"destination": {
+							"fileName": "ReferenceDataMonths.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "ReferenceData",
+							"table": "Vehicle_Makes"
+						},
+						"destination": {
+							"fileName": "ReferenceDataVehicle_Makes.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "ReferenceData",
+							"table": "ZipCodes"
+						},
+						"destination": {
+							"fileName": "ReferenceDataZipCodes.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Tickets",
+							"table": "Accounting"
+						},
+						"destination": {
+							"fileName": "TicketsAccounting.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Tickets",
+							"table": "Fine_amounts"
+						},
+						"destination": {
+							"fileName": "TicketsFine_amounts.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Tickets",
+							"table": "License_Plates"
+						},
+						"destination": {
+							"fileName": "TicketsLicense_Plates.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Tickets",
+							"table": "Location_Text"
+						},
+						"destination": {
+							"fileName": "TicketsLocation_Text.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Tickets",
+							"table": "Locations"
+						},
+						"destination": {
+							"fileName": "TicketsLocations.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Tickets",
+							"table": "Notice_Level"
+						},
+						"destination": {
+							"fileName": "TicketsNotice_Level.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Tickets",
+							"table": "Officers"
+						},
+						"destination": {
+							"fileName": "TicketsOfficers.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Tickets",
+							"table": "Parking_Violations"
+						},
+						"destination": {
+							"fileName": "TicketsParking_Violations.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Tickets",
+							"table": "Ticket_Status"
+						},
+						"destination": {
+							"fileName": "TicketsTicket_Status.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Tickets",
+							"table": "Units"
+						},
+						"destination": {
+							"fileName": "TicketsUnits.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Tickets",
+							"table": "Violation"
+						},
+						"destination": {
+							"fileName": "TicketsViolation.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Weather",
+							"table": "Precipitation"
+						},
+						"destination": {
+							"fileName": "WeatherPrecipitation.parquet"
+						}
+					},
+					{
+						"source": {
+							"schema": "Weather",
+							"table": "Temperature"
+						},
+						"destination": {
+							"fileName": "WeatherTemperature.parquet"
+						}
+					}
+				]
+			}
+		},
+		"annotations": []
+	}
+}
